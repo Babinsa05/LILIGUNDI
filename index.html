@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#1e3b2c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
     
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/32/190/190411.png">
@@ -127,6 +128,7 @@
         #installContainer {
             position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 16px; border-radius: 28px;
             z-index: 1000; display: none; text-align: center; border: 1px solid #5b9b7a;
+            backdrop-filter: blur(10px);
         }
         .install-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
         .install-buttons button { padding: 10px 24px; margin: 0; width: auto; }
@@ -180,7 +182,13 @@
         <hr>
     </div>
 </div>
-<div id="installContainer"><p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi</p><div class="install-buttons"><button id="installButton">Pasang</button><button id="closeInstall">Tutup</button></div></div>
+<div id="installContainer">
+    <p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi DUKOPS di HP</p>
+    <div class="install-buttons">
+        <button id="installButton" style="background:#317456;"><i class="fas fa-download"></i> Pasang</button>
+        <button id="closeInstall" style="background:#5a3a3a;"><i class="fas fa-times"></i> Tutup</button>
+    </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
@@ -226,7 +234,8 @@
             KOORDINAT_LIST = data.koordinat;
             koordinatLoaded = true;
             currentKoordinat = getRandomCoordinate();
-            previewKordinat.innerHTML = `📍 ${currentKoordinat}`;
+            // Format tampilan koordinat dengan awalan "Koordinat📍 "
+            previewKordinat.innerHTML = `Koordinat📍 ${currentKoordinat}`;
             
         } catch (error) {
             console.error('Gagal memuat koordinat:', error);
@@ -239,7 +248,7 @@
     
     function getRandomCoordinate() {
         if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
-            return "Koordinat belum tersedia";
+            return "-8° 8'38.215S, 115°6'52.463E";
         }
         return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
     }
@@ -276,14 +285,13 @@
         
         if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
             currentKoordinat = getRandomCoordinate();
-            previewKordinat.innerHTML = `📍 ${currentKoordinat}`;
+            previewKordinat.innerHTML = `Koordinat📍 ${currentKoordinat}`;
         }
         
         const reader = new FileReader();
         reader.onload = function(e) {
             currentImage = new Image();
             currentImage.onload = function() {
-                // Gambar di canvas dengan ukuran tetap 759x300 (tidak melebar)
                 updateCanvasPreview();
                 checkInputCompletion();
             };
@@ -308,7 +316,7 @@
     }
     
     function updateCanvasPreview() {
-        // Ukuran canvas FIX: 759 x 300 (tidak berubah)
+        // Ukuran canvas FIX: 759 x 300
         canvas.width = 759;
         canvas.height = 300;
         
@@ -328,17 +336,18 @@
             ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
         }
         
-        // Font Arial ukuran 25px SEMUA (sama rata)
+        // Font Arial ukuran 25px SEMUA
         ctx.fillStyle = "white";
         ctx.font = "25px Arial";
         ctx.textAlign = "right";
         
-        // Posisi teks: dari bawah (y = 280, 250, 220)
+        // Posisi teks: dari bawah
         // Judul kegiatan (baris paling atas)
         ctx.fillText(currentJudul.substring(0, 40), canvas.width - 10, canvas.height - 80);
         
-        // Koordinat (baris tengah)
-        ctx.fillText(currentKoordinat || "Koordinat Tidak Tersedia", canvas.width - 10, canvas.height - 50);
+        // Koordinat dengan format "Koordinat📍 " (baris tengah)
+        const coordText = `Koordinat📍 ${currentKoordinat || "Koordinat Tidak Tersedia"}`;
+        ctx.fillText(coordText, canvas.width - 10, canvas.height - 50);
         
         // Tanggal dan Waktu (baris paling bawah)
         let dateObj = new Date(currentTimestamp);
@@ -435,30 +444,45 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         }
     }
     
-    // ======================== PWA INSTALL ========================
+    // ======================== PWA INSTALL (SEPERTI APK) ========================
     let deferredPrompt;
     const installDiv = document.getElementById('installContainer');
     const installBtn = document.getElementById('installButton');
     const closeInstall = document.getElementById('closeInstall');
     
     if (installBtn) {
-        installBtn.addEventListener('click', () => {
+        installBtn.addEventListener('click', async () => {
             installDiv.style.display = 'none';
-            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                deferredPrompt = null;
+            } else {
+                alert("Installasi bisa dilakukan melalui menu browser: 'Install App' atau 'Tambahkan ke Home Screen'");
+            }
         });
     }
     if (closeInstall) {
-        closeInstall.addEventListener('click', () => installDiv.style.display = 'none');
+        closeInstall.addEventListener('click', () => {
+            installDiv.style.display = 'none';
+        });
     }
     
-    window.addEventListener('beforeinstallprompt', (e) => { 
-        e.preventDefault(); 
-        deferredPrompt = e; 
-        installDiv.style.display = 'block'; 
+    // Tangkap event beforeinstallprompt untuk PWA
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installDiv.style.display = 'block';
     });
     
-    if ('serviceWorker' in navigator) { 
-        navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); 
+    // Daftarkan Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registered:', reg.scope))
+                .catch(err => console.log('Service Worker failed:', err));
+        });
     }
     
     // ======================== EVENT LISTENERS ========================
@@ -482,7 +506,6 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         
         await loadKoordinat();
         
-        // Canvas sudah diatur width=759 height=300 di HTML
         updateCanvasPreview();
         
         checkInputCompletion();
