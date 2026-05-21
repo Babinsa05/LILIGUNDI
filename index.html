@@ -9,11 +9,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
     
-    <!-- Favicon & Icons -->
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/32/190/190411.png">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/192/190/190411.png">
+    <!-- Icon untuk berbagai platform -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Font Awesome untuk icon tampilan -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -234,7 +238,6 @@
             KOORDINAT_LIST = data.koordinat;
             koordinatLoaded = true;
             currentKoordinat = getRandomCoordinate();
-            // Format tampilan koordinat dengan awalan "Koordinat📍 "
             previewKordinat.innerHTML = `Koordinat📍 ${currentKoordinat}`;
             
         } catch (error) {
