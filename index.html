@@ -45,29 +45,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
         }
         .header-icon {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             object-fit: contain;
-            border-radius: 12px;
+            border-radius: 16px;
         }
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             margin: 0;
+            letter-spacing: 1px;
         }
         .header .sub {
             font-size: 0.9rem;
             opacity: 0.85;
             color: #c7e9cf;
-            margin-top: 8px;
+            margin-top: 12px;
         }
         .badge-area { 
             display: inline-flex; 
@@ -173,8 +174,13 @@
         @media (max-width: 550px) { 
             .content { padding: 20px 18px; } 
             .stat-number { font-size: 1.7rem; }
-            .header-icon { width: 35px; height: 35px; }
-            .header h1 { font-size: 1.3rem; }
+            .header-icon { width: 45px; height: 45px; }
+            .header h1 { font-size: 1.4rem; }
+            .header-title { gap: 12px; }
+        }
+        @media (min-width: 551px) and (max-width: 700px) {
+            .header-icon { width: 55px; height: 55px; }
+            .header h1 { font-size: 1.7rem; }
         }
     </style>
 </head>
@@ -267,6 +273,25 @@
     let submissionCount = 0;
     let sequenceNumber = 0;
     
+    // ======================== FUNGSI UNTUK ACAK DETIK ========================
+    function acakDetik(pilihWaktu) {
+        if (!pilihWaktu) return null;
+        
+        let dateObj = new Date(pilihWaktu);
+        if (isNaN(dateObj.getTime())) return null;
+        
+        const detikAcak = Math.floor(Math.random() * 60);
+        dateObj.setSeconds(detikAcak);
+        currentTimestamp = dateObj.toISOString();
+        
+        previewTanggal.textContent = dateObj.toLocaleString('id-ID', { 
+            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        });
+        
+        return dateObj;
+    }
+    
     // ======================== LOAD KOORDINAT DARI GITHUB ========================
     async function loadKoordinat() {
         try {
@@ -334,6 +359,11 @@
             previewKordinat.innerHTML = `📍 ${currentKoordinat}`;
         }
         
+        const currentDateValue = tanggalInput.value;
+        if (currentDateValue) {
+            acakDetik(currentDateValue);
+        }
+        
         const reader = new FileReader();
         reader.onload = function(e) {
             currentImage = new Image();
@@ -351,14 +381,27 @@
     
     function updateDatePreview(dateString) {
         if (!dateString) return;
-        let date = new Date(dateString);
-        if (isNaN(date.getTime())) return;
-        currentTimestamp = date.toISOString();
-        previewTanggal.textContent = date.toLocaleString('id-ID', { 
-            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', 
-            hour: '2-digit', minute: '2-digit' 
-        });
+        acakDetik(dateString);
         updateCanvasPreview();
+    }
+    
+    function acakDetikDanUpdate(pilihWaktu) {
+        if (!pilihWaktu) return;
+        
+        let dateObj = new Date(pilihWaktu);
+        if (isNaN(dateObj.getTime())) return;
+        
+        const detikAcak = Math.floor(Math.random() * 60);
+        dateObj.setSeconds(detikAcak);
+        currentTimestamp = dateObj.toISOString();
+        
+        previewTanggal.textContent = dateObj.toLocaleString('id-ID', { 
+            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        });
+        
+        updateCanvasPreview();
+        return dateObj;
     }
     
     function updateCanvasPreview() {
@@ -414,7 +457,12 @@
             return;
         }
         
-        const dateObj = new Date(tanggalInput.value);
+        const currentDateValue = tanggalInput.value;
+        if (currentDateValue) {
+            acakDetikDanUpdate(currentDateValue);
+        }
+        
+        const dateObj = new Date(currentTimestamp);
         if (isNaN(dateObj.getTime())) { 
             alert("Tanggal tidak valid"); 
             return; 
@@ -423,7 +471,7 @@
         const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
         const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         
-        if (!confirm(`Simpan laporan?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n📍 Koordinat: ${currentKoordinat}`)) return;
+        if (!confirm(`Simpan laporan?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}`)) return;
         
         loader.style.display = "block";
         downloadBtn.disabled = true;
@@ -532,9 +580,15 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         loadCounter();
         
         const now = new Date();
-        const localDatetime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
-        tanggalInput.value = localDatetime;
-        updateDatePreview(localDatetime);
+        const tahun = now.getFullYear();
+        const bulan = String(now.getMonth() + 1).padStart(2, '0');
+        const tanggal = String(now.getDate()).padStart(2, '0');
+        const jam = String(now.getHours()).padStart(2, '0');
+        const menit = String(now.getMinutes()).padStart(2, '0');
+        const defaultDateTime = `${tahun}-${bulan}-${tanggal}T${jam}:${menit}`;
+        tanggalInput.value = defaultDateTime;
+        
+        acakDetik(defaultDateTime);
         
         updateJudul();
         
