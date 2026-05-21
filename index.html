@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>DUKOPS BABINSA LILIGUNDI - Koramil 1609-01/Buleleng</title>
+    <meta name="theme-color" content="#1e3b2c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
+    
+    <!-- Favicon CDN -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/32/190/190411.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/192/190/190411.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a1814 0%, #11221c 100%);
+            color: #eef4ea;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            background: rgba(26, 44, 37, 0.95);
+            border-radius: 36px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(76, 130, 100, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a3a2c, #0f2a20);
+            padding: 28px 24px 24px;
+            text-align: center;
+            border-bottom: 1px solid #3a6b55;
+        }
+        .header h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 6px; }
+        .header .sub { font-size: 0.9rem; opacity: 0.85; color: #c7e9cf; font-weight: 500; }
+        .badge-area { display: inline-flex; background: #2a5541; padding: 6px 16px; border-radius: 60px; font-size: 0.75rem; font-weight: 600; margin-top: 12px; gap: 8px; }
+        .content { padding: 28px 26px; }
+        .form-group { margin-bottom: 24px; }
+        label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; color: #cbefd4; margin-bottom: 8px; }
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1e352b;
+            border: 1px solid #3b6b55;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #f0faf3;
+            transition: all 0.2s;
+            font-family: 'Inter', monospace;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #7bcb9e;
+            background: #254f3f;
+            box-shadow: 0 0 0 3px rgba(92, 186, 125, 0.2);
+        }
+        textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+        .preview-chip {
+            background: #10261f;
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            color: #bde5ca;
+            border-left: 3px solid #63b581;
+        }
+        .canvas-wrapper { background: #0e221c; border-radius: 28px; padding: 8px; margin: 20px 0 10px; border: 1px solid #3c6b54; }
+        canvas { display: block; width: 100%; height: auto; border-radius: 22px; background: #1b3028; }
+        .stat-card {
+            background: #1c3a30;
+            border-radius: 28px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            border: 1px solid #468066;
+        }
+        .stat-label { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: #bde0ca; }
+        .stat-number { font-size: 2.1rem; font-weight: 800; line-height: 1; background: linear-gradient(to right, #e2ffe2, #b3e6b3); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .btn-primary {
+            background: linear-gradient(95deg, #317456, #1f543f);
+            border: none;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 60px;
+            width: 100%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .btn-primary:hover:not(:disabled) { background: linear-gradient(95deg, #409b72, #2b7054); transform: scale(0.98); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary { background: #3a5548; border: none; padding: 12px; font-weight: 600; border-radius: 60px; width: 100%; color: #f0fff0; cursor: pointer; margin-top: 12px; }
+        .btn-secondary:hover { background: #577b66; }
+        .loader-overlay { display: flex; justify-content: center; margin: 8px 0; }
+        .loader { width: 36px; height: 36px; border: 4px solid #3c775b; border-top: 4px solid #c5f5d3; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hint { font-size: 0.7rem; color: #9bc2aa; margin-top: 5px; margin-left: 12px; }
+        hr { border: none; border-top: 1px solid #3e6857; margin: 22px 0 10px; }
+        .footer-note { text-align: center; font-size: 0.7rem; opacity: 0.7; margin-top: 24px; }
+        .status-bar {
+            background: #1c3a30;
+            padding: 8px 16px;
+            border-radius: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #bde5ca;
+        }
+        #installContainer {
+            position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 16px; border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; display: none; text-align: center; border: 1px solid #5b9b7a;
+        }
+        .install-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
+        .install-buttons button { padding: 10px 24px; margin: 0; width: auto; }
+        @media (max-width: 550px) { .content { padding: 20px 18px; } .stat-number { font-size: 1.7rem; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📁 DUKOPS BABINSA</h1>
+        <div class="sub">Koramil 1609-01 / Buleleng</div>
+        <div class="badge-area"><span>📍 Kelurahan Liligundi</span><span>⚡ Online / Offline</span></div>
+    </div>
+    <div class="content">
+        <div class="status-bar" id="statusBar">
+            <i class="fas fa-spinner fa-pulse"></i> Memuat koordinat dari GitHub...
+        </div>
+        
+        <div class="stat-card"><span class="stat-label">📦 Total Laporan Tersimpan</span><span class="stat-number" id="submissionCounter">0</span></div>
+
+        <div class="form-group">
+            <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
+            <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
+            <div class="hint">✏️ Judul kegiatan akan tampil di laporan dan canvas</div>
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i> Koordinat Kegiatan (acak setiap pilih gambar)</label>
+            <div id="previewKordinatInfo" class="preview-chip">📍 Menunggu koordinat dari server...</div>
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
+            <input type="file" id="gambar" accept="image/*">
+            <div id="previewGambarInfo" class="preview-chip"></div>
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-calendar-alt"></i> Tanggal & Waktu Kegiatan</label>
+            <input type="datetime-local" id="tanggalWaktu">
+            <div id="previewTanggal" class="preview-chip"></div>
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-file-alt"></i> Narasi Kegiatan</label>
+            <textarea id="narasi" rows="4" placeholder="Contoh: Babinsa Kelurahan Liligundi melaksanakan kegiatan DUKOPS..."></textarea>
+        </div>
+
+        <div class="canvas-wrapper"><canvas id="canvas"></canvas></div>
+        <div class="loader-overlay"><div class="loader" id="loadingIndicator"></div></div>
+
+        <button id="downloadBtn" class="btn-primary" disabled><i class="fas fa-download"></i> SIMPAN LAPORAN LOKAL (ZIP)</button>
+        <button id="resetBtn" class="btn-secondary"><i class="fas fa-sync-alt"></i> Reset penghitung laporan</button>
+        <hr>
+        <div class="footer-note">✅ Koordinat diambil dari GitHub<br>Data laporan tersimpan secara lokal di perangkat Anda</div>
+    </div>
+</div>
+<div id="installContainer"><p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi DUKOPS BABINSA di HP Anda</p><div class="install-buttons"><button id="installButton"><i class="fas fa-download"></i> Pasang</button><button id="closeInstall"><i class="fas fa-times"></i> Tutup</button></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+    // ======================== KONFIGURASI ========================
+    // GANTI URL INI DENGAN RAW URL JSON DARI GITHUB ANDA
+    const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/koordinat.json';
+    
+    let KOORDINAT_LIST = [];
+    let koordinatLoaded = false;
+    
+    const STORAGE_KEY_COUNTER = "dukops_liligundi_counter";
+    
+    // DOM Elements
+    const judulKegiatanInput = document.getElementById('judulKegiatanInput');
+    const previewKordinatInfo = document.getElementById('previewKordinatInfo');
+    const statusBar = document.getElementById('statusBar');
+    const gambarInput = document.getElementById('gambar');
+    const tanggalWaktuInput = document.getElementById('tanggalWaktu');
+    const narasiTextarea = document.getElementById('narasi');
+    const canvas = document.getElementById('canvas');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const submissionCounterSpan = document.getElementById('submissionCounter');
+    const resetBtn = document.getElementById('resetBtn');
+    const previewGambarInfo = document.getElementById('previewGambarInfo');
+    const previewTanggalSpan = document.getElementById('previewTanggal');
+    
+    let currentImage = new Image();
+    let currentKoordinat = "";
+    let currentJudul = "Kelurahan Liligundi";
+    let currentTimestamp = "";
+    let submissionCount = 0;
+    let sequenceNumber = 0;
+    
+    // ======================== LOAD KOORDINAT DARI GITHUB ========================
+    async function loadKoordinatDariGitHub() {
+        try {
+            statusBar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Mengambil koordinat dari GitHub...';
+            const response = await fetch(GITHUB_JSON_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            KOORDINAT_LIST = data.koordinat;
+            koordinatLoaded = true;
+            statusBar.innerHTML = '<i class="fas fa-check-circle"></i> ✓ Koordinat berhasil dimuat dari GitHub (' + KOORDINAT_LIST.length + ' titik)';
+            statusBar.style.background = '#2a5e48';
+            // ambil koordinat acak pertama
+            currentKoordinat = getRandomCoordinate();
+            previewKordinatInfo.innerHTML = `📍 ${currentKoordinat}`;
+            checkInputCompletion();
+        } catch (error) {
+            console.error('Gagal memuat koordinat:', error);
+            statusBar.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat koordinat! Gunakan koordinat default.';
+            statusBar.style.background = '#8b3a3a';
+            // Gunakan koordinat default jika gagal load
+            KOORDINAT_LIST = [
+                "-8° 7'38.579S, 115°5'52.040E",
+                "-8° 7'39.112S, 115°5'53.218E",
+                "-8° 7'40.456S, 115°5'54.621E"
+            ];
+            koordinatLoaded = true;
+            currentKoordinat = getRandomCoordinate();
+            previewKordinatInfo.innerHTML = `📍 ${currentKoordinat} (default)`;
+            checkInputCompletion();
+        }
+    }
+    
+    function getRandomCoordinate() {
+        if (!KOORDINAT_LIST.length) return "-8° 7'38.579S, 115°5'52.040E";
+        return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
+    }
+    
+    // ======================== COUNTER ========================
+    function loadLocalCounter() {
+        const saved = localStorage.getItem(STORAGE_KEY_COUNTER);
+        submissionCount = saved ? parseInt(saved, 10) : 0;
+        sequenceNumber = submissionCount;
+        submissionCounterSpan.textContent = submissionCount;
+    }
+    function saveLocalCounter() { localStorage.setItem(STORAGE_KEY_COUNTER, submissionCount.toString()); }
+    function incrementCounter() { submissionCount++; sequenceNumber = submissionCount; submissionCounterSpan.textContent = submissionCount; saveLocalCounter(); }
+    function resetCounterOnly() {
+        if (confirm("RESET PENGHITUNG LAPORAN? Nomor urut akan dimulai dari 1 lagi.")) {
+            submissionCount = 0; sequenceNumber = 0; saveLocalCounter(); submissionCounterSpan.textContent = "0";
+            alert("✅ Penghitung laporan telah direset ke 0.");
+        }
+    }
+    
+    function updateJudul() {
+        let raw = judulKegiatanInput.value.trim();
+        if (raw === "") raw = "Kelurahan Liligundi";
+        currentJudul = raw;
+        document.title = `${currentJudul} - DUKOPS`;
+        updateCanvasPreview();
+        checkInputCompletion();
+    }
+    
+    function previewImage(file) {
+        if (!file) return;
+        previewGambarInfo.textContent = `📷 ${file.name}`;
+        // Ambil koordinat acak dari list yang sudah di-load
+        currentKoordinat = getRandomCoordinate();
+        previewKordinatInfo.innerHTML = `📍 ${currentKoordinat}`;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            currentImage = new Image();
+            currentImage.src = ev.target.result;
+            currentImage.onload = () => { updateCanvasPreview(); checkInputCompletion(); };
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function updateDatePreview(dateString) {
+        if (!dateString) return;
+        let date = new Date(dateString);
+        if (isNaN(date.getTime())) return;
+        currentTimestamp = date.toISOString();
+        previewTanggalSpan.textContent = date.toLocaleString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        updateCanvasPreview();
+    }
+    
+    function updateCanvasPreview() {
+        if (!currentImage.complete || !currentImage.src || currentImage.src === "") return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = 759; canvas.height = 300;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 18px 'Inter', 'Segoe UI'";
+        ctx.textAlign = "right";
+        ctx.fillText(currentJudul.substring(0, 50), canvas.width - 14, canvas.height - 68);
+        ctx.fillText(currentKoordinat, canvas.width - 14, canvas.height - 40);
+        let dateObj = new Date(currentTimestamp);
+        if (!isNaN(dateObj.getTime())) {
+            const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+            const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            ctx.fillText(`${dateStr} ${timeStr}`, canvas.width - 14, canvas.height - 12);
+        }
+        ctx.font = "italic 11px 'Inter'";
+        ctx.fillStyle = "#dddddd";
+        ctx.fillText("Koramil 1609-01/Buleleng - Liligundi", canvas.width - 14, canvas.height - 2);
+    }
+    
+    function checkInputCompletion() {
+        const hasImage = gambarInput.files.length > 0 && currentImage.complete;
+        const hasDate = tanggalWaktuInput.value.trim() !== "";
+        const hasNarasi = narasiTextarea.value.trim() !== "";
+        const hasJudul = judulKegiatanInput.value.trim() !== "";
+        const hasKoordinat = koordinatLoaded && KOORDINAT_LIST.length > 0;
+        downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat);
+    }
+    
+    async function processLocalSave() {
+        if (downloadBtn.disabled) { alert("Lengkapi data: foto, tanggal, narasi, dan judul kegiatan!"); return; }
+        const dateObj = new Date(tanggalWaktuInput.value);
+        if (isNaN(dateObj.getTime())) { alert("Tanggal tidak valid"); return; }
+        
+        const optionsDate = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+        const formattedDate = dateObj.toLocaleDateString('id-ID', optionsDate);
+        const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        const confirmMsg = `📁 SIMPAN LAPORAN LOKAL\n\nKoramil 1609-01/Buleleng\nJudul: ${currentJudul}\nKoordinat: ${currentKoordinat}\nTanggal: ${formattedDate}\nWaktu: ${formattedTime}\n\nLanjutkan?`;
+        if (!confirm(confirmMsg)) return;
+        
+        showLoading(true);
+        try {
+            sequenceNumber++;
+            const ddmm = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit' }).replace(/\//g, "-");
+            let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
+            if (!safeJudul) safeJudul = "Liligundi";
+            const finalName = `${sequenceNumber}_${safeJudul}_${ddmm}`.replace(/\s/g, "_");
+            
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 18px 'Inter', 'Segoe UI'";
+            ctx.textAlign = "right";
+            ctx.fillText(currentJudul.substring(0, 50), canvas.width - 14, canvas.height - 68);
+            ctx.fillText(currentKoordinat, canvas.width - 14, canvas.height - 40);
+            
+            const imageDataURL = canvas.toDataURL("image/png");
+            const narasiText = narasiTextarea.value;
+            
+            const txtContent = `Judul Kegiatan: ${currentJudul}
+Tanggal: ${formattedDate}
+Waktu input kegiatan  : ${formattedTime}
+NARASI:
+${narasiText}
+
+Koordinat: ${currentKoordinat}
+Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
+            
+            if (typeof JSZip === 'undefined') throw new Error("JSZip tidak dimuat!");
+            const zip = new JSZip();
+            zip.file(`${finalName}_Laporan.txt`, txtContent);
+            zip.file(`${finalName}_Dokumentasi.png`, imageDataURL.split("base64,")[1], { base64: true });
+            const zipBlob = await zip.generateAsync({ type: "blob" });
+            
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(zipBlob);
+            link.href = url;
+            link.download = `${finalName}.zip`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            incrementCounter();
+            alert(`✅ Laporan "${currentJudul}" berhasil disimpan!\n📦 ${finalName}.zip`);
+        } catch (err) {
+            console.error(err);
+            alert("Gagal membuat laporan: " + err.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    function showLoading(show) {
+        loadingIndicator.style.display = show ? "block" : "none";
+        downloadBtn.disabled = show;
+        downloadBtn.textContent = show ? "⏳ MEMPROSES ..." : "💾 SIMPAN LAPORAN LOKAL (ZIP) 💾";
+    }
+    
+    // PWA Installation
+    let deferredPrompt;
+    const installContainer = document.getElementById('installContainer');
+    const installButton = document.getElementById('installButton');
+    const closeInstall = document.getElementById('closeInstall');
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installContainer.style.display = 'block'; });
+    installButton.addEventListener('click', async () => { installContainer.style.display = 'none'; if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } });
+    closeInstall.addEventListener('click', () => { installContainer.style.display = 'none'; });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); }); }
+    
+    function bindEvents() {
+        judulKegiatanInput.addEventListener('input', () => { updateJudul(); });
+        gambarInput.addEventListener('change', (e) => { if (e.target.files.length) previewImage(e.target.files[0]); else checkInputCompletion(); });
+        tanggalWaktuInput.addEventListener('input', (e) => { updateDatePreview(e.target.value); checkInputCompletion(); });
+        narasiTextarea.addEventListener('input', checkInputCompletion);
+        downloadBtn.addEventListener('click', processLocalSave);
+        resetBtn.addEventListener('click', resetCounterOnly);
+    }
+    
+    async function init() {
+        loadLocalCounter();
+        bindEvents();
+        await loadKoordinatDariGitHub();
+        const now = new Date();
+        const localDatetime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+        tanggalWaktuInput.value = localDatetime;
+        updateDatePreview(localDatetime);
+        updateJudul();
+        checkInputCompletion();
+    }
+    init();
+</script>
+</body>
+</html>
