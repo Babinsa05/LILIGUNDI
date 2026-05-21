@@ -45,27 +45,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             flex-wrap: wrap;
         }
         .header-icon {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            border-radius: 16px;
+            border-radius: 20px;
         }
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             margin: 0;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
         .header .sub {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0.85;
             color: #c7e9cf;
             margin-top: 12px;
@@ -164,23 +164,75 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .hint { font-size: 0.7rem; color: #9bc2aa; margin-top: 5px; margin-left: 12px; }
         hr { border: none; border-top: 1px solid #3e6857; margin: 22px 0 10px; }
+        
+        /* LOG SECTION */
+        .log-section {
+            margin-top: 24px;
+            background: #12261f;
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid #3a6b55;
+        }
+        .log-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #bde0ca;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .log-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.75rem;
+        }
+        .log-item {
+            background: #1a352b;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #63b581;
+        }
+        .log-filename {
+            font-weight: 600;
+            color: #bde5ca;
+            word-break: break-all;
+            flex: 1;
+        }
+        .log-time {
+            color: #8abf9a;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
+        .empty-log {
+            text-align: center;
+            color: #8abf9a;
+            padding: 16px;
+            font-style: italic;
+        }
+        
         #installContainer {
             position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 16px; border-radius: 28px;
             z-index: 1000; display: none; text-align: center; border: 1px solid #5b9b7a;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         .install-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
         .install-buttons button { padding: 10px 24px; margin: 0; width: auto; }
         @media (max-width: 550px) { 
             .content { padding: 20px 18px; } 
             .stat-number { font-size: 1.7rem; }
-            .header-icon { width: 45px; height: 45px; }
-            .header h1 { font-size: 1.4rem; }
-            .header-title { gap: 12px; }
+            .header-icon { width: 55px; height: 55px; }
+            .header h1 { font-size: 1.5rem; }
+            .header-title { gap: 15px; }
         }
         @media (min-width: 551px) and (max-width: 700px) {
-            .header-icon { width: 55px; height: 55px; }
-            .header h1 { font-size: 1.7rem; }
+            .header-icon { width: 65px; height: 65px; }
+            .header h1 { font-size: 1.9rem; }
         }
     </style>
 </head>
@@ -188,9 +240,9 @@
 <div class="container">
     <div class="header">
         <div class="header-title">
-            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo Kiri" onerror="this.style.display='none'">
+            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png" alt="Logo Kiri" onerror="this.style.display='none'">
             <h1>DUKOPS BABINSA</h1>
-            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png" alt="Logo Kanan" onerror="this.style.display='none'">
+            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo Kanan" onerror="this.style.display='none'">
         </div>
         <div class="sub">Koramil 1609-01 / Buleleng</div>
         <div class="badge-area"><span>📍 Kelurahan Liligundi</span></div>
@@ -232,6 +284,14 @@
 
         <button id="downloadBtn" class="btn-primary" disabled><i class="fas fa-download"></i> SIMPAN LAPORAN (ZIP)</button>
         <button id="resetBtn" class="btn-secondary"><i class="fas fa-sync-alt"></i> Reset penghitung</button>
+        
+        <!-- LOG FILE TERKIRIM -->
+        <div class="log-section">
+            <div class="log-title"><i class="fas fa-history"></i> Riwayat Laporan Tersimpan</div>
+            <div id="logList" class="log-list">
+                <div class="empty-log">Belum ada laporan tersimpan</div>
+            </div>
+        </div>
         <hr>
     </div>
 </div>
@@ -251,6 +311,7 @@
     let KOORDINAT_LIST = [];
     let koordinatLoaded = false;
     const STORAGE_KEY_COUNTER = "dukops_counter";
+    const STORAGE_KEY_LOGS = "dukops_logs";
     
     // DOM Elements
     const judulInput = document.getElementById('judulKegiatanInput');
@@ -265,6 +326,7 @@
     const resetBtn = document.getElementById('resetBtn');
     const previewGambar = document.getElementById('previewGambarInfo');
     const previewTanggal = document.getElementById('previewTanggal');
+    const logListDiv = document.getElementById('logList');
     
     let currentImage = new Image();
     let currentKoordinat = "";
@@ -272,6 +334,55 @@
     let currentTimestamp = "";
     let submissionCount = 0;
     let sequenceNumber = 0;
+    
+    // ======================== LOG SYSTEM ========================
+    function loadLogs() {
+        const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+        if (savedLogs) {
+            try {
+                const logs = JSON.parse(savedLogs);
+                displayLogs(logs);
+            } catch(e) { console.error(e); }
+        }
+    }
+    
+    function saveLog(filename, timeStr) {
+        let logs = [];
+        const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+        if (savedLogs) {
+            try {
+                logs = JSON.parse(savedLogs);
+            } catch(e) { logs = []; }
+        }
+        logs.unshift({ filename, time: timeStr, date: new Date().toISOString() });
+        if (logs.length > 50) logs = logs.slice(0, 50);
+        localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
+        displayLogs(logs);
+    }
+    
+    function displayLogs(logs) {
+        if (!logListDiv) return;
+        if (!logs || logs.length === 0) {
+            logListDiv.innerHTML = '<div class="empty-log">Belum ada laporan tersimpan</div>';
+            return;
+        }
+        logListDiv.innerHTML = '';
+        logs.forEach(log => {
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.innerHTML = `
+                <span class="log-filename"><i class="fas fa-file-archive"></i> ${log.filename}</span>
+                <span class="log-time"><i class="far fa-clock"></i> ${log.time || '-'}</span>
+            `;
+            logListDiv.appendChild(logItem);
+        });
+    }
+    
+    function addLog(filename) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        saveLog(filename, timeStr);
+    }
     
     // ======================== FUNGSI UNTUK ACAK DETIK ========================
     function acakDetik(pilihWaktu) {
@@ -515,6 +626,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             URL.revokeObjectURL(url);
             
             incrementCounter();
+            addLog(`${finalName}.zip`);
             alert(`✅ Laporan berhasil disimpan!\n📦 ${finalName}.zip`);
             
         } catch (err) {
@@ -553,12 +665,23 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         });
     }
     
+    // Tampilkan install prompt saat halaman dimuat (jika memungkinkan)
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
+        // Tampilkan container install
         installDiv.style.display = 'block';
     });
     
+    // Coba trigger install prompt setelah load
+    window.addEventListener('load', () => {
+        // Jika sudah terinstall, tidak akan muncul prompt
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('Aplikasi sudah berjalan sebagai PWA');
+        }
+    });
+    
+    // Daftarkan Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js')
@@ -578,6 +701,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
     // ======================== INIT ========================
     async function init() {
         loadCounter();
+        loadLogs(); // Load log yang tersimpan
         
         const now = new Date();
         const tahun = now.getFullYear();
