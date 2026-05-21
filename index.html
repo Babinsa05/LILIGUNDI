@@ -10,15 +10,88 @@
     <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
     
     <!-- Icon untuk berbagai platform -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
     <link rel="manifest" href="/site.webmanifest">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* SPLASH SCREEN STYLE */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a1814 0%, #11221c 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .splash-content {
+            text-align: center;
+            padding: 20px;
+        }
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .splash-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        .splash-subtitle {
+            font-size: 1rem;
+            color: #c7e9cf;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .progress-container {
+            width: 280px;
+            height: 6px;
+            background: #2a5541;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #63b581, #a8e6b0);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #8abf9a;
+            font-family: monospace;
+        }
+        
+        /* MAIN APP STYLE (awal disembunyikan) */
+        #mainApp {
+            display: none;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, 'Segoe UI', sans-serif;
@@ -118,7 +191,6 @@
         }
         textarea { resize: vertical; min-height: 85px; line-height: 1.4; }
         
-        /* Input file styling */
         .file-input-wrapper {
             position: relative;
             width: 100%;
@@ -158,7 +230,6 @@
             font-size: 0.8rem;
         }
         
-        /* Koordinat inline */
         .coord-wrapper {
             display: flex;
             align-items: center;
@@ -233,7 +304,6 @@
         .hint { font-size: 0.65rem; color: #9bc2aa; margin-top: 4px; margin-left: 10px; }
         hr { border: none; border-top: 1px solid #3e6857; margin: 16px 0 10px; }
         
-        /* LOG SECTION */
         .log-section {
             margin-top: 18px;
             background: #12261f;
@@ -298,6 +368,14 @@
             font-size: 0.7rem;
         }
         
+        .footer-version {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #6b8f7a;
+            margin-top: 16px;
+            padding-bottom: 8px;
+        }
+        
         #installContainer {
             position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 12px; border-radius: 24px;
             z-index: 1000; display: none; text-align: center; border: 1px solid #5b9b7a;
@@ -319,434 +397,473 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="header-row1">
-            <div class="header-title">
-                <h1>DUKOPS BABINSA</h1>
+    <!-- SPLASH SCREEN -->
+    <div id="splashScreen">
+        <div class="splash-content">
+            <img class="splash-logo" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png" alt="Logo">
+            <div class="splash-title">DUKOPS BABINSA</div>
+            <div class="splash-subtitle">KELURAHAN LILIGUNDI</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
             </div>
-        </div>
-        <div class="header-row2">
-            <div class="sub">Koramil 1609-01 / Buleleng</div>
-        </div>
-        <div class="header-row3">
-            <img class="header-icon-right" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
-        </div>
-        <div class="header-row4">
-            <div class="badge-area">
-                <span>📍 Kelurahan Liligundi</span>
-            </div>
+            <div class="progress-text" id="progressText">Loading 0%</div>
         </div>
     </div>
-    <div class="content">
-        <!-- Judul Kegiatan -->
-        <div class="form-group">
-            <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
-            <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
-        </div>
 
-        <!-- Koordinat (inline dengan label) -->
-        <div class="form-group">
-            <label><i class="fas fa-map-marker-alt"></i> Koordinat</label>
-            <div class="coord-wrapper">
-                <span class="coord-label">📍</span>
-                <span class="coord-value" id="coordValue">Pilih foto untuk mendapatkan koordinat</span>
-                <button class="coord-refresh" id="refreshCoordBtn" title="Acak koordinat"><i class="fas fa-sync-alt"></i></button>
-            </div>
-        </div>
-
-        <!-- Foto Kegiatan -->
-        <div class="form-group">
-            <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
-            <div class="file-input-wrapper" id="fileInputWrapper">
-                <div class="file-input-label" id="fileInputLabel">
-                    <span><i class="fas fa-upload"></i> Pilih file</span>
-                    <span id="fileNameDisplay">Belum ada file</span>
+    <!-- MAIN APP -->
+    <div id="mainApp">
+        <div class="container">
+            <div class="header">
+                <div class="header-row1">
+                    <div class="header-title">
+                        <h1>DUKOPS BABINSA</h1>
+                    </div>
                 </div>
-                <input type="file" id="gambar" accept="image/*">
+                <div class="header-row2">
+                    <div class="sub">Koramil 1609-01 / Buleleng</div>
+                </div>
+                <div class="header-row3">
+                    <img class="header-icon-right" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
+                </div>
+                <div class="header-row4">
+                    <div class="badge-area">
+                        <span>📍 Kelurahan Liligundi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
+                    <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Koordinat</label>
+                    <div class="coord-wrapper">
+                        <span class="coord-label">📍</span>
+                        <span class="coord-value" id="coordValue">Pilih foto untuk mendapatkan koordinat</span>
+                        <button class="coord-refresh" id="refreshCoordBtn" title="Acak koordinat"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
+                    <div class="file-input-wrapper">
+                        <div class="file-input-label" id="fileInputLabel">
+                            <span><i class="fas fa-upload"></i> Pilih file</span>
+                            <span id="fileNameDisplay">Belum ada file</span>
+                        </div>
+                        <input type="file" id="gambar" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-alt"></i> Tanggal & Waktu</label>
+                    <input type="datetime-local" id="tanggalWaktu">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-file-alt"></i> Narasi Kegiatan</label>
+                    <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="canvas" width="759" height="300"></canvas>
+                </div>
+                <div class="loader-overlay"><div class="loader" id="loadingIndicator"></div></div>
+
+                <button id="downloadBtn" class="btn-primary" disabled><i class="fas fa-download"></i> SIMPAN LAPORAN (ZIP)</button>
+                <button id="resetBtn" class="btn-secondary"><i class="fas fa-trash-alt"></i> Reset semua data</button>
+                
+                <div class="log-section">
+                    <div class="log-title">
+                        <span><i class="fas fa-history"></i> Riwayat Laporan Tersimpan</span>
+                        <span class="log-count" id="logCountBadge">0</span>
+                    </div>
+                    <div id="logList" class="log-list">
+                        <div class="empty-log">Belum ada laporan tersimpan</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="footer-version">
+                    VERSI 1.1<br>
+                    Developer: Serka I Nyoman Arta
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Tanggal & Waktu -->
-        <div class="form-group">
-            <label><i class="fas fa-calendar-alt"></i> Tanggal & Waktu</label>
-            <input type="datetime-local" id="tanggalWaktu">
+    <div id="installContainer">
+        <p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi DUKOPS di HP</p>
+        <div class="install-buttons">
+            <button id="installButton" style="background:#317456;"><i class="fas fa-download"></i> Pasang</button>
+            <button id="closeInstall" style="background:#5a3a3a;"><i class="fas fa-times"></i> Tutup</button>
         </div>
+    </div>
 
-        <!-- Narasi Kegiatan -->
-        <div class="form-group">
-            <label><i class="fas fa-file-alt"></i> Narasi Kegiatan</label>
-            <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
-        </div>
-
-        <!-- Canvas Preview -->
-        <div class="canvas-wrapper">
-            <canvas id="canvas" width="759" height="300"></canvas>
-        </div>
-        <div class="loader-overlay"><div class="loader" id="loadingIndicator"></div></div>
-
-        <!-- Tombol -->
-        <button id="downloadBtn" class="btn-primary" disabled><i class="fas fa-download"></i> SIMPAN LAPORAN (ZIP)</button>
-        <button id="resetBtn" class="btn-secondary"><i class="fas fa-trash-alt"></i> Reset semua data</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        // ======================== SPLASH SCREEN WITH PROGRESS ========================
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const splashScreen = document.getElementById('splashScreen');
+        const mainApp = document.getElementById('mainApp');
         
-        <!-- LOG FILE TERKIRIM -->
-        <div class="log-section">
-            <div class="log-title">
-                <span><i class="fas fa-history"></i> Riwayat Laporan Tersimpan</span>
-                <span class="log-count" id="logCountBadge">0</span>
-            </div>
-            <div id="logList" class="log-list">
-                <div class="empty-log">Belum ada laporan tersimpan</div>
-            </div>
-        </div>
-        <hr>
-    </div>
-</div>
-<div id="installContainer">
-    <p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi DUKOPS di HP</p>
-    <div class="install-buttons">
-        <button id="installButton" style="background:#317456;"><i class="fas fa-download"></i> Pasang</button>
-        <button id="closeInstall" style="background:#5a3a3a;"><i class="fas fa-times"></i> Tutup</button>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script>
-    // ======================== KONFIGURASI ========================
-    const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
-    
-    let KOORDINAT_LIST = [];
-    let koordinatLoaded = false;
-    const STORAGE_KEY_COUNTER = "dukops_counter";
-    const STORAGE_KEY_LOGS = "dukops_logs";
-    const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates"; // Menyimpan TANGGAL LENGKAP (YYYY-MM-DD) yang sudah pernah dibuat laporan
-    
-    // DOM Elements
-    const judulInput = document.getElementById('judulKegiatanInput');
-    const coordValueSpan = document.getElementById('coordValue');
-    const refreshCoordBtn = document.getElementById('refreshCoordBtn');
-    const gambarInput = document.getElementById('gambar');
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const fileInputLabel = document.getElementById('fileInputLabel');
-    const tanggalInput = document.getElementById('tanggalWaktu');
-    const narasiText = document.getElementById('narasi');
-    const canvas = document.getElementById('canvas');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const loader = document.getElementById('loadingIndicator');
-    const resetBtn = document.getElementById('resetBtn');
-    const logListDiv = document.getElementById('logList');
-    const logCountBadge = document.getElementById('logCountBadge');
-    
-    let currentImage = new Image();
-    let currentKoordinat = "";
-    let currentJudul = "Kelurahan Liligundi";
-    let currentTimestamp = "";
-    let submissionCount = 0;
-    let sequenceNumber = 0;
-    
-    // ======================== ANTI GANDA - CEK TANGGAL LENGKAP YANG SAMA ========================
-    // Mendapatkan kunci tanggal lengkap (format: YYYY-MM-DD, contoh: 2026-04-02)
-    function getFullDateKey(dateString) {
-        if (!dateString) return null;
-        let date = new Date(dateString);
-        if (isNaN(date.getTime())) return null;
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    }
-    
-    // Cek apakah tanggal (YYYY-MM-DD) yang dipilih sudah pernah dibuat laporan
-    function isFullDateAlreadySubmitted(dateString) {
-        const submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
-        const dateKey = getFullDateKey(dateString);
-        return submittedDates.includes(dateKey);
-    }
-    
-    // Simpan tanggal lengkap (YYYY-MM-DD) yang sudah dibuat laporan
-    function saveSubmittedFullDate(dateString) {
-        const dateKey = getFullDateKey(dateString);
-        if (!dateKey) return;
-        let submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
-        if (!submittedDates.includes(dateKey)) {
-            submittedDates.push(dateKey);
-            localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submittedDates));
+        function updateProgress(value) {
+            progress = value;
+            progressBar.style.width = progress + '%';
+            progressText.textContent = 'Loading ' + progress + '%';
         }
-    }
-    
-    // Hapus semua data tanggal yang tersimpan (saat reset)
-    function clearSubmittedFullDates() {
-        localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
-    }
-    
-    // ======================== LOG SYSTEM ========================
-    function updateLogBadge() {
-        const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-        if (savedLogs) {
-            try {
-                const logs = JSON.parse(savedLogs);
-                if (logCountBadge) logCountBadge.textContent = logs.length;
-            } catch(e) { if (logCountBadge) logCountBadge.textContent = "0"; }
-        } else {
-            if (logCountBadge) logCountBadge.textContent = "0";
+        
+        function finishSplash() {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainApp.style.display = 'block';
+            }, 500);
         }
-    }
-    
-    function loadLogs() {
-        const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-        if (savedLogs) {
-            try {
-                const logs = JSON.parse(savedLogs);
-                displayLogs(logs);
-                if (logCountBadge) logCountBadge.textContent = logs.length;
-            } catch(e) { console.error(e); }
-        } else {
-            if (logCountBadge) logCountBadge.textContent = "0";
-        }
-    }
-    
-    function displayLogs(logs) {
-        if (!logListDiv) return;
-        if (!logs || logs.length === 0) {
-            logListDiv.innerHTML = '<div class="empty-log">Belum ada laporan tersimpan</div>';
-            return;
-        }
-        logListDiv.innerHTML = '';
-        logs.forEach(log => {
-            const logItem = document.createElement('div');
-            logItem.className = 'log-item';
-            logItem.innerHTML = `
-                <span class="log-filename"><i class="fas fa-file-archive"></i> ${log.filename}</span>
-                <span class="log-time"><i class="far fa-clock"></i> ${log.time || '-'}</span>
-            `;
-            logListDiv.appendChild(logItem);
-        });
-    }
-    
-    function saveLog(filename, timeStr) {
-        let logs = [];
-        const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-        if (savedLogs) {
-            try {
-                logs = JSON.parse(savedLogs);
-            } catch(e) { logs = []; }
-        }
-        logs.unshift({ filename, time: timeStr, date: new Date().toISOString() });
-        if (logs.length > 50) logs = logs.slice(0, 50);
-        localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
-        displayLogs(logs);
-        if (logCountBadge) logCountBadge.textContent = logs.length;
-    }
-    
-    function addLog(filename) {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        saveLog(filename, timeStr);
-    }
-    
-    function resetAllData() {
-        if (confirm("RESET SEMUA DATA? Menghapus semua laporan tersimpan, data tanggal terkirim, dan mengatur ulang penghitung. Data tidak dapat dikembalikan.")) {
-            localStorage.removeItem(STORAGE_KEY_COUNTER);
-            localStorage.removeItem(STORAGE_KEY_LOGS);
-            localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
-            submissionCount = 0;
-            sequenceNumber = 0;
-            displayLogs([]);
-            if (logCountBadge) logCountBadge.textContent = "0";
-            alert("✅ Semua data laporan, riwayat tanggal, dan penghitung telah direset.");
-        }
-    }
-    
-    // ======================== FUNGSI UNTUK ACAK DETIK ========================
-    function acakDetik(pilihWaktu) {
-        if (!pilihWaktu) return null;
-        let dateObj = new Date(pilihWaktu);
-        if (isNaN(dateObj.getTime())) return null;
-        const detikAcak = Math.floor(Math.random() * 60);
-        dateObj.setSeconds(detikAcak);
-        currentTimestamp = dateObj.toISOString();
-        return dateObj;
-    }
-    
-    // ======================== LOAD KOORDINAT DARI GITHUB ========================
-    async function loadKoordinat() {
-        try {
-            const response = await fetch(GITHUB_JSON_URL);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-            if (!data.koordinat || data.koordinat.length === 0) {
-                throw new Error('File koordinat kosong');
+        
+        // Simulasi loading progress
+        updateProgress(0);
+        let interval = setInterval(() => {
+            if (progress < 100) {
+                let increment = Math.floor(Math.random() * 15) + 5;
+                let newProgress = Math.min(progress + increment, 100);
+                updateProgress(newProgress);
+                if (newProgress === 100) {
+                    clearInterval(interval);
+                    finishSplash();
+                }
             }
-            KOORDINAT_LIST = data.koordinat;
-            koordinatLoaded = true;
-            currentKoordinat = getRandomCoordinate();
-            coordValueSpan.textContent = currentKoordinat;
-        } catch (error) {
-            console.error('Gagal memuat koordinat:', error);
-            koordinatLoaded = false;
-            coordValueSpan.textContent = 'Gagal memuat koordinat';
+        }, 150);
+        
+        // ======================== KONFIGURASI ========================
+        const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
+        
+        let KOORDINAT_LIST = [];
+        let koordinatLoaded = false;
+        const STORAGE_KEY_COUNTER = "dukops_counter";
+        const STORAGE_KEY_LOGS = "dukops_logs";
+        const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
+        
+        // DOM Elements
+        const judulInput = document.getElementById('judulKegiatanInput');
+        const coordValueSpan = document.getElementById('coordValue');
+        const refreshCoordBtn = document.getElementById('refreshCoordBtn');
+        const gambarInput = document.getElementById('gambar');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const fileInputLabel = document.getElementById('fileInputLabel');
+        const tanggalInput = document.getElementById('tanggalWaktu');
+        const narasiText = document.getElementById('narasi');
+        const canvas = document.getElementById('canvas');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const loader = document.getElementById('loadingIndicator');
+        const resetBtn = document.getElementById('resetBtn');
+        const logListDiv = document.getElementById('logList');
+        const logCountBadge = document.getElementById('logCountBadge');
+        
+        let currentImage = new Image();
+        let currentKoordinat = "";
+        let currentJudul = "Kelurahan Liligundi";
+        let currentTimestamp = "";
+        let submissionCount = 0;
+        let sequenceNumber = 0;
+        
+        // ======================== ANTI GANDA ========================
+        function getFullDateKey(dateString) {
+            if (!dateString) return null;
+            let date = new Date(dateString);
+            if (isNaN(date.getTime())) return null;
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         }
-        checkInputCompletion();
-    }
-    
-    function getRandomCoordinate() {
-        if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
-            return "-8° 8'38.215S, 115°6'52.463E";
+        
+        function isFullDateAlreadySubmitted(dateString) {
+            const submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
+            const dateKey = getFullDateKey(dateString);
+            return submittedDates.includes(dateKey);
         }
-        return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
-    }
-    
-    function refreshCoordinate() {
-        if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
-            currentKoordinat = getRandomCoordinate();
-            coordValueSpan.textContent = currentKoordinat;
-            updateCanvasPreview();
+        
+        function saveSubmittedFullDate(dateString) {
+            const dateKey = getFullDateKey(dateString);
+            if (!dateKey) return;
+            let submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
+            if (!submittedDates.includes(dateKey)) {
+                submittedDates.push(dateKey);
+                localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submittedDates));
+            }
+        }
+        
+        function clearSubmittedFullDates() {
+            localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
+        }
+        
+        // ======================== LOG SYSTEM ========================
+        function updateLogBadge() {
+            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+            if (savedLogs) {
+                try {
+                    const logs = JSON.parse(savedLogs);
+                    if (logCountBadge) logCountBadge.textContent = logs.length;
+                } catch(e) { if (logCountBadge) logCountBadge.textContent = "0"; }
+            } else {
+                if (logCountBadge) logCountBadge.textContent = "0";
+            }
+        }
+        
+        function loadLogs() {
+            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+            if (savedLogs) {
+                try {
+                    const logs = JSON.parse(savedLogs);
+                    displayLogs(logs);
+                    if (logCountBadge) logCountBadge.textContent = logs.length;
+                } catch(e) { console.error(e); }
+            } else {
+                if (logCountBadge) logCountBadge.textContent = "0";
+            }
+        }
+        
+        function displayLogs(logs) {
+            if (!logListDiv) return;
+            if (!logs || logs.length === 0) {
+                logListDiv.innerHTML = '<div class="empty-log">Belum ada laporan tersimpan</div>';
+                return;
+            }
+            logListDiv.innerHTML = '';
+            logs.forEach(log => {
+                const logItem = document.createElement('div');
+                logItem.className = 'log-item';
+                logItem.innerHTML = `
+                    <span class="log-filename"><i class="fas fa-file-archive"></i> ${log.filename}</span>
+                    <span class="log-time"><i class="far fa-clock"></i> ${log.time || '-'}</span>
+                `;
+                logListDiv.appendChild(logItem);
+            });
+        }
+        
+        function saveLog(filename, timeStr) {
+            let logs = [];
+            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+            if (savedLogs) {
+                try {
+                    logs = JSON.parse(savedLogs);
+                } catch(e) { logs = []; }
+            }
+            logs.unshift({ filename, time: timeStr, date: new Date().toISOString() });
+            if (logs.length > 50) logs = logs.slice(0, 50);
+            localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
+            displayLogs(logs);
+            if (logCountBadge) logCountBadge.textContent = logs.length;
+        }
+        
+        function addLog(filename) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            saveLog(filename, timeStr);
+        }
+        
+        function resetAllData() {
+            if (confirm("RESET SEMUA DATA? Menghapus semua laporan tersimpan, data tanggal terkirim, dan mengatur ulang penghitung. Data tidak dapat dikembalikan.")) {
+                localStorage.removeItem(STORAGE_KEY_COUNTER);
+                localStorage.removeItem(STORAGE_KEY_LOGS);
+                localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
+                submissionCount = 0;
+                sequenceNumber = 0;
+                displayLogs([]);
+                if (logCountBadge) logCountBadge.textContent = "0";
+                alert("✅ Semua data laporan, riwayat tanggal, dan penghitung telah direset.");
+            }
+        }
+        
+        // ======================== FUNGSI LAINNYA ========================
+        function acakDetik(pilihWaktu) {
+            if (!pilihWaktu) return null;
+            let dateObj = new Date(pilihWaktu);
+            if (isNaN(dateObj.getTime())) return null;
+            const detikAcak = Math.floor(Math.random() * 60);
+            dateObj.setSeconds(detikAcak);
+            currentTimestamp = dateObj.toISOString();
+            return dateObj;
+        }
+        
+        async function loadKoordinat() {
+            try {
+                const response = await fetch(GITHUB_JSON_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                if (!data.koordinat || data.koordinat.length === 0) {
+                    throw new Error('File koordinat kosong');
+                }
+                KOORDINAT_LIST = data.koordinat;
+                koordinatLoaded = true;
+                currentKoordinat = getRandomCoordinate();
+                coordValueSpan.textContent = currentKoordinat;
+            } catch (error) {
+                console.error('Gagal memuat koordinat:', error);
+                koordinatLoaded = false;
+                coordValueSpan.textContent = 'Gagal memuat koordinat';
+            }
             checkInputCompletion();
         }
-    }
-    
-    function updateJudul() {
-        let raw = judulInput.value.trim();
-        if (raw === "") raw = "Kelurahan Liligundi";
-        currentJudul = raw;
-        document.title = `${currentJudul} - DUKOPS`;
-        updateCanvasPreview();
-    }
-    
-    // ======================== PREVIEW GAMBAR ========================
-    function previewImage(file) {
-        if (!file) return;
         
-        fileNameDisplay.textContent = file.name;
-        fileInputLabel.style.background = "#254f3f";
-        
-        if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
-            currentKoordinat = getRandomCoordinate();
-            coordValueSpan.textContent = currentKoordinat;
+        function getRandomCoordinate() {
+            if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
+                return "-8° 8'38.215S, 115°6'52.463E";
+            }
+            return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
         }
         
-        const currentDateValue = tanggalInput.value;
-        if (currentDateValue) {
-            acakDetik(currentDateValue);
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            currentImage = new Image();
-            currentImage.onload = function() {
+        function refreshCoordinate() {
+            if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
+                currentKoordinat = getRandomCoordinate();
+                coordValueSpan.textContent = currentKoordinat;
                 updateCanvasPreview();
                 checkInputCompletion();
-            };
-            currentImage.onerror = function() {
-                fileNameDisplay.textContent = 'Gagal memuat gambar';
-                checkInputCompletion();
-            };
-            currentImage.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function updateDatePreview(dateString) {
-        if (!dateString) return;
-        acakDetik(dateString);
-        updateCanvasPreview();
-    }
-    
-    function updateCanvasPreview() {
-        canvas.width = 759;
-        canvas.height = 300;
-        
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
-            ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-        } else {
-            ctx.fillStyle = '#2a5e48';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#bde5ca';
-            ctx.font = "25px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
+            }
         }
         
-        ctx.fillStyle = "white";
-        ctx.font = "25px Arial";
-        ctx.textAlign = "right";
-        
-        ctx.fillText(currentJudul.substring(0, 40), canvas.width - 10, canvas.height - 80);
-        ctx.fillText(currentKoordinat || "Koordinat Tidak Tersedia", canvas.width - 10, canvas.height - 50);
-        
-        let dateObj = new Date(currentTimestamp);
-        if (!isNaN(dateObj.getTime())) {
-            const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-            const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-            ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 10, canvas.height - 20);
-        } else {
-            ctx.fillText("Tanggal belum dipilih", canvas.width - 10, canvas.height - 20);
-        }
-    }
-    
-    function checkInputCompletion() {
-        const hasImage = gambarInput.files.length > 0 && currentImage.complete && currentImage.src;
-        const hasDate = tanggalInput.value.trim() !== "";
-        const hasNarasi = narasiText.value.trim() !== "";
-        const hasJudul = judulInput.value.trim() !== "";
-        const hasKoordinat = koordinatLoaded && KOORDINAT_LIST.length > 0;
-        
-        downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat);
-    }
-    
-    // ======================== SIMPAN LAPORAN ========================
-    async function saveReport() {
-        if (downloadBtn.disabled) {
-            if (!koordinatLoaded) alert("Koordinat belum dimuat. Periksa koneksi internet!");
-            else alert("Lengkapi semua data terlebih dahulu!");
-            return;
-        }
-        
-        const currentDateValue = tanggalInput.value;
-        if (!currentDateValue) {
-            alert("Pilih tanggal dan waktu terlebih dahulu!");
-            return;
-        }
-        
-        // CEK ANTI GANDA - Apakah tanggal LENGKAP (YYYY-MM-DD) ini sudah pernah dibuat laporan?
-        if (isFullDateAlreadySubmitted(currentDateValue)) {
-            const dateObj = new Date(currentDateValue);
-            const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-            alert(`⚠️ GAGAL! Laporan untuk tanggal ${tanggalFormatted} sudah pernah dibuat.\n\nSilakan pilih TANGGAL YANG BERBEDA.`);
-            return;
-        }
-        
-        const dateObj = new Date(currentDateValue);
-        if (isNaN(dateObj.getTime())) { 
-            alert("Tanggal tidak valid"); 
-            return; 
-        }
-        
-        // Acak detik sebelum simpan
-        acakDetik(currentDateValue);
-        
-        const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-        const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        
-        if (!confirm(`Simpan laporan?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ Perhatian: Tanggal yang sama tidak bisa digunakan dua kali!`)) return;
-        
-        loader.style.display = "block";
-        downloadBtn.disabled = true;
-        downloadBtn.textContent = "⏳ MEMPROSES...";
-        
-        try {
-            sequenceNumber++;
-            const ddmm = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit' }).replace(/\//g, "-");
-            let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
-            if (!safeJudul) safeJudul = "Kegiatan";
-            const finalName = `${sequenceNumber}_${safeJudul}_${ddmm}`.replace(/\s/g, "_");
-            
+        function updateJudul() {
+            let raw = judulInput.value.trim();
+            if (raw === "") raw = "Kelurahan Liligundi";
+            currentJudul = raw;
+            document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
+        }
+        
+        function previewImage(file) {
+            if (!file) return;
             
-            const imageDataURL = canvas.toDataURL("image/png");
-            const narasiContent = narasiText.value;
+            fileNameDisplay.textContent = file.name;
+            fileInputLabel.style.background = "#254f3f";
             
-            const txtContent = `Judul Kegiatan: ${currentJudul}
+            if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
+                currentKoordinat = getRandomCoordinate();
+                coordValueSpan.textContent = currentKoordinat;
+            }
+            
+            const currentDateValue = tanggalInput.value;
+            if (currentDateValue) {
+                acakDetik(currentDateValue);
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImage = new Image();
+                currentImage.onload = function() {
+                    updateCanvasPreview();
+                    checkInputCompletion();
+                };
+                currentImage.onerror = function() {
+                    fileNameDisplay.textContent = 'Gagal memuat gambar';
+                    checkInputCompletion();
+                };
+                currentImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function updateDatePreview(dateString) {
+            if (!dateString) return;
+            acakDetik(dateString);
+            updateCanvasPreview();
+        }
+        
+        function updateCanvasPreview() {
+            canvas.width = 759;
+            canvas.height = 300;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#2a5e48';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#bde5ca';
+                ctx.font = "25px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
+            }
+            
+            ctx.fillStyle = "white";
+            ctx.font = "25px Arial";
+            ctx.textAlign = "right";
+            
+            ctx.fillText(currentJudul.substring(0, 40), canvas.width - 10, canvas.height - 80);
+            ctx.fillText(currentKoordinat || "Koordinat Tidak Tersedia", canvas.width - 10, canvas.height - 50);
+            
+            let dateObj = new Date(currentTimestamp);
+            if (!isNaN(dateObj.getTime())) {
+                const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+                const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 10, canvas.height - 20);
+            } else {
+                ctx.fillText("Tanggal belum dipilih", canvas.width - 10, canvas.height - 20);
+            }
+        }
+        
+        function checkInputCompletion() {
+            const hasImage = gambarInput.files.length > 0 && currentImage.complete && currentImage.src;
+            const hasDate = tanggalInput.value.trim() !== "";
+            const hasNarasi = narasiText.value.trim() !== "";
+            const hasJudul = judulInput.value.trim() !== "";
+            const hasKoordinat = koordinatLoaded && KOORDINAT_LIST.length > 0;
+            
+            downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat);
+        }
+        
+        async function saveReport() {
+            if (downloadBtn.disabled) {
+                if (!koordinatLoaded) alert("Koordinat belum dimuat. Periksa koneksi internet!");
+                else alert("Lengkapi semua data terlebih dahulu!");
+                return;
+            }
+            
+            const currentDateValue = tanggalInput.value;
+            if (!currentDateValue) {
+                alert("Pilih tanggal dan waktu terlebih dahulu!");
+                return;
+            }
+            
+            if (isFullDateAlreadySubmitted(currentDateValue)) {
+                const dateObj = new Date(currentDateValue);
+                const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+                alert(`⚠️ GAGAL! Laporan untuk tanggal ${tanggalFormatted} sudah pernah dibuat.\n\nSilakan pilih TANGGAL YANG BERBEDA.`);
+                return;
+            }
+            
+            const dateObj = new Date(currentDateValue);
+            if (isNaN(dateObj.getTime())) { 
+                alert("Tanggal tidak valid"); 
+                return; 
+            }
+            
+            acakDetik(currentDateValue);
+            
+            const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+            const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            if (!confirm(`Simpan laporan?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ Perhatian: Tanggal yang sama tidak bisa digunakan dua kali!`)) return;
+            
+            loader.style.display = "block";
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = "⏳ MEMPROSES...";
+            
+            try {
+                sequenceNumber++;
+                const ddmm = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit' }).replace(/\//g, "-");
+                let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
+                if (!safeJudul) safeJudul = "Kegiatan";
+                const finalName = `${sequenceNumber}_${safeJudul}_${ddmm}`.replace(/\s/g, "_");
+                
+                updateCanvasPreview();
+                
+                const imageDataURL = canvas.toDataURL("image/png");
+                const narasiContent = narasiText.value;
+                
+                const txtContent = `Judul Kegiatan: ${currentJudul}
 Tanggal: ${formattedDate}
 Waktu input kegiatan: ${formattedTime}
 NARASI:
@@ -754,118 +871,126 @@ ${narasiContent}
 
 Koordinat: ${currentKoordinat}
 Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
-            
-            if (typeof JSZip === 'undefined') throw new Error("JSZip tidak dimuat!");
-            
-            const zip = new JSZip();
-            zip.file(`${finalName}_Laporan.txt`, txtContent);
-            zip.file(`${finalName}_Dokumentasi.png`, imageDataURL.split("base64,")[1], { base64: true });
-            const zipBlob = await zip.generateAsync({ type: "blob" });
-            
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(zipBlob);
-            link.href = url;
-            link.download = `${finalName}.zip`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            // Simpan tanggal LENGKAP yang sudah digunakan (YYYY-MM-DD)
-            saveSubmittedFullDate(currentDateValue);
-            addLog(`${finalName}.zip`);
-            alert(`✅ Laporan berhasil disimpan!\n📦 ${finalName}.zip\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
-            
-        } catch (err) {
-            console.error(err);
-            alert("Gagal menyimpan: " + err.message);
-        } finally {
-            loader.style.display = "none";
-            downloadBtn.disabled = false;
-            downloadBtn.textContent = "💾 SIMPAN LAPORAN (ZIP)";
-            checkInputCompletion();
+                
+                if (typeof JSZip === 'undefined') throw new Error("JSZip tidak dimuat!");
+                
+                const zip = new JSZip();
+                zip.file(`${finalName}_Laporan.txt`, txtContent);
+                zip.file(`${finalName}_Dokumentasi.png`, imageDataURL.split("base64,")[1], { base64: true });
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+                
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(zipBlob);
+                link.href = url;
+                link.download = `${finalName}.zip`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                saveSubmittedFullDate(currentDateValue);
+                addLog(`${finalName}.zip`);
+                alert(`✅ Laporan berhasil disimpan!\n📦 ${finalName}.zip\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
+                
+            } catch (err) {
+                console.error(err);
+                alert("Gagal menyimpan: " + err.message);
+            } finally {
+                loader.style.display = "none";
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = "💾 SIMPAN LAPORAN (ZIP)";
+                checkInputCompletion();
+            }
         }
-    }
-    
-    // ======================== PWA INSTALL ========================
-    let deferredPrompt;
-    const installDiv = document.getElementById('installContainer');
-    const installBtn = document.getElementById('installButton');
-    const closeInstall = document.getElementById('closeInstall');
-    
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            installDiv.style.display = 'none';
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response: ${outcome}`);
-                deferredPrompt = null;
+        
+        // ======================== PWA INSTALL ========================
+        let deferredPrompt;
+        const installDiv = document.getElementById('installContainer');
+        const installBtn = document.getElementById('installButton');
+        const closeInstall = document.getElementById('closeInstall');
+        
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                installDiv.style.display = 'none';
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response: ${outcome}`);
+                    deferredPrompt = null;
+                } else {
+                    alert("Installasi bisa dilakukan melalui menu browser: 'Install App' atau 'Tambahkan ke Home Screen'");
+                }
+            });
+        }
+        if (closeInstall) {
+            closeInstall.addEventListener('click', () => {
+                installDiv.style.display = 'none';
+            });
+        }
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installDiv.style.display = 'block';
+        });
+        
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registered:', reg.scope))
+                    .catch(err => console.log('Service Worker failed:', err));
+            });
+        }
+        
+        // ======================== EVENT LISTENERS ========================
+        judulInput.addEventListener('input', () => { updateJudul(); checkInputCompletion(); });
+        tanggalInput.addEventListener('input', (e) => { updateDatePreview(e.target.value); checkInputCompletion(); });
+        narasiText.addEventListener('input', checkInputCompletion);
+        downloadBtn.addEventListener('click', saveReport);
+        resetBtn.addEventListener('click', resetAllData);
+        refreshCoordBtn.addEventListener('click', refreshCoordinate);
+        
+        gambarInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                previewImage(e.target.files[0]);
             } else {
-                alert("Installasi bisa dilakukan melalui menu browser: 'Install App' atau 'Tambahkan ke Home Screen'");
+                fileNameDisplay.textContent = 'Belum ada file';
+                fileInputLabel.style.background = '#1e352b';
+                checkInputCompletion();
             }
         });
-    }
-    if (closeInstall) {
-        closeInstall.addEventListener('click', () => {
-            installDiv.style.display = 'none';
-        });
-    }
-    
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installDiv.style.display = 'block';
-    });
-    
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registered:', reg.scope))
-                .catch(err => console.log('Service Worker failed:', err));
-        });
-    }
-    
-    // ======================== EVENT LISTENERS ========================
-    judulInput.addEventListener('input', () => { updateJudul(); checkInputCompletion(); });
-    tanggalInput.addEventListener('input', (e) => { updateDatePreview(e.target.value); checkInputCompletion(); });
-    narasiText.addEventListener('input', checkInputCompletion);
-    downloadBtn.addEventListener('click', saveReport);
-    resetBtn.addEventListener('click', resetAllData);
-    refreshCoordBtn.addEventListener('click', refreshCoordinate);
-    
-    // Event untuk input file
-    gambarInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            previewImage(e.target.files[0]);
-        } else {
-            fileNameDisplay.textContent = 'Belum ada file';
-            fileInputLabel.style.background = '#1e352b';
+        
+        // Load counter dan data
+        function loadCounter() {
+            const saved = localStorage.getItem(STORAGE_KEY_COUNTER);
+            submissionCount = saved ? parseInt(saved, 10) : 0;
+            sequenceNumber = submissionCount;
+        }
+        
+        async function init() {
+            loadCounter();
+            loadLogs();
+            
+            const now = new Date();
+            const tahun = now.getFullYear();
+            const bulan = String(now.getMonth() + 1).padStart(2, '0');
+            const tanggal = String(now.getDate()).padStart(2, '0');
+            const jam = String(now.getHours()).padStart(2, '0');
+            const menit = String(now.getMinutes()).padStart(2, '0');
+            const defaultDateTime = `${tahun}-${bulan}-${tanggal}T${jam}:${menit}`;
+            tanggalInput.value = defaultDateTime;
+            
+            acakDetik(defaultDateTime);
+            updateJudul();
+            await loadKoordinat();
+            updateCanvasPreview();
             checkInputCompletion();
         }
-    });
-    
-    // ======================== INIT ========================
-    async function init() {
-        loadLogs();
         
-        const now = new Date();
-        const tahun = now.getFullYear();
-        const bulan = String(now.getMonth() + 1).padStart(2, '0');
-        const tanggal = String(now.getDate()).padStart(2, '0');
-        const jam = String(now.getHours()).padStart(2, '0');
-        const menit = String(now.getMinutes()).padStart(2, '0');
-        const defaultDateTime = `${tahun}-${bulan}-${tanggal}T${jam}:${menit}`;
-        tanggalInput.value = defaultDateTime;
-        
-        acakDetik(defaultDateTime);
-        updateJudul();
-        await loadKoordinat();
-        updateCanvasPreview();
-        checkInputCompletion();
-    }
-    
-    init();
-</script>
+        // Tunggu splash selesai baru init
+        setTimeout(() => {
+            init();
+        }, 500);
+    </script>
 </body>
 </html>
