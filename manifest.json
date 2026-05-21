@@ -1,0 +1,14 @@
+{
+  "name": "DUKOPS Babinsa Liligundi",
+  "short_name": "DUKOPS",
+  "description": "Aplikasi DUKOPS Babinsa Kelurahan Liligundi - Koramil 1609-01/Buleleng",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1e3b2c",
+  "background_color": "#0a1814",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "https://cdn-icons-png.flaticon.com/192/190/190411.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "https://cdn-icons-png.flaticon.com/512/190/190411.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
