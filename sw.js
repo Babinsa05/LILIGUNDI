@@ -2,11 +2,12 @@ const CACHE_NAME = 'dukops-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json',
+  '/site.webmanifest',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/apple-touch-icon.png',
   'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-  'https://cdn-icons-png.flaticon.com/32/190/190411.png',
-  'https://cdn-icons-png.flaticon.com/192/190/190411.png'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
 
 self.addEventListener('install', event => {
