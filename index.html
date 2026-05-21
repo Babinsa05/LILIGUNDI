@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     
-    <!-- Font Awesome untuk icon tampilan -->
+    <!-- Font Awesome untuk icon tambahan -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -41,9 +41,43 @@
             text-align: center;
             border-bottom: 1px solid #3a6b55;
         }
-        .header h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .header .sub { font-size: 0.9rem; opacity: 0.85; color: #c7e9cf; }
-        .badge-area { display: inline-flex; background: #2a5541; padding: 6px 16px; border-radius: 60px; font-size: 0.75rem; margin-top: 12px; gap: 8px; }
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+        }
+        .header .sub {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            color: #c7e9cf;
+            margin-top: 8px;
+        }
+        .badge-area { 
+            display: inline-flex; 
+            background: #2a5541; 
+            padding: 6px 16px; 
+            border-radius: 60px; 
+            font-size: 0.75rem; 
+            margin-top: 12px; 
+            gap: 8px; 
+        }
         .content { padding: 28px 26px; }
         .form-group { margin-bottom: 24px; }
         label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; color: #cbefd4; margin-bottom: 8px; }
@@ -106,7 +140,7 @@
             border: 1px solid #468066;
         }
         .stat-label { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: #bde0ca; }
-        .stat-number { font-size: 2.1rem; font-weight: 800; background: linear-gradient(to right, #e2ffe2, #b3e6b3); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .stat-number { font-size: 2.1rem; font-weight: 800; background: linear-gradient(to right, #e2ffe6, #b3e6b3); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .btn-primary {
             background: linear-gradient(95deg, #317456, #1f543f);
             border: none;
@@ -136,13 +170,22 @@
         }
         .install-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
         .install-buttons button { padding: 10px 24px; margin: 0; width: auto; }
-        @media (max-width: 550px) { .content { padding: 20px 18px; } .stat-number { font-size: 1.7rem; } }
+        @media (max-width: 550px) { 
+            .content { padding: 20px 18px; } 
+            .stat-number { font-size: 1.7rem; }
+            .header-icon { width: 35px; height: 35px; }
+            .header h1 { font-size: 1.3rem; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>📁 DUKOPS BABINSA</h1>
+        <div class="header-title">
+            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo Kiri" onerror="this.style.display='none'">
+            <h1>DUKOPS BABINSA</h1>
+            <img class="header-icon" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png" alt="Logo Kanan" onerror="this.style.display='none'">
+        </div>
         <div class="sub">Koramil 1609-01 / Buleleng</div>
         <div class="badge-area"><span>📍 Kelurahan Liligundi</span></div>
     </div>
@@ -238,7 +281,7 @@
             KOORDINAT_LIST = data.koordinat;
             koordinatLoaded = true;
             currentKoordinat = getRandomCoordinate();
-            previewKordinat.innerHTML = `Koordinat📍 ${currentKoordinat}`;
+            previewKordinat.innerHTML = `📍 ${currentKoordinat}`;
             
         } catch (error) {
             console.error('Gagal memuat koordinat:', error);
@@ -288,7 +331,7 @@
         
         if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
             currentKoordinat = getRandomCoordinate();
-            previewKordinat.innerHTML = `Koordinat📍 ${currentKoordinat}`;
+            previewKordinat.innerHTML = `📍 ${currentKoordinat}`;
         }
         
         const reader = new FileReader();
@@ -319,18 +362,15 @@
     }
     
     function updateCanvasPreview() {
-        // Ukuran canvas FIX: 759 x 300
         canvas.width = 759;
         canvas.height = 300;
         
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Gambar foto (dipaksa ke ukuran 759x300)
         if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
             ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
         } else {
-            // Background jika belum ada gambar
             ctx.fillStyle = '#2a5e48';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#bde5ca';
@@ -339,20 +379,13 @@
             ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
         }
         
-        // Font Arial ukuran 25px SEMUA
         ctx.fillStyle = "white";
         ctx.font = "25px Arial";
         ctx.textAlign = "right";
         
-        // Posisi teks: dari bawah
-        // Judul kegiatan (baris paling atas)
         ctx.fillText(currentJudul.substring(0, 40), canvas.width - 10, canvas.height - 80);
+        ctx.fillText(currentKoordinat || "Koordinat Tidak Tersedia", canvas.width - 10, canvas.height - 50);
         
-        // Koordinat dengan format "Koordinat📍 " (baris tengah)
-        const coordText = `Koordinat📍 ${currentKoordinat || "Koordinat Tidak Tersedia"}`;
-        ctx.fillText(coordText, canvas.width - 10, canvas.height - 50);
-        
-        // Tanggal dan Waktu (baris paling bawah)
         let dateObj = new Date(currentTimestamp);
         if (!isNaN(dateObj.getTime())) {
             const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
@@ -447,7 +480,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         }
     }
     
-    // ======================== PWA INSTALL (SEPERTI APK) ========================
+    // ======================== PWA INSTALL ========================
     let deferredPrompt;
     const installDiv = document.getElementById('installContainer');
     const installBtn = document.getElementById('installButton');
@@ -472,14 +505,12 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         });
     }
     
-    // Tangkap event beforeinstallprompt untuk PWA
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
         installDiv.style.display = 'block';
     });
     
-    // Daftarkan Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js')
