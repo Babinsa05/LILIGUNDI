@@ -5,49 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template Narasi Babinsa - 100+ Contoh</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0a3022, #0a1814);
             color: #eef4ea;
             padding: 20px;
         }
-        .template-container { max-width: 1200px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: rgba(26, 44, 37, 0.9); border-radius: 20px; }
-        .header h1 { background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .stats { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        .stat-card { background: rgba(26, 44, 37, 0.8); padding: 10px 20px; border-radius: 16px; text-align: center; border-left: 3px solid #2ecc71; }
-        .stat-number { font-size: 1.5rem; font-weight: bold; color: #2ecc71; }
-        .stat-label { font-size: 0.7rem; }
-        .tabs { display: flex; flex-wrap: wrap; background: #12261f; border-radius: 16px 16px 0 0; overflow-x: auto; }
-        .tab-btn { padding: 12px 20px; background: none; border: none; color: #8abf9a; cursor: pointer; font-size: 0.85rem; border-bottom: 2px solid transparent; transition: 0.2s; }
-        .tab-btn.active { color: #2ecc71; border-bottom-color: #2ecc71; }
-        .tab-content { display: none; background: rgba(18, 38, 31, 0.7); border-radius: 0 0 20px 20px; padding: 20px; max-height: 500px; overflow-y: auto; }
-        .tab-content.active { display: block; }
-        .template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 12px; }
-        .template-card { background: #1e352b; padding: 12px 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; border-left: 3px solid #3b6b55; }
-        .template-card:hover { background: #2a5541; border-left-color: #2ecc71; transform: translateX(5px); }
-        .template-num { font-size: 0.65rem; color: #2ecc71; margin-bottom: 5px; }
-        .template-text { font-size: 0.8rem; line-height: 1.4; }
-        .footer { text-align: center; padding: 20px; color: #6b8f7a; font-size: 0.7rem; }
-        @media (max-width: 600px) { .template-grid { grid-template-columns: 1fr; } .tab-btn { padding: 10px 12px; font-size: 0.7rem; } }
+        .template-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(26, 44, 37, 0.9);
+            border-radius: 20px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .header p {
+            color: #8abf9a;
+            margin-top: 8px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: rgba(26, 44, 37, 0.8);
+            padding: 10px 20px;
+            border-radius: 16px;
+            text-align: center;
+            border-left: 3px solid #2ecc71;
+        }
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #12261f;
+            border-radius: 16px 16px 0 0;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #8abf9a;
+            cursor: pointer;
+            font-size: 0.85rem;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            color: #2ecc71;
+            border-bottom-color: #2ecc71;
+        }
+        .tab-content {
+            display: none;
+            background: rgba(18, 38, 31, 0.7);
+            border-radius: 0 0 20px 20px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 12px;
+        }
+        .template-card {
+            background: #1e352b;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 3px solid #3b6b55;
+        }
+        .template-card:hover {
+            background: #2a5541;
+            border-left-color: #2ecc71;
+            transform: translateX(5px);
+        }
+        .template-num {
+            font-size: 0.65rem;
+            color: #2ecc71;
+            margin-bottom: 8px;
+        }
+        .template-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b8f7a;
+            font-size: 0.7rem;
+        }
+        @media (max-width: 600px) {
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 0.7rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="template-container">
         <div class="header">
-            <h1>📋 100+ TEMPLATE NARASI BABINSA</h1>
-            <p>Klik pada template untuk menyalin | Koramil 1609-01/Buleleng</p>
+            <h1>📋 100+ TEMPLATE NARASI BABINSA (PANJANG)</h1>
+            <p>Klik pada template untuk menyalin | Koramil 1609-01/Buleleng | Kelurahan Liligundi</p>
         </div>
 
         <div class="stats">
             <div class="stat-card"><div class="stat-number" id="totalCount">0</div><div class="stat-label">Total</div></div>
-            <div class="stat-card"><div class="stat-number" id="komsosCount">0</div><div class="stat-label">Komsos</div></div>
-            <div class="stat-card"><div class="stat-number" id="patroliCount">0</div><div class="stat-label">Patroli</div></div>
-            <div class="stat-card"><div class="stat-number" id="musyawarahCount">0</div><div class="stat-label">Musyawarah</div></div>
-            <div class="stat-card"><div class="stat-number" id="bantuanCount">0</div><div class="stat-label">Bantuan</div></div>
-            <div class="stat-card"><div class="stat-number" id="pembinaanCount">0</div><div class="stat-label">Pembinaan</div></div>
             <div class="stat-card"><div class="stat-number" id="monitoringCount">0</div><div class="stat-label">Monitoring</div></div>
+            <div class="stat-card"><div class="stat-number" id="komsosCount">0</div><div class="stat-label">Komsos</div></div>
+            <div class="stat-card"><div class="stat-number" id="pengamananCount">0</div><div class="stat-label">Pengamanan</div></div>
+            <div class="stat-card"><div class="stat-number" id="pendampinganCount">0</div><div class="stat-label">Pendampingan</div></div>
+            <div class="stat-card"><div class="stat-number" id="gotongCount">0</div><div class="stat-label">Gotong Royong</div></div>
         </div>
 
         <div class="tabs" id="tabs"></div>
@@ -60,71 +162,121 @@
     </div>
 
     <script>
-        // ======================== 100+ TEMPLATE NARASI ========================
-        const templates = {
-            komsos: [
-                "Melaksanakan kegiatan komunikasi sosial (Komsos) dengan warga binaan di Kelurahan Liligundi dalam rangka menjalin silaturahmi dan deteksi dini gangguan kamtibmas. Warga menyambut baik dan berkomitmen menjaga keamanan lingkungan. Kegiatan berlangsung lancar dan kondusif.",
-                "Melaksanakan Komsos dengan tokoh masyarakat di wilayah binaan untuk membahas perkembangan situasi kamtibmas. Terjalin komunikasi yang baik dan diperoleh informasi penting untuk pencegahan gangguan keamanan.",
-                "Melaksanakan kegiatan Komsos bersama perangkat kelurahan dalam rangka sinergitas TNI-Pemerintah Desa. Hasilnya tercapai kesepakatan untuk meningkatkan kerjasama dalam menjaga keamanan wilayah.",
-                "Melaksanakan komunikasi sosial dengan pemuda karang taruna di Kelurahan Liligundi. Disampaikan himbauan tentang pentingnya peran pemuda dalam menjaga keamanan lingkungan.",
-                "Melaksanakan Komsos dengan tokoh agama di wilayah binaan untuk menjalin kerukunan umat beragama. Kegiatan berjalan dengan baik dan tercipta suasana yang harmonis."
-            ],
-            patroli: [
-                "Melaksanakan patroli rutin di wilayah Kelurahan Liligundi untuk memastikan situasi aman dan memberikan rasa aman kepada masyarakat. Tidak ditemukan hal-hal yang menonjol. Patroli berjalan lancar.",
-                "Melaksanakan patroli malam hari bersama Linmas di wilayah binaan. Hasil patroli menunjukkan situasi kondusif, tidak ada aktivitas mencurigakan. Patroli selesai pukul 02.00 WITA.",
-                "Melaksanakan patroli siang hari di sekitar sekolah dan tempat ibadah untuk antisipasi gangguan keamanan. Seluruh titik pantau aman terkendali. Warga mengapresiasi kegiatan patroli.",
-                "Melaksanakan patroli gabungan TNI-Polri di perbatasan wilayah kelurahan. Sinergitas kedua aparat berjalan baik, situasi kamtibmas terkendali dengan aman.",
-                "Melaksanakan patroli daerah rawan kriminalitas di Kelurahan Liligundi. Dari hasil patroli, tidak ditemukan indikasi gangguan. Patroli dilanjutkan dengan pemantauan CCTV."
-            ],
-            musyawarah: [
-                "Menghadiri undangan rapat koordinasi di Kelurahan Liligundi untuk membahas program pembangunan dan keamanan lingkungan. Kegiatan berjalan tertib dan menghasilkan kesepakatan bersama.",
-                "Menghadiri kegiatan musyawarah RT/RW se-Kelurahan Liligundi membahas permasalahan lingkungan. Dicapai kesepakatan bersama untuk kemajuan bersama.",
-                "Melaksanakan kegiatan Forum Kewaspadaan Dini Masyarakat (FKDM) bersama tokoh masyarakat dan unsur kelurahan. Hasil forum menghasilkan rekomendasi peningkatan kewaspadaan.",
-                "Menghadiri rapat evaluasi program kerja kelurahan bersama lurah dan perangkat. Disepakati langkah-langkah percepatan program yang tertunda.",
-                "Melaksanakan rapat pembentukan poskamling dan penjadwalan piket ronda bersama warga. Warga antusias dan berkomitmen menjaga keamanan lingkungan."
-            ],
-            bantuan: [
-                "Memberikan bantuan dan pendampingan kepada warga kurang mampu di wilayah binaan berupa sembako dan kebutuhan pokok lainnya. Warga mengucapkan terima kasih atas perhatian Babinsa.",
-                "Melaksanakan karya bakti membersihkan lingkungan bersama warga di Kelurahan Liligundi. Gotong royong berjalan dengan baik dan hasilnya lingkungan menjadi bersih dan nyaman.",
-                "Membantu warga yang terkena musibah bencana alam dengan koordinasi bersama aparat kelurahan dan BPBD. Bantuan logistik disalurkan tepat sasaran.",
-                "Melaksanakan kegiatan bakti sosial donor darah bersama PMI dan masyarakat binaan. Terkumpul 50 kantong darah yang akan disalurkan ke pasien yang membutuhkan.",
-                "Melaksanakan kegiatan bedah rumah tidak layak huni bersama warga dan donatur. Satu unit rumah selesai direnovasi dan ditempati kembali oleh keluarga yang membutuhkan."
-            ],
-            pembinaan: [
-                "Melaksanakan pembinaan teritorial kepada pemuda karang taruna dalam rangka menumbuhkan jiwa nasionalisme dan cinta tanah air. Pemuda antusias mengikuti materi pembinaan.",
-                "Memberikan penyuluhan tentang bahaya narkoba kepada remaja di lingkungan binaan sebagai upaya preventif penyalahgunaan narkoba. Remaja berkomitmen untuk menjauhi narkoba.",
-                "Melaksanakan pembinaan fisik dan mental kepada anggota Linmas desa binaan. Materi meliputi peraturan baris-berbaris, bela negara, dan kesiapsiagaan bencana.",
-                "Memberikan penyuluhan tentang 4 pilar kebangsaan kepada masyarakat binaan untuk menanamkan nilai-nilai Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika.",
-                "Memberikan pelatihan PBB (Peraturan Baris-Berbaris) kepada siswa-siswi SMK di wilayah binaan. Pelatihan bertujuan menanamkan kedisiplinan dan jiwa kepemimpinan."
-            ],
-            monitoring: [
-                "Melaksanakan monitoring dan evaluasi wilayah binaan untuk mengetahui perkembangan situasi dan kondisi terkini. Hasil monitoring menunjukkan situasi dalam keadaan aman dan kondusif.",
-                "Melaksanakan pendataan kependudukan wilayah binaan untuk update data warga pendatang. Dari hasil pendataan, terdapat 5 KK pendatang baru yang tercatat.",
-                "Melaksanakan pemantauan harga sembako di pasar tradisional untuk mengantisipasi kelangkaan dan kenaikan harga. Harga kebutuhan pokok stabil dan stok aman.",
-                "Melaksanakan pendampingan kegiatan Posyandu balita di RW binaan. Antusiasme warga tinggi, balita yang hadir 45 orang dan semuanya dalam kondisi sehat.",
-                "Melaksanakan monitoring pelaksanaan vaksinasi polio di wilayah binaan. Dari target 200 balita, tercapai 185 balita yang divaksin (92,5%)."
-            ]
-        };
-
-        const tabConfig = [
-            { id: "komsos", name: "📞 KOMSOS", icon: "fa-comments" },
-            { id: "patroli", name: "🚶 PATROLI", icon: "fa-walking" },
-            { id: "musyawarah", name: "🏛️ MUSYAWARAH", icon: "fa-users" },
-            { id: "bantuan", name: "🤝 BANTUAN", icon: "fa-hand-holding-heart" },
-            { id: "pembinaan", name: "🎓 PEMBINAAN", icon: "fa-chalkboard-user" },
-            { id: "monitoring", name: "📊 MONITORING", icon: "fa-chart-line" }
+        // ======================== 100+ TEMPLATE NARASI PANJANG ========================
+        
+        // KATEGORI 1: MONITORING & PATROLI (Narasi panjang)
+        const monitoringTemplates = [
+            "Babinsa melaksanakan monitoring wilayah binaan di Kelurahan Liligundi dalam rangka menjaga situasi kamtibmas tetap aman dan kondusif. Dari hasil monitoring, situasi wilayah terpantau aman, tidak ditemukan hal-hal yang menonjol. Kegiatan monitoring berjalan lancar dan masyarakat menyambut baik kehadiran Babinsa di tengah-tengah warga.",
+            "Babinsa melaksanakan patroli wilayah di sektor barat Kelurahan Liligundi untuk memantau perkembangan situasi keamanan di desa binaan. Dalam patroli kali ini, Babinsa menyambangi beberapa titik rawan dan berinteraksi dengan warga setempat. Hasil patroli menunjukkan situasi dalam keadaan aman dan terkendali. Patroli akan terus ditingkatkan secara rutin.",
+            "Babinsa melaksanakan monitoring aktivitas warga di pemukiman padat penduduk guna mengantisipasi potensi gangguan kamtibmas. Dari hasil pemantauan, aktivitas warga berjalan normal dan tidak ditemukan indikasi gangguan keamanan. Babinsa juga menyempatkan diri untuk berdialog dengan warga dan memberikan himbauan kamtibmas.",
+            "Babinsa melaksanakan pemantauan wilayah secara rutin di Kelurahan Liligundi untuk menjaga keamanan dan ketertiban masyarakat. Kegiatan ini dilaksanakan pagi hari dengan menyusuri beberapa titik rawan. Hasil pemantauan menunjukkan situasi aman dan warga beraktivitas seperti biasa. Babinsa mengimbau warga untuk selalu waspada.",
+            "Babinsa melaksanakan monitoring situasi desa di seluruh wilayah binaan untuk mengetahui perkembangan kondisi terkini. Dari hasil monitoring, diketahui bahwa situasi kamtibmas dalam keadaan aman, tidak ada laporan kejadian menonjol. Babinsa berkoordinasi dengan perangkat desa untuk meningkatkan kewaspadaan bersama.",
+            "Babinsa melaksanakan pengawasan kegiatan masyarakat di wilayah binaan untuk menciptakan situasi yang aman dan kondusif. Dalam pengawasan ini, Babinsa memastikan setiap kegiatan masyarakat berjalan tertib. Masyarakat kooperatif dan mengikuti arahan dari Babinsa. Kegiatan berlangsung lancar tanpa hambatan.",
+            "Babinsa melaksanakan monitoring wilayah pada jam rawan (pukul 02.00-04.00 WITA) di wilayah binaan untuk mengantisipasi tindak kriminalitas. Patroli malam ini menyasar pemukiman dan tempat usaha yang rawan. Hasil patroli tidak ditemukan aktivitas mencurigakan. Babinsa berkoordinasi dengan Linmas setempat untuk peningkatan kewaspadaan.",
+            "Babinsa melaksanakan patroli keamanan lingkungan bersama Linmas di Kelurahan Liligundi untuk menjaga situasi tetap aman dan tertib. Patroli menyusuri jalan-jalan utama dan gang-gang pemukiman. Warga yang ditemui menyambut baik dan menyatakan situasi aman. Patroli akan dilaksanakan secara rutin setiap malam.",
+            "Babinsa melaksanakan pemantauan wilayah di perbatasan Kelurahan Liligundi untuk mengantisipasi potensi gangguan ketertiban masyarakat. Hasil pemantauan menunjukkan tidak ada potensi konflik antar warga. Babinsa terus berkoordinasi dengan aparat desa tetangga untuk menjaga stabilitas keamanan perbatasan.",
+            "Babinsa melaksanakan monitoring kegiatan masyarakat sebagai upaya menjaga stabilitas keamanan wilayah binaan. Monitoring dilaksanakan di beberapa lokasi strategis seperti pasar dan terminal. Hasil monitoring menunjukkan kegiatan masyarakat berjalan normal dan aman. Babinsa memberikan himbauan kepada warga untuk tetap waspada terhadap kejahatan jalanan.",
+            "Babinsa melaksanakan monitoring wilayah desa secara maraton menyusuri 5 dusun yang ada di Kelurahan Liligundi untuk memastikan situasi tetap aman dan kondusif. Dari hasil monitoring, seluruh dusun dalam keadaan aman. Babinsa menyempatkan diri berdialog dengan warga di setiap dusun untuk menyerap aspirasi masyarakat.",
+            "Babinsa melaksanakan patroli wilayah bersama Bhabinkamtibmas di seluruh wilayah binaan untuk menjaga keamanan lingkungan. Patroli gabungan ini dilaksanakan dalam rangka sinergitas TNI-Polri. Hasil patroli menunjukkan situasi kamtibmas aman terkendali. Masyarakat menyambut baik kehadiran aparat gabungan.",
+            "Babinsa melaksanakan monitoring situasi lingkungan di wilayah binaan pasca hujan deras yang melanda semalam. Monitoring dilaksanakan untuk mengantisipasi potensi banjir dan tanah longsor. Hasil monitoring menunjukkan debit air sungai normal dan tidak ada kerusakan infrastruktur. Warga dihimbau tetap waspada.",
+            "Babinsa melaksanakan patroli wilayah di kawasan permukiman padat penduduk guna memberikan rasa aman kepada masyarakat desa binaan. Patroli dilaksanakan pada sore hari saat warga sedang beraktivitas. Warga menyambut baik dan melaporkan situasi lingkungan yang aman. Patroli dilanjutkan ke titik berikutnya.",
+            "Babinsa melaksanakan monitoring aktivitas masyarakat di pusat keramaian seperti pasar tradisional dan terminal untuk menjaga ketertiban umum. Hasil monitoring menunjukkan aktivitas berjalan lancar, tidak ada kerumunan yang berpotensi menimbulkan masalah. Babinsa mengimbau warga untuk tetap menjaga protokol kesehatan."
         ];
 
-        // Update statistik
-        document.getElementById('totalCount').textContent = 
-            templates.komsos.length + templates.patroli.length + templates.musyawarah.length + 
-            templates.bantuan.length + templates.pembinaan.length + templates.monitoring.length;
-        document.getElementById('komsosCount').textContent = templates.komsos.length;
-        document.getElementById('patroliCount').textContent = templates.patroli.length;
-        document.getElementById('musyawarahCount').textContent = templates.musyawarah.length;
-        document.getElementById('bantuanCount').textContent = templates.bantuan.length;
-        document.getElementById('pembinaanCount').textContent = templates.pembinaan.length;
-        document.getElementById('monitoringCount').textContent = templates.monitoring.length;
+        // KATEGORI 2: KOMSOS (Komunikasi Sosial) - Panjang
+        const komsosTemplates = [
+            "Babinsa melaksanakan komunikasi sosial dengan warga masyarakat di RT 03 RW 05 Kelurahan Liligundi dalam rangka mempererat hubungan silaturahmi di wilayah binaan. Dalam komsos ini, Babinsa mendengarkan keluhan dan aspirasi warga terkait keamanan lingkungan. Warga menyampaikan terima kasih atas kepedulian Babinsa dan berharap kegiatan serupa terus dilaksanakan.",
+            "Babinsa melaksanakan komunikasi sosial bersama tokoh masyarakat Bapak Made Pastika di kediamannya untuk membahas perkembangan situasi kamtibmas sekaligus memperkuat sinergitas di wilayah binaan. Tokoh masyarakat menyambut hangat kehadiran Babinsa dan siap bersinergi dalam menjaga keamanan lingkungan. Kegiatan berlangsung akrab dan penuh kekeluargaan.",
+            "Babinsa melaksanakan komunikasi sosial bersama warga binaan di warung kopi setempat untuk mengetahui perkembangan situasi desa secara langsung dari masyarakat. Warga menyampaikan berbagai informasi terkini dan menyatakan situasi aman. Babinsa memberikan himbauan kamtibmas dan mengajak warga untuk aktif dalam menjaga keamanan lingkungan.",
+            "Babinsa melaksanakan komunikasi sosial bersama perangkat desa dan RT/RW se-Kelurahan Liligundi untuk meningkatkan kerja sama di wilayah binaan. Dalam pertemuan ini dibahas berbagai program keamanan lingkungan dan jadwal ronda malam. Disepakati peningkatan koordinasi antara Babinsa, perangkat desa, dan warga dalam menjaga kamtibmas.",
+            "Babinsa melaksanakan komunikasi sosial dengan tokoh adat di Kelurahan Liligundi untuk menjaga hubungan baik dan melestarikan nilai-nilai budaya. Dalam kesempatan ini, Babinsa juga menyampaikan himbauan tentang pentingnya menjaga kerukunan antar warga. Tokoh adat menyambut baik dan berkomitmen untuk terus bersinergi dengan TNI.",
+            "Babinsa melaksanakan komunikasi sosial bersama pemuda karang taruna di balai desa untuk meningkatkan kesadaran generasi muda dalam menjaga keamanan lingkungan. Pemuda antusias mengikuti arahan dan siap menjadi garda terdepan dalam menjaga kamtibmas. Kegiatan ditutup dengan pembentukan posko pemuda peduli keamanan.",
+            "Babinsa melaksanakan komunikasi sosial bersama warga binaan di poskamling RW 07 Kelurahan Liligundi untuk mempererat hubungan antara TNI dan masyarakat. Dalam kesempatan ini, Babinsa juga mengecek kesiapan sarana poskamling. Warga menyatakan siap untuk aktif dalam jadwal ronda malam.",
+            "Babinsa melaksanakan komunikasi sosial bersama aparat desa di kantor kelurahan terkait perkembangan situasi kamtibmas di wilayah binaan. Dalam rapat koordinasi ini dibahas peningkatan kewaspadaan menjelang hari-hari besar keagamaan. Disepakati peningkatan patroli dan koordinasi dengan pihak keamanan.",
+            "Babinsa melaksanakan komunikasi sosial bersama warga binaan di masjid setelah shalat magrib untuk menjaga hubungan harmonis di lingkungan masyarakat. Babinsa menyampaikan pesan-pesan kamtibmas dan mengajak warga untuk saling menjaga. Warga menyambut baik dan berkomitmen untuk aktif dalam kegiatan ronda malam.",
+            "Babinsa melaksanakan komunikasi sosial bersama kelompok pemuda di sekretariat karang taruna untuk meningkatkan kesadaran bela negara dan cinta tanah air. Pemuda antusias mengikuti materi yang disampaikan dan berencana mengadakan kegiatan pelatihan dasar kemiliteran. Kegiatan berlangsung interaktif.",
+            "Babinsa melaksanakan komunikasi sosial bersama tokoh agama di pondok pesantren untuk menjaga kerukunan umat beragama di wilayah binaan. Dalam kesempatan ini, Babinsa menyampaikan pesan tentang pentingnya toleransi antar umat beragama. Tokoh agama menyambut baik dan mendoakan kelancaran tugas Babinsa.",
+            "Babinsa melaksanakan komunikasi sosial bersama perangkat desa di ruang rapat kelurahan membahas strategi pengamanan lingkungan menjelang Pilkada serentak. Disepakati peningkatan patroli gabungan dan pembentukan posko pengaduan masyarakat. Rapat berlangsung konstruktif dan menghasilkan rekomendasi yang aplikatif.",
+            "Babinsa melaksanakan komunikasi sosial bersama warga binaan di lahan pertanian terkait kebersihan lingkungan dan pengelolaan sampah. Warga petani menyampaikan keluhan tentang sampah yang dibuang sembarangan. Babinsa berkoordinasi dengan perangkat desa untuk menyediakan tempat pembuangan sampah sementara.",
+            "Babinsa melaksanakan komunikasi sosial bersama kelompok nelayan di pesisir pantai untuk mengetahui perkembangan situasi di wilayah pesisir. Nelayan menyampaikan informasi tentang cuaca dan hasil tangkapan. Babinsa memberikan himbauan tentang keselamatan melaut dan pentingnya menjaga kebersihan pantai.",
+            "Babinsa melaksanakan komunikasi sosial bersama warga binaan di balai pertemuan untuk mempererat kemanunggalan TNI dengan rakyat. Babinsa menyampaikan program-program TNI dan mengajak warga berpartisipasi aktif dalam menjaga keamanan. Warga menyambut hangat dan berkomitmen untuk bersinergi dengan Babinsa."
+        ];
+
+        // KATEGORI 3: PENGAMANAN KEGIATAN - Panjang
+        const pengamananTemplates = [
+            "Babinsa melaksanakan pengamanan kegiatan masyarakat berupa lomba 17 Agustusan di Lapangan Kelurahan Liligundi agar kegiatan berjalan tertib, aman dan lancar. Babinsa berkoordinasi dengan panitia dan Linmas untuk mengatur jalannya lomba. Seluruh rangkaian kegiatan berjalan lancar tanpa kendala berarti.",
+            "Babinsa melaksanakan pengamanan kegiatan adat Ngaben di Banjar Adat Kelurahan Liligundi agar pelaksanaan kegiatan berlangsung aman dan tertib. Babinsa bersama Linmas mengatur arus lalu lintas dan memastikan keamanan selama prosesi adat. Kegiatan berlangsung khidmat dan lancar.",
+            "Babinsa melaksanakan pengamanan kegiatan keagamaan peringatan Maulid Nabi Muhammad SAW di Masjid Nurul Huda guna memberikan rasa aman kepada masyarakat. Babinsa berjaga di titik-titik strategis dan mengatur parkir jamaah. Kegiatan berlangsung lancar dan jamaah merasa aman.",
+            "Babinsa melaksanakan pengamanan kegiatan keramaian masyarakat berupa pawai budaya dalam rangka HUT Kemerdekaan guna mencegah gangguan keamanan. Babinsa bersama unsur keamanan lainnya mengawal jalannya pawai. Kegiatan berlangsung meriah dan aman tanpa gangguan.",
+            "Babinsa melaksanakan pengamanan dan monitoring aktivitas masyarakat di wilayah desa binaan saat pelaksanaan pemungutan suara. Babinsa memastikan TPS aman dan masyarakat tertib dalam menggunakan hak pilihnya. Pelaksanaan pemilu berjalan lancar dan kondusif.",
+            "Babinsa melaksanakan pengamanan kegiatan olahraga turnamen voli antar dusun di Lapangan Desa agar berlangsung tertib dan aman. Babinsa berkoordinasi dengan panitia dan wasit. Pertandingan berjalan sportif dan penonton tertib. Kegiatan selesai tanpa kejadian menonjol.",
+            "Babinsa melaksanakan pengamanan kegiatan masyarakat berupa pengajian akbar di Lapangan Kelurahan Liligundi guna memberikan rasa aman dan nyaman kepada ribuan jamaah. Babinsa bersama Linmas mengatur arus lalu lintas dan parkir. Kegiatan berlangsung lancar hingga selesai.",
+            "Babinsa melaksanakan pengamanan kegiatan pasar malam yang berlangsung selama 7 hari di halaman kelurahan untuk menjaga ketertiban dan keamanan masyarakat. Babinsa berjaga setiap malam dan melakukan patroli di area pasar. Selama penyelenggaraan, tidak terjadi gangguan keamanan.",
+            "Babinsa melaksanakan pengamanan kegiatan desa berupa rapat terbuka dengan warga untuk memastikan kegiatan berjalan dengan tertib dan lancar. Babinsa mengatur tempat duduk dan jalannya diskusi. Rapat berlangsung kondusif dan menghasilkan keputusan yang disepakati bersama.",
+            "Babinsa melaksanakan pengamanan kegiatan adat dan budaya festival Joged Bumbung guna menjaga ketertiban selama kegiatan berlangsung. Babinsa bersama Linmas mengawal jalannya festival. Masyarakat dan wisatawan menikmati acara dengan tertib. Kegiatan selesai aman.",
+            "Babinsa melaksanakan pengamanan kegiatan ibadah perayaan Natal bersama di Gereja Kristen di wilayah binaan untuk menciptakan situasi yang aman dan nyaman bagi umat yang merayakan. Babinsa berjaga di sekitar gereja dan mengatur parkir. Perayaan berjalan lancar dan khidmat.",
+            "Babinsa melaksanakan pengamanan kegiatan masyarakat seperti jalan sehat dan senam bersama guna menjaga ketertiban selama kegiatan berlangsung. Babinsa mengatur start dan finish serta mengawal peserta. Kegiatan berlangsung meriah dan tanpa kejadian menonjol.",
+            "Babinsa melaksanakan pengamanan serta monitoring kegiatan masyarakat pada perayaan Tahun Baru di pusat keramaian untuk menciptakan situasi aman dan kondusif. Babinsa berjaga hingga larut malam bersama unsur keamanan lainnya. Perayaan berlangsung meriah dan aman.",
+            "Babinsa melaksanakan pengamanan kegiatan upacara adat Tumpek Landep di Pura Desa binaan. Babinsa bersama Linmas mengatur jalannya upacara dan memastikan keamanan umat yang mengikuti persembahyangan. Upacara berlangsung lancar dan tertib.",
+            "Babinsa melaksanakan pengamanan kegiatan pertandingan olahraga sepak bola antar kampung di stadion mini. Babinsa mengamankan jalannya pertandingan dan mencegah potensi kericuhan antar suporter. Pertandingan berjalan sportif dan berakhir dengan skor 2-1."
+        ];
+
+        // KATEGORI 4: PENDAMPINGAN & BANTUAN SOSIAL - Panjang
+        const pendampinganTemplates = [
+            "Babinsa melaksanakan pendampingan kegiatan masyarakat berupa Posyandu balita di RW 03 Kelurahan Liligundi sebagai bentuk kepedulian terhadap kesehatan warga binaan. Babinsa membantu kader posyandu dalam penimbangan balita dan pencatatan data. Kegiatan dihadiri 35 balita dan berjalan lancar.",
+            "Babinsa melaksanakan pendampingan kegiatan Posyandu lansia di RW 05 guna mendukung pelayanan kesehatan masyarakat lanjut usia di wilayah binaan. Babinsa membantu mengatur antrean dan memastikan lansia mendapatkan pelayanan yang baik. Kegiatan berjalan lancar.",
+            "Babinsa melaksanakan pendampingan penyaluran bantuan sosial berupa sembako dari pemerintah kepada warga penerima manfaat di Kelurahan Liligundi agar berjalan tertib dan lancar. Babinsa membantu verifikasi data penerima dan mengatur pembagian. Bantuan tersalurkan tepat sasaran.",
+            "Babinsa melaksanakan pendampingan petani dalam kegiatan penanaman padi musim tanam kedua di lahan persawahan seluas 5 hektar. Babinsa membantu petani mulai dari pengolahan lahan hingga penanaman. Petani mengucapkan terima kasih atas pendampingan dari Babinsa.",
+            "Babinsa melaksanakan anjangsana ke rumah warga lansia Bapak Wayan Redi yang sedang sakit untuk mempererat hubungan silaturahmi sekaligus memberikan motivasi. Babinsa juga menyerahkan bantuan sembako dan obat-obatan. Keluarga warga mengucapkan terima kasih.",
+            "Babinsa melaksanakan pendampingan vaksinasi COVID-19 bagi masyarakat di Puskesmas Kelurahan Liligundi guna mendukung program pemerintah dalam percepatan vaksinasi. Babinsa membantu mengatur antrean dan memberikan edukasi tentang pentingnya vaksin.",
+            "Babinsa melaksanakan pendampingan kegiatan belajar siswa di SDN 2 Liligundi dengan memberikan motivasi belajar serta membantu mengajar mata pelajaran PPKn. Siswa-siswi antusias mengikuti pembelajaran. Kepala sekolah mengapresiasi kepedulian Babinsa.",
+            "Babinsa melaksanakan pendampingan pembagian sembako kepada 50 kepala keluarga kurang mampu yang terdampak ekonomi di Kelurahan Liligundi. Babinsa membantu pengemasan dan distribusi hingga ke rumah warga. Masyarakat menyampaikan rasa terima kasih.",
+            "Babinsa melaksanakan pendampingan kegiatan penimbangan balita di Posyandu Mawar RW 07 desa binaan. Dari 45 balita yang terdaftar, 40 balita hadir dan dalam kondisi kesehatan baik. Babinsa membantu kader dalam pelayanan dan pencatatan hasil penimbangan.",
+            "Babinsa melaksanakan pendampingan panen padi bersama kelompok tani Makmur di lahan seluas 3 hektar. Hasil panen mencapai 15 ton gabah kering. Petani bersyukur dan mengucapkan terima kasih atas pendampingan Babinsa sejak masa tanam hingga panen.",
+            "Babinsa melaksanakan pendampingan kegiatan donor darah yang diselenggarakan di Balai Kelurahan Liligundi bekerja sama dengan PMI. Terkumpul 50 kantong darah yang akan disalurkan ke pasien yang membutuhkan. Kegiatan diikuti 75 pendonor.",
+            "Babinsa melaksanakan pendampingan distribusi pupuk bersubsidi kepada 100 kelompok tani di wilayah binaan. Babinsa membantu mengawasi pendistribusian agar tepat sasaran. Pupuk tersalurkan sesuai alokasi dan petani siap untuk musim tanam berikutnya.",
+            "Babinsa melaksanakan pendampingan pemeriksaan kesehatan gratis bagi 200 masyarakat desa binaan yang diselenggarakan Puskesmas Kelurahan Liligundi. Babinsa membantu pendaftaran dan mengatur antrean. Masyarakat antusias mengikuti pemeriksaan.",
+            "Babinsa melaksanakan pendampingan pembagian makanan tambahan bagi balita dan ibu hamil di Posyandu se-Kelurahan Liligundi. Babinsa membantu pendistribusian dan memastikan tepat sasaran. Program ini mendapat apresiasi dari kader posyandu.",
+            "Babinsa melaksanakan pendampingan penyaluran air bersih kepada 300 kepala keluarga terdampak kekeringan di musim kemarau. Babinsa ikut mendistribusikan air menggunakan mobil tangki ke rumah-rumah warga. Warga mengucapkan terima kasih."
+        ];
+
+        // KATEGORI 5: GOTONG ROYONG & KARYA BAKTI - Panjang
+        const gotongTemplates = [
+            "Babinsa melaksanakan gotong royong bersama 150 warga masyarakat dalam pembersihan lingkungan desa dari sampah dan rumput liar di sepanjang jalan utama. Kegiatan dimulai pukul 07.00 hingga 10.00 WITA. Lingkungan menjadi bersih dan asri.",
+            "Babinsa melaksanakan monitoring harga kebutuhan pokok di Pasar Tradisional Liligundi untuk memastikan ketersediaan dan stabilitas harga menjelang hari raya. Hasil monitoring menunjukkan harga stabil dan stok aman. Babinsa berkoordinasi dengan pedagang.",
+            "Babinsa melaksanakan pemantauan debit air sungai Telaga Waja guna mengantisipasi potensi banjir saat musim hujan tiba. Pemantauan dilakukan setiap 2 jam sekali saat hujan deras. Hasil pemantauan menunjukkan debit air dalam batas normal.",
+            "Babinsa melaksanakan karya bakti bersama 100 warga masyarakat dalam pembersihan saluran irigasi yang tersumbat sampah dan lumpur. Kegiatan berlangsung selama 4 jam dan berhasil mengalirkan air kembali ke lahan pertanian seluas 20 hektar.",
+            "Babinsa melaksanakan pengamanan kegiatan pasar malam yang digelar seminggu sekali di halaman kelurahan untuk menjaga keamanan dan ketertiban masyarakat. Babinsa berjaga setiap malam hingga pasar tutup. Tidak terjadi gangguan selama penyelenggaraan.",
+            "Babinsa melaksanakan monitoring proyek pembangunan jalan desa sepanjang 2 kilometer untuk memastikan kegiatan berjalan lancar sesuai spesifikasi. Babinsa berkoordinasi dengan kontraktor dan pengawas. Progres pembangunan mencapai 75%.",
+            "Babinsa melaksanakan gotong royong pembersihan area tempat ibadah Pura Desa dan Masjid bersama 75 warga masyarakat. Kegiatan meliputi pembersihan halaman, perbaikan sarana, dan pengecatan. Tempat ibadah menjadi bersih dan nyaman.",
+            "Babinsa melaksanakan patroli dialogis bersama warga sambil memberikan himbauan kamtibmas secara langsung dari rumah ke rumah. Babinsa menyambangi 50 rumah dan memberikan pesan-pesan keamanan. Warga menyambut baik dan berterima kasih.",
+            "Babinsa melaksanakan karya bakti pembersihan jalan desa sepanjang 1,5 kilometer bersama 80 warga masyarakat. Kegiatan membersihkan semak belukar dan sampah di pinggir jalan. Jalan desa menjadi bersih dan nyaman dilalui.",
+            "Babinsa melaksanakan pengamanan kegiatan pentas seni budaya masyarakat desa dalam rangka Hari Jadi Kelurahan Liligundi. Babinsa mengamankan jalannya acara bersama Linmas. Pentas seni berlangsung meriah dan aman tanpa gangguan.",
+            "Babinsa melaksanakan gotong royong bersama 120 warga masyarakat dalam perbaikan fasilitas umum desa berupa balai pertemuan dan poskamling yang rusak. Babinsa ikut terjun langsung memperbaiki atap dan mengecat. Fasilitas umum kembali berfungsi."
+        ];
+
+        // Hitung total
+        let totalMonitoring = monitoringTemplates.length;
+        let totalKomsos = komsosTemplates.length;
+        let totalPengamanan = pengamananTemplates.length;
+        let totalPendampingan = pendampinganTemplates.length;
+        let totalGotong = gotongTemplates.length;
+        let grandTotal = totalMonitoring + totalKomsos + totalPengamanan + totalPendampingan + totalGotong;
+
+        document.getElementById('totalCount').textContent = grandTotal;
+        document.getElementById('monitoringCount').textContent = totalMonitoring;
+        document.getElementById('komsosCount').textContent = totalKomsos;
+        document.getElementById('pengamananCount').textContent = totalPengamanan;
+        document.getElementById('pendampinganCount').textContent = totalPendampingan;
+        document.getElementById('gotongCount').textContent = totalGotong;
+
+        const tabConfig = [
+            { id: "monitoring", name: "🚓 MONITORING & PATROLI", templates: monitoringTemplates },
+            { id: "komsos", name: "💬 KOMSOS", templates: komsosTemplates },
+            { id: "pengamanan", name: "🛡️ PENGAMANAN", templates: pengamananTemplates },
+            { id: "pendampingan", name: "🤝 PENDAMPINGAN", templates: pendampinganTemplates },
+            { id: "gotong", name: "🌾 GOTONG ROYONG", templates: gotongTemplates }
+        ];
 
         // Render tabs
         const tabsContainer = document.getElementById('tabs');
@@ -147,7 +299,7 @@
             tabContent.id = `tab-${tab.id}`;
             tabContent.innerHTML = `
                 <div class="template-grid">
-                    ${templates[tab.id].map((template, i) => `
+                    ${tab.templates.map((template, i) => `
                         <div class="template-card" onclick="copyTemplate('${escapeJs(template)}')">
                             <div class="template-num">#${i + 1}</div>
                             <div class="template-text">${escapeHtml(template)}</div>
@@ -169,7 +321,6 @@
         }
 
         window.copyTemplate = function(text) {
-            // Kirim ke parent window (aplikasi utama)
             if (window.parent !== window) {
                 window.parent.postMessage({ type: 'COPY_TEMPLATE', template: text }, '*');
             } else {
