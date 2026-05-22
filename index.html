@@ -19,6 +19,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* ==================== TAMBAHAN FITUR PROFESIONAL ==================== */
+        
+        /* Pastikan touch target minimal 44px (WCAG) - Aksesibilitas untuk jari */
+        button, .btn-action, .file-input-label {
+            min-height: 44px;
+        }
+        
+        /* Smooth scrolling - Scroll halus untuk navigasi yang nyaman */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Mencegah zoom berlebihan pada input di iOS - Mobile friendly */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px; /* Mencegah auto-zoom iOS saat input diklik */
+            }
+        }
+        
+        /* ==================== END TAMBAHAN ==================== */
+        
         /* SPLASH SCREEN */
         #splashScreen {
             position: fixed;
@@ -628,7 +649,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.7<br>
+                    VERSI 1.8<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
