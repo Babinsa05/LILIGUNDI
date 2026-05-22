@@ -135,6 +135,7 @@
             background: linear-gradient(135deg, #1a3a2c, #0f2a20);
             padding: 16px 20px 12px;
             border-bottom: 1px solid #3a6b55;
+            overflow-x: hidden; /* Mencegah overflow horizontal */
         }
         
         /* Container 2 kolom */
@@ -163,7 +164,8 @@
         /* Kolom Kanan - Info Teks */
         .header-right {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
+            overflow-x: hidden; /* Mencegah overflow */
         }
         
         /* Baris Judul dan Status */
@@ -185,6 +187,7 @@
             color: transparent;
             margin: 0;
             letter-spacing: 1.5px;
+            white-space: nowrap;
         }
         
         /* STATUS ONLINE/OFFLINE */
@@ -197,6 +200,7 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: bold;
+            flex-shrink: 0;
         }
         
         .status-dot {
@@ -235,7 +239,7 @@
             color: #e74c3c;
         }
         
-        /* MARQUEE / RUNNING TEXT */
+        /* MARQUEE / RUNNING TEXT - DIPERBAIKI */
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -254,6 +258,7 @@
             font-weight: bold;
             color: #fff700;
             text-shadow: 1px 1px 2px black;
+            white-space: nowrap;
         }
         
         @keyframes jalan {
@@ -273,6 +278,9 @@
             color: #c7e9cf;
             border-top: 1px solid #3a6b55;
             margin-top: 8px;
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
         }
         
         .motto i {
@@ -280,7 +288,7 @@
             color: #63b581;
         }
         
-        /* BADGE AREA - dipindah ke bawah banner (di luar header-two-columns) */
+        /* BADGE AREA */
         .badge-area {
             display: inline-flex;
             background: #2a5541;
@@ -521,19 +529,26 @@
             body { padding: 12px 8px; }
             .content { padding: 16px 18px; }
             .header-two-columns { flex-direction: column; text-align: center; gap: 10px; }
-            .header-right { text-align: center; }
-            .title-status-row { justify-content: center; }
-            .header-title h1 { font-size: 1.3rem; }
+            .header-right { text-align: center; width: 100%; }
+            .title-status-row { justify-content: center; flex-direction: column; }
+            .header-title h1 { font-size: 1.2rem; white-space: normal; }
             .status-indicator { padding: 3px 8px; font-size: 0.65rem; }
             .status-dot { width: 8px; height: 8px; }
-            .marquee { font-size: 11px; animation-duration: 12s; }
-            .motto { text-align: center; font-size: 10px; }
+            .marquee { font-size: 10px; animation-duration: 12s; }
+            .motto { text-align: center; font-size: 9px; white-space: normal; }
             .badge-area { font-size: 0.7rem; padding: 4px 14px; }
-            .button-group { gap: 6px; }
-            .btn-action { font-size: 0.65rem; padding: 8px 4px; white-space: normal; word-break: keep-all; }
+            .button-group { gap: 6px; flex-wrap: wrap; }
+            .btn-action { font-size: 0.65rem; padding: 10px 4px; white-space: normal; word-break: keep-all; min-width: 90px; }
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
             canvas { max-width: 100%; }
             .header-logo { width: 60px; height: 60px; }
+        }
+        
+        /* Ukuran sangat kecil (320px) */
+        @media (max-width: 380px) {
+            .btn-action { font-size: 0.6rem; padding: 8px 2px; min-width: 75px; }
+            .button-group { gap: 5px; }
+            .header-title h1 { font-size: 1rem; }
         }
     </style>
 </head>
@@ -574,7 +589,7 @@
                             </div>
                         </div>
                         
-                        <!-- MARQUEE / RUNNING TEXT -->
+                        <!-- MARQUEE / RUNNING TEXT - DIPERBAIKI -->
                         <div class="marquee-container">
                             <div class="marquee">
                                 ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
@@ -588,7 +603,7 @@
                     </div>
                 </div>
                 
-                <!-- BADGE AREA di bawah banner (setelah 2 kolom) -->
+                <!-- BADGE AREA -->
                 <div class="badge-wrapper">
                     <div class="badge-area">
                         <span>📍 Kelurahan Liligundi</span>
@@ -601,8 +616,6 @@
                     <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
                     <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
                 </div>
-
-                <!-- BAGIAN KOORDINAT TELAH DIHAPUS DARI TAMPILAN FORM (fungsi koordinat tetap berjalan secara internal, acak dan di canvas) -->
 
                 <div class="form-group">
                     <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
@@ -649,7 +662,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.8<br>
+                    VERSI 1.9<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
@@ -716,11 +729,8 @@
             }
         }
         
-        // Event listener untuk perubahan koneksi
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
-        
-        // Cek status awal
         updateConnectionStatus();
         
         // ======================== KONFIGURASI ========================
@@ -732,7 +742,6 @@
         const STORAGE_KEY_LOGS = "dukops_logs";
         const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
         
-        // DOM Elements
         const judulInput = document.getElementById('judulKegiatanInput');
         const gambarInput = document.getElementById('gambar');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
@@ -753,8 +762,6 @@
         let currentTimestamp = "";
         let submissionCount = 0;
         let sequenceNumber = 0;
-        
-        // Variabel untuk ukuran canvas dinamis
         let canvasWidth = 600;
         let canvasHeight = 400;
         
@@ -780,10 +787,6 @@
                 submittedDates.push(dateKey);
                 localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submittedDates));
             }
-        }
-        
-        function clearSubmittedFullDates() {
-            localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
         }
         
         // ======================== LOG SYSTEM ========================
@@ -854,7 +857,6 @@
         
         // ======================== FUNGSI DOWNLOAD PNG+TXT ========================
         async function downloadPngAndTxt() {
-            // Cek kelengkapan data
             if (!currentImage.complete || !currentImage.src || currentImage.naturalWidth === 0) {
                 alert("❌ Pilih foto terlebih dahulu!");
                 return;
@@ -878,7 +880,6 @@
             
             const currentDateValue = tanggalInput.value;
             
-            // CEK TANGGAL GANDA
             if (isFullDateAlreadySubmitted(currentDateValue)) {
                 const dateObj = new Date(currentDateValue);
                 const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -891,7 +892,6 @@
             downloadPngBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROSES';
             
             try {
-                // Update timestamp dan canvas
                 acakDetik(currentDateValue);
                 updateCanvasPreview();
                 
@@ -899,13 +899,11 @@
                 const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
                 const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
-                // Buat nama file
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
                 let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
                 if (!safeJudul) safeJudul = "Kegiatan";
                 const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
                 
-                // Konfirmasi
                 if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
                     loader.style.display = "none";
                     downloadPngBtn.disabled = false;
@@ -913,7 +911,6 @@
                     return;
                 }
                 
-                // Buat konten TXT
                 const txtContent = `═══════════════════════════════════════
    DUKOPS BABINSA - LILIGUNDI
    Koramil 1609-01 / Buleleng
@@ -938,7 +935,6 @@ ${narasiText.value}
 Dokumentasi: ${baseFileName}.png
 ═══════════════════════════════════════`;
 
-                // Download PNG
                 const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
                 const pngLink = document.createElement('a');
                 const pngUrl = URL.createObjectURL(pngBlob);
@@ -949,7 +945,6 @@ Dokumentasi: ${baseFileName}.png
                 document.body.removeChild(pngLink);
                 URL.revokeObjectURL(pngUrl);
                 
-                // Download TXT
                 const txtBlob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
                 const txtLink = document.createElement('a');
                 const txtUrl = URL.createObjectURL(txtBlob);
@@ -960,7 +955,6 @@ Dokumentasi: ${baseFileName}.png
                 document.body.removeChild(txtLink);
                 URL.revokeObjectURL(txtUrl);
                 
-                // Simpan tanggal ke riwayat
                 saveSubmittedFullDate(currentDateValue);
                 addLog(`${baseFileName}.png + .txt`);
                 
@@ -998,7 +992,6 @@ Dokumentasi: ${baseFileName}.png
                 KOORDINAT_LIST = data.koordinat;
                 koordinatLoaded = true;
                 currentKoordinat = getRandomCoordinate();
-                // Tidak perlu update span karena sudah dihapus
             } catch (error) {
                 console.error('Gagal memuat koordinat:', error);
                 koordinatLoaded = false;
@@ -1011,15 +1004,6 @@ Dokumentasi: ${baseFileName}.png
                 return "-8° 8'38.215S, 115°6'52.463E";
             }
             return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
-        }
-        
-        // Fungsi refresh koordinat: tetap dipanggil dari tombol refresh? Tombol refresh dihapus, tapi tetap buat internal jika diperlukan untuk update acak gambar
-        function refreshCoordinateInternal() {
-            if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
-                currentKoordinat = getRandomCoordinate();
-                updateCanvasPreview();
-                checkInputCompletion();
-            }
         }
         
         function updateJudul() {
@@ -1036,7 +1020,6 @@ Dokumentasi: ${baseFileName}.png
             fileNameDisplay.textContent = file.name;
             fileInputLabel.style.background = "#254f3f";
             
-            // Setiap kali pilih gambar, koordinat diacak ulang secara otomatis
             if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
                 currentKoordinat = getRandomCoordinate();
             }
@@ -1248,11 +1231,21 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             }
         }
         
-        // ======================== PWA INSTALL ========================
+        // ======================== PWA INSTALL - DIPERBAIKI ========================
         let deferredPrompt;
         const installDiv = document.getElementById('installContainer');
         const installBtn = document.getElementById('installButton');
         const closeInstall = document.getElementById('closeInstall');
+        
+        // Tampilkan install button sebagai fallback jika PWA tidak terdeteksi
+        function showInstallFallback() {
+            // Jika setelah 3 detik tidak ada beforeinstallprompt, tampilkan manual
+            setTimeout(() => {
+                if (installDiv.style.display !== 'block') {
+                    installDiv.style.display = 'block';
+                }
+            }, 3000);
+        }
         
         if (installBtn) {
             installBtn.addEventListener('click', async () => {
@@ -1263,21 +1256,45 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
                     console.log(`User response: ${outcome}`);
                     deferredPrompt = null;
                 } else {
-                    alert("Installasi bisa dilakukan melalui menu browser: 'Install App' atau 'Tambahkan ke Home Screen'");
+                    alert("📱 Pasang Aplikasi:\n\n• Android: Buka menu browser (3 titik) → 'Install App' atau 'Tambahkan ke Home Screen'\n• iPhone: Buka menu Safari (bagian bawah) → 'Tambahkan ke Layar Utama'");
                 }
             });
         }
+        
         if (closeInstall) {
             closeInstall.addEventListener('click', () => {
                 installDiv.style.display = 'none';
+                // Simpan ke localStorage agar tidak muncul lagi dalam session ini
+                localStorage.setItem('installDismissed', 'true');
             });
+        }
+        
+        // Cek apakah user sudah dismiss sebelumnya
+        const isDismissed = localStorage.getItem('installDismissed');
+        if (!isDismissed) {
+            showInstallFallback();
         }
         
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            // Hapus dismiss flag jika ada
+            localStorage.removeItem('installDismissed');
             installDiv.style.display = 'block';
         });
+        
+        // Reset dismiss flag setelah beberapa hari (opsional)
+        setInterval(() => {
+            const dismissed = localStorage.getItem('installDismissed');
+            if (dismissed) {
+                const dismissedTime = parseInt(localStorage.getItem('installDismissedTime') || '0');
+                const oneDay = 24 * 60 * 60 * 1000;
+                if (Date.now() - dismissedTime > oneDay) {
+                    localStorage.removeItem('installDismissed');
+                    localStorage.removeItem('installDismissedTime');
+                }
+            }
+        }, 3600000); // Cek setiap jam
         
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1293,7 +1310,6 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         narasiText.addEventListener('input', checkInputCompletion);
         downloadBtn.addEventListener('click', saveReport);
         resetBtn.addEventListener('click', resetAllData);
-        // Tombol refresh koordinat sudah dihapus dari UI, jadi tidak perlu event listener untuk itu
         
         if (downloadPngBtn) {
             downloadPngBtn.addEventListener('click', downloadPngAndTxt);
