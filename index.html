@@ -483,7 +483,7 @@
                 
                 <!-- TOMBOL BERJAJAR HORIZONTAL -->
                 <div class="button-group">
-                    <button id="downloadPngBtn" class="btn-action"><i class="fas fa-image"></i> PNG</button>
+                    <button id="downloadPngBtn" class="btn-action"><i class="fas fa-image"></i> PNG+TXT</button>
                     <button id="downloadBtn" class="btn-action btn-download" disabled><i class="fas fa-save"></i> SIMPAN ZIP</button>
                     <button id="resetBtn" class="btn-action btn-reset"><i class="fas fa-trash-alt"></i> RESET</button>
                 </div>
@@ -501,7 +501,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.5<br>
+                    VERSI 1.6<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
@@ -683,20 +683,129 @@
             }
         }
         
-        // ======================== DOWNLOAD PNG ========================
-        function downloadCanvasAsPNG() {
+        // ======================== FUNGSI DOWNLOAD PNG+TXT (TANPA ZIP, DENGAN KONFIRMASI TANGGAL GANDA) ========================
+        async function downloadPngAndTxt() {
+            // Cek kelengkapan data
+            if (!currentImage.complete || !currentImage.src || currentImage.naturalWidth === 0) {
+                alert("❌ Pilih foto terlebih dahulu!");
+                return;
+            }
+            if (!tanggalInput.value) {
+                alert("❌ Pilih tanggal dan waktu terlebih dahulu!");
+                return;
+            }
+            if (!narasiText.value.trim()) {
+                alert("❌ Isi narasi kegiatan terlebih dahulu!");
+                return;
+            }
+            if (!judulInput.value.trim()) {
+                alert("❌ Isi judul kegiatan terlebih dahulu!");
+                return;
+            }
+            if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
+                alert("❌ Koordinat belum dimuat. Periksa koneksi internet!");
+                return;
+            }
+            
+            const currentDateValue = tanggalInput.value;
+            
+            // CEK TANGGAL GANDA (sama seperti SIMPAN ZIP)
+            if (isFullDateAlreadySubmitted(currentDateValue)) {
+                const dateObj = new Date(currentDateValue);
+                const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+                alert(`⚠️ GAGAL! Laporan untuk tanggal ${tanggalFormatted} sudah pernah dibuat.\n\nSilakan pilih TANGGAL YANG BERBEDA.`);
+                return;
+            }
+            
+            loader.style.display = "block";
+            downloadPngBtn.disabled = true;
+            downloadPngBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROSES';
+            
             try {
+                // Update timestamp dan canvas
+                acakDetik(currentDateValue);
                 updateCanvasPreview();
-                const link = document.createElement('a');
+                
+                const dateObj = new Date(currentTimestamp);
+                const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+                const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                // Buat nama file (tanpa nomor urut)
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                const filename = `DUKOPS_Canvas_${timestamp}.png`;
-                link.download = filename;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                alert(`✅ Gambar canvas berhasil diunduh sebagai:\n${filename}`);
-            } catch (error) {
-                console.error('Gagal download PNG:', error);
-                alert('❌ Gagal mengunduh gambar canvas.');
+                let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
+                if (!safeJudul) safeJudul = "Kegiatan";
+                const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
+                
+                // Konfirmasi sebelum download
+                if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
+                    loader.style.display = "none";
+                    downloadPngBtn.disabled = false;
+                    downloadPngBtn.innerHTML = '<i class="fas fa-image"></i> PNG+TXT';
+                    return;
+                }
+                
+                // Buat konten TXT (format rapi)
+                const txtContent = `═══════════════════════════════════════
+   DUKOPS BABINSA - LILIGUNDI
+   Koramil 1609-01 / Buleleng
+═══════════════════════════════════════
+
+📌 JUDUL KEGIATAN
+${currentJudul}
+
+📅 TANGGAL
+${formattedDate}
+
+🕐 WAKTU
+${formattedTime}
+
+📍 KOORDINAT
+${currentKoordinat}
+
+📝 NARASI KEGIATAN
+${narasiText.value}
+
+═══════════════════════════════════════
+Dokumentasi: ${baseFileName}.png
+═══════════════════════════════════════`;
+
+                // Download PNG
+                const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                const pngLink = document.createElement('a');
+                const pngUrl = URL.createObjectURL(pngBlob);
+                pngLink.href = pngUrl;
+                pngLink.download = `${baseFileName}.png`;
+                document.body.appendChild(pngLink);
+                pngLink.click();
+                document.body.removeChild(pngLink);
+                URL.revokeObjectURL(pngUrl);
+                
+                // Download TXT
+                const txtBlob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
+                const txtLink = document.createElement('a');
+                const txtUrl = URL.createObjectURL(txtBlob);
+                txtLink.href = txtUrl;
+                txtLink.download = `${baseFileName}.txt`;
+                document.body.appendChild(txtLink);
+                txtLink.click();
+                document.body.removeChild(txtLink);
+                URL.revokeObjectURL(txtUrl);
+                
+                // Simpan tanggal ke riwayat (agar tidak bisa dipakai lagi)
+                saveSubmittedFullDate(currentDateValue);
+                
+                // Tambahkan ke log dengan keterangan "PNG+TXT"
+                addLog(`${baseFileName}.png + .txt`);
+                
+                alert(`✅ Berhasil diunduh!\n📄 ${baseFileName}.txt\n🖼️ ${baseFileName}.png\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
+                
+            } catch (err) {
+                console.error(err);
+                alert("❌ Gagal menyimpan: " + err.message);
+            } finally {
+                loader.style.display = "none";
+                downloadPngBtn.disabled = false;
+                downloadPngBtn.innerHTML = '<i class="fas fa-image"></i> PNG+TXT';
             }
         }
         
@@ -749,7 +858,7 @@
         
         function updateJudul() {
             let raw = judulInput.value.trim();
-            if (raw === "") raw = "";
+            if (raw === "") raw = "Kelurahan Liligundi";
             currentJudul = raw;
             document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
@@ -775,15 +884,12 @@
             reader.onload = function(e) {
                 currentImage = new Image();
                 currentImage.onload = function() {
-                    // Set ukuran canvas berdasarkan rasio gambar asli
-                    // Maksimal lebar 600px, tinggi menyesuaikan rasio
                     const maxWidth = 600;
                     const maxHeight = 500;
                     
                     let width = currentImage.naturalWidth;
                     let height = currentImage.naturalHeight;
                     
-                    // Resize proporsional jika terlalu besar
                     if (width > maxWidth) {
                         height = (height * maxWidth) / width;
                         width = maxWidth;
@@ -819,7 +925,6 @@
         
         function updateCanvasPreview() {
             if (!canvas.width || canvas.width === 0) {
-                // Default size jika belum ada gambar
                 canvas.width = 500;
                 canvas.height = 300;
                 canvasWidth = 500;
@@ -829,12 +934,9 @@
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Gambar foto - FULL menutupi seluruh canvas sesuai rasio asli
             if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
-                // Gambar ditaruh sesuai ukuran canvas (sudah proporsional)
                 ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
             } else {
-                // Background jika belum ada gambar
                 ctx.fillStyle = '#2a5e48';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#bde5ca';
@@ -843,28 +945,23 @@
                 ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
             }
             
-            // Shadow untuk teks agar terbaca
             ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
             ctx.shadowBlur = 4;
             ctx.shadowOffsetX = 1;
             ctx.shadowOffsetY = 1;
             
-            // Teks RATA KANAN dengan jarak 15px dari tepi kanan
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign = "right";
             
-            // Hitung posisi Y berdasarkan tinggi canvas
             const marginBottom = 20;
             const lineHeight = 22;
             let yPos = canvas.height - marginBottom;
             
-            // Tanggal & Waktu (paling bawah) - Menggunakan koma sebagai pemisah
             let dateObj = new Date(currentTimestamp);
             if (!isNaN(dateObj.getTime())) {
                 const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
                 const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
                 ctx.font = "12px Arial";
-                // Menggunakan koma sebagai pengganti tanda hubung
                 ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 15, yPos);
                 yPos -= lineHeight;
             } else {
@@ -873,16 +970,13 @@
                 yPos -= lineHeight;
             }
             
-            // Koordinat - UKURAN AWAL 12px
             ctx.font = "12px Arial";
             ctx.fillText(currentKoordinat, canvas.width - 15, yPos);
             yPos -= lineHeight;
             
-            // Judul (paling atas) - UKURAN AWAL 14px BOLD
             ctx.font = "bold 14px Arial";
             ctx.fillText(currentJudul, canvas.width - 15, yPos);
             
-            // Reset shadow
             ctx.shadowColor = "transparent";
             ctx.shadowBlur = 0;
             ctx.shadowOffsetX = 0;
@@ -1036,7 +1130,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         refreshCoordBtn.addEventListener('click', refreshCoordinate);
         
         if (downloadPngBtn) {
-            downloadPngBtn.addEventListener('click', downloadCanvasAsPNG);
+            downloadPngBtn.addEventListener('click', downloadPngAndTxt);
         }
         
         gambarInput.addEventListener('change', function(e) {
@@ -1072,7 +1166,6 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             updateJudul();
             await loadKoordinat();
             
-            // Set default canvas size
             canvas.width = 500;
             canvas.height = 300;
             updateCanvasPreview();
