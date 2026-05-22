@@ -869,7 +869,7 @@
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
                 let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
                 if (!safeJudul) safeJudul = "Kegiatan";
-                const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
+                const baseFileName = `LILIGUNDI_${safeJudul}_${timestamp}`;
                 
                 if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
                     loader.style.display = "none";
