@@ -19,28 +19,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* ==================== TAMBAHAN FITUR PROFESIONAL ==================== */
-        
-        /* Pastikan touch target minimal 44px (WCAG) - Aksesibilitas untuk jari */
         button, .btn-action, .file-input-label {
             min-height: 44px;
         }
         
-        /* Smooth scrolling - Scroll halus untuk navigasi yang nyaman */
         html {
             scroll-behavior: smooth;
         }
         
-        /* Mencegah zoom berlebihan pada input di iOS - Mobile friendly */
         @media (max-width: 768px) {
             input, select, textarea {
-                font-size: 16px; /* Mencegah auto-zoom iOS saat input diklik */
+                font-size: 16px;
             }
         }
         
-        /* ==================== END TAMBAHAN ==================== */
-        
-        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -108,7 +100,6 @@
             font-family: monospace;
         }
         
-        /* MAIN APP */
         #mainApp {
             display: none;
         }
@@ -130,15 +121,13 @@
             overflow: hidden;
         }
         
-        /* HEADER STYLE - LAYOUT 2 KOLOM */
         .header {
             background: linear-gradient(135deg, #1a3a2c, #0f2a20);
             padding: 16px 20px 12px;
             border-bottom: 1px solid #3a6b55;
-            overflow-x: hidden; /* Mencegah overflow horizontal */
+            overflow-x: hidden;
         }
         
-        /* Container 2 kolom */
         .header-two-columns {
             display: flex;
             gap: 20px;
@@ -146,7 +135,6 @@
             flex-wrap: wrap;
         }
         
-        /* Kolom Kiri - Logo */
         .header-left {
             flex-shrink: 0;
             text-align: center;
@@ -161,14 +149,12 @@
             padding: 5px;
         }
         
-        /* Kolom Kanan - Info Teks */
         .header-right {
             flex: 1;
             min-width: 180px;
-            overflow-x: hidden; /* Mencegah overflow */
+            overflow-x: hidden;
         }
         
-        /* Baris Judul dan Status */
         .title-status-row {
             display: flex;
             align-items: center;
@@ -190,7 +176,6 @@
             white-space: nowrap;
         }
         
-        /* STATUS ONLINE/OFFLINE */
         .status-indicator {
             display: inline-flex;
             align-items: center;
@@ -239,7 +224,6 @@
             color: #e74c3c;
         }
         
-        /* MARQUEE / RUNNING TEXT - DIPERBAIKI */
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -270,7 +254,6 @@
             animation-play-state: paused;
         }
         
-        /* MOTTO */
         .motto {
             text-align: left;
             padding: 5px 0 0 0;
@@ -288,8 +271,12 @@
             color: #63b581;
         }
         
-        /* BADGE AREA */
-        .badge-area {
+        .badge-wrapper {
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .badge-wrapper div {
             display: inline-flex;
             background: #2a5541;
             padding: 6px 20px;
@@ -297,14 +284,6 @@
             font-size: 0.8rem;
             gap: 8px;
             font-weight: 500;
-            margin-top: 12px;
-            width: auto;
-            justify-content: center;
-        }
-        
-        .badge-wrapper {
-            text-align: center;
-            margin-top: 5px;
         }
         
         .content { padding: 20px 22px; }
@@ -385,7 +364,6 @@
             margin: 0 auto;
         }
         
-        /* TOMBOL BERJAJAR HORIZONTAL */
         .button-group {
             display: flex;
             gap: 10px;
@@ -536,7 +514,6 @@
             .status-dot { width: 8px; height: 8px; }
             .marquee { font-size: 10px; animation-duration: 12s; }
             .motto { text-align: center; font-size: 9px; white-space: normal; }
-            .badge-area { font-size: 0.7rem; padding: 4px 14px; }
             .button-group { gap: 6px; flex-wrap: wrap; }
             .btn-action { font-size: 0.65rem; padding: 10px 4px; white-space: normal; word-break: keep-all; min-width: 90px; }
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
@@ -544,7 +521,6 @@
             .header-logo { width: 60px; height: 60px; }
         }
         
-        /* Ukuran sangat kecil (320px) */
         @media (max-width: 380px) {
             .btn-action { font-size: 0.6rem; padding: 8px 2px; min-width: 75px; }
             .button-group { gap: 5px; }
@@ -553,7 +529,6 @@
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-content">
             <img class="splash-logo" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png" alt="Logo">
@@ -566,18 +541,14 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="mainApp">
         <div class="container">
-            <!-- HEADER -->
             <div class="header">
                 <div class="header-two-columns">
-                    <!-- KOLOM KIRI: LOGO -->
                     <div class="header-left">
                         <img class="header-logo" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
                     </div>
                     
-                    <!-- KOLOM KANAN: TEKS -->
                     <div class="header-right">
                         <div class="title-status-row">
                             <div class="header-title">
@@ -589,23 +560,20 @@
                             </div>
                         </div>
                         
-                        <!-- MARQUEE / RUNNING TEXT - DIPERBAIKI -->
                         <div class="marquee-container">
                             <div class="marquee">
                                 ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
                             </div>
                         </div>
                         
-                        <!-- MOTTO -->
                         <div class="motto">
                             <i class="fas fa-quote-left"></i> Bersama Rakyat TNI Kuat <i class="fas fa-quote-right"></i>
                         </div>
                     </div>
                 </div>
                 
-                <!-- BADGE AREA -->
                 <div class="badge-wrapper">
-                    <div class="">
+                    <div>
                         <span>Kelurahan Liligundi</span>
                     </div>
                 </div>
@@ -634,7 +602,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fas fa-file-alt"></i> Narasi Kegiatan Babinsa </label>
+                    <label><i class="fas fa-file-alt"></i> Narasi Kegiatan Babinsa</label>
                     <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
                 </div>
 
@@ -642,7 +610,6 @@
                     <canvas id="canvas"></canvas>
                 </div>
                 
-                <!-- TOMBOL BERJAJAR HORIZONTAL -->
                 <div class="button-group">
                     <button id="downloadPngBtn" class="btn-action"><i class="fas fa-image"></i> PNG+TXT</button>
                     <button id="downloadBtn" class="btn-action btn-download" disabled><i class="fas fa-save"></i> SIMPAN ZIP</button>
@@ -662,7 +629,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.9<br>
+                    VERSI 2.0<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
@@ -1033,8 +1000,8 @@ Dokumentasi: ${baseFileName}.png
             reader.onload = function(e) {
                 currentImage = new Image();
                 currentImage.onload = function() {
-                    const maxWidth = 600;
-                    const maxHeight = 500;
+                    const maxWidth = 800;
+                    const maxHeight = 600;
                     
                     let width = currentImage.naturalWidth;
                     let height = currentImage.naturalHeight;
@@ -1066,22 +1033,22 @@ Dokumentasi: ${baseFileName}.png
             reader.readAsDataURL(file);
         }
         
-        function updateDatePreview(dateString) {
-            if (!dateString) return;
-            acakDetik(dateString);
-            updateCanvasPreview();
-        }
-        
+        // ========== UPDATE CANVAS TANPA BACKGROUND GELAP ==========
         function updateCanvasPreview() {
             if (!canvas.width || canvas.width === 0) {
-                canvas.width = 500;
-                canvas.height = 300;
-                canvasWidth = 500;
-                canvasHeight = 300;
+                canvas.width = 600;
+                canvas.height = 400;
+                canvasWidth = 600;
+                canvasHeight = 400;
             }
             
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // HITUNG FONT SIZE PROPORSIONAL BERDASARKAN LEBAR CANVAS
+            const baseFontSize = Math.max(14, Math.floor(canvas.width / 28));
+            const boldFontSize = baseFontSize + 2;
+            const smallFontSize = Math.max(11, baseFontSize - 2);
             
             if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
                 ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
@@ -1089,43 +1056,58 @@ Dokumentasi: ${baseFileName}.png
                 ctx.fillStyle = '#2a5e48';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#bde5ca';
-                ctx.font = "20px Arial";
+                ctx.font = `${baseFontSize}px Arial`;
                 ctx.textAlign = "center";
                 ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
             }
             
-            ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-            ctx.shadowBlur = 4;
+            // HANYA SHADOW UNTUK TEKS, TANPA BACKGROUND GELAP
+            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+            ctx.shadowBlur = 3;
             ctx.shadowOffsetX = 1;
             ctx.shadowOffsetY = 1;
             
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign = "right";
             
-            const marginBottom = 20;
-            const lineHeight = 22;
+            const marginBottom = 12;
+            const lineHeight = baseFontSize + 5;
             let yPos = canvas.height - marginBottom;
             
+            // TAMPILAN TANGGAL DAN WAKTU
             let dateObj = new Date(currentTimestamp);
             if (!isNaN(dateObj.getTime())) {
                 const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
                 const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                ctx.font = "20px Arial";
-                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 15, yPos);
+                ctx.font = `${smallFontSize}px Arial`;
+                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 12, yPos);
                 yPos -= lineHeight;
             } else {
-                ctx.font = "20px Arial";
-                ctx.fillText("Tanggal belum dipilih", canvas.width - 15, yPos);
+                ctx.font = `${smallFontSize}px Arial`;
+                ctx.fillText("Tanggal belum dipilih", canvas.width - 12, yPos);
                 yPos -= lineHeight;
             }
             
-            ctx.font = "20px Arial";
-            ctx.fillText(currentKoordinat, canvas.width - 15, yPos);
+            // KOORDINAT
+            ctx.font = `${smallFontSize}px Arial`;
+            let koordinatDisplay = currentKoordinat;
+            const maxCharsCoord = Math.floor(canvas.width / 9);
+            if (koordinatDisplay.length > maxCharsCoord) {
+                koordinatDisplay = koordinatDisplay.substring(0, maxCharsCoord - 3) + '...';
+            }
+            ctx.fillText(koordinatDisplay, canvas.width - 12, yPos);
             yPos -= lineHeight;
             
-            ctx.font = "bold 20px Arial";
-            ctx.fillText(currentJudul, canvas.width - 15, yPos);
+            // JUDUL KEGIATAN
+            ctx.font = `bold ${boldFontSize}px Arial`;
+            let judulDisplay = currentJudul;
+            const maxChars = Math.floor(canvas.width / 10);
+            if (judulDisplay.length > maxChars) {
+                judulDisplay = judulDisplay.substring(0, maxChars - 3) + '...';
+            }
+            ctx.fillText(judulDisplay, canvas.width - 12, yPos);
             
+            // MATIKAN SHADOW SETELAH SELESAI
             ctx.shadowColor = "transparent";
             ctx.shadowBlur = 0;
             ctx.shadowOffsetX = 0;
@@ -1231,15 +1213,13 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             }
         }
         
-        // ======================== PWA INSTALL - DIPERBAIKI ========================
+        // ======================== PWA INSTALL ========================
         let deferredPrompt;
         const installDiv = document.getElementById('installContainer');
         const installBtn = document.getElementById('installButton');
         const closeInstall = document.getElementById('closeInstall');
         
-        // Tampilkan install button sebagai fallback jika PWA tidak terdeteksi
         function showInstallFallback() {
-            // Jika setelah 3 detik tidak ada beforeinstallprompt, tampilkan manual
             setTimeout(() => {
                 if (installDiv.style.display !== 'block') {
                     installDiv.style.display = 'block';
@@ -1264,12 +1244,11 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         if (closeInstall) {
             closeInstall.addEventListener('click', () => {
                 installDiv.style.display = 'none';
-                // Simpan ke localStorage agar tidak muncul lagi dalam session ini
                 localStorage.setItem('installDismissed', 'true');
+                localStorage.setItem('installDismissedTime', Date.now().toString());
             });
         }
         
-        // Cek apakah user sudah dismiss sebelumnya
         const isDismissed = localStorage.getItem('installDismissed');
         if (!isDismissed) {
             showInstallFallback();
@@ -1278,23 +1257,9 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Hapus dismiss flag jika ada
             localStorage.removeItem('installDismissed');
             installDiv.style.display = 'block';
         });
-        
-        // Reset dismiss flag setelah beberapa hari (opsional)
-        setInterval(() => {
-            const dismissed = localStorage.getItem('installDismissed');
-            if (dismissed) {
-                const dismissedTime = parseInt(localStorage.getItem('installDismissedTime') || '0');
-                const oneDay = 24 * 60 * 60 * 1000;
-                if (Date.now() - dismissedTime > oneDay) {
-                    localStorage.removeItem('installDismissed');
-                    localStorage.removeItem('installDismissedTime');
-                }
-            }
-        }, 3600000); // Cek setiap jam
         
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1306,7 +1271,13 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         
         // ======================== EVENT LISTENERS ========================
         judulInput.addEventListener('input', () => { updateJudul(); checkInputCompletion(); });
-        tanggalInput.addEventListener('input', (e) => { updateDatePreview(e.target.value); checkInputCompletion(); });
+        tanggalInput.addEventListener('input', (e) => { 
+            if (e.target.value) {
+                acakDetik(e.target.value);
+                updateCanvasPreview();
+            }
+            checkInputCompletion();
+        });
         narasiText.addEventListener('input', checkInputCompletion);
         downloadBtn.addEventListener('click', saveReport);
         resetBtn.addEventListener('click', resetAllData);
@@ -1348,8 +1319,8 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             updateJudul();
             await loadKoordinat();
             
-            canvas.width = 500;
-            canvas.height = 300;
+            canvas.width = 600;
+            canvas.height = 400;
             updateCanvasPreview();
             checkInputCompletion();
         }
