@@ -488,10 +488,21 @@
         
         .footer-version {
             text-align: center;
-            font-size: 0.65rem;
-            color: #6b8f7a;
+            font-size: 0.7rem;
+            color: #8abf9a;
             margin-top: 16px;
             padding-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .footer-version .version {
+            font-weight: bold;
+            color: #bde5ca;
+        }
+        
+        .footer-version .sub {
+            font-size: 0.65rem;
+            color: #6b8f7a;
         }
         
         #installContainer {
@@ -519,6 +530,7 @@
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
             canvas { max-width: 100%; }
             .header-logo { width: 60px; height: 60px; }
+            .footer-version { font-size: 0.6rem; }
         }
         
         @media (max-width: 380px) {
@@ -572,7 +584,7 @@
                     </div>
                 </div>
                 
-                <div class="">
+                <div class="badge-wrapper">
                     <div>
                         <span>Kelurahan Liligundi</span>
                     </div>
@@ -629,8 +641,9 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 2.0<br>
-                    Developer: Serka I Nyoman Arta
+                    <div class="version">DUKOPS BABINSA — VERSI 2.0</div>
+                    <div class="sub">Aplikasi Pendukung Data dan Operasional Babinsa</div>
+                    <div class="sub">Developer: Serka I Nyoman Arta</div>
                 </div>
             </div>
         </div>
@@ -869,7 +882,7 @@
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
                 let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
                 if (!safeJudul) safeJudul = "Kegiatan";
-                const baseFileName = `LILIGUNDI_${safeJudul}_${timestamp}`;
+                const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
                 
                 if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
                     loader.style.display = "none";
@@ -975,7 +988,7 @@ Dokumentasi: ${baseFileName}.png
         
         function updateJudul() {
             let raw = judulInput.value.trim();
-            if (raw === "") raw = "";
+            if (raw === "") raw = "Kelurahan Liligundi";
             currentJudul = raw;
             document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
