@@ -444,7 +444,7 @@
             <div class="content">
                 <div class="form-group">
                     <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
-                    <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="">
+                    <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
                 </div>
 
                 <div class="form-group">
@@ -749,7 +749,7 @@
         
         function updateJudul() {
             let raw = judulInput.value.trim();
-            if (raw === "") raw = "";
+            if (raw === "") raw = "Kelurahan Liligundi";
             currentJudul = raw;
             document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
