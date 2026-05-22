@@ -336,28 +336,6 @@
         .file-input-label span:first-child { color: #bde5ca; }
         .file-input-label span:last-child { color: #8abf9a; font-size: 0.8rem; }
         
-        .coord-wrapper {
-            display: flex;
-            align-items: center;
-            background: #1e352b;
-            border: 1px solid #3b6b55;
-            border-radius: 18px;
-            padding: 10px 14px;
-            min-height: 44px;
-        }
-        .coord-label { color: #bde5ca; margin-right: 8px; font-weight: 500; white-space: nowrap; }
-        .coord-value { color: #f0faf3; word-break: break-all; flex: 1; }
-        .coord-refresh {
-            background: none;
-            border: none;
-            color: #63b581;
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 0 5px;
-            margin-left: 5px;
-        }
-        .coord-refresh:hover { color: #7bcb9e; }
-        
         .canvas-wrapper {
             background: transparent;
             border-radius: 22px;
@@ -530,7 +508,6 @@
             .marquee { font-size: 11px; animation-duration: 12s; }
             .motto { text-align: center; font-size: 10px; }
             .badge-area { font-size: 0.7rem; padding: 4px 14px; }
-            .coord-label { font-size: 0.8rem; }
             .button-group { gap: 6px; }
             .btn-action { font-size: 0.65rem; padding: 8px 4px; white-space: normal; word-break: keep-all; }
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
@@ -604,14 +581,7 @@
                     <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
                 </div>
 
-                <div class="form-group">
-                    <label><i class="fas fa-map-marker-alt"></i> Koordinat</label>
-                    <div class="coord-wrapper">
-                        <span class="coord-label">📍</span>
-                        <span class="coord-value" id="coordValue">Pilih foto untuk mendapatkan koordinat</span>
-                        <button class="coord-refresh" id="refreshCoordBtn" title="Acak koordinat"><i class="fas fa-sync-alt"></i></button>
-                    </div>
-                </div>
+                <!-- BAGIAN KOORDINAT TELAH DIHAPUS DARI TAMPILAN FORM (fungsi koordinat tetap berjalan secara internal, acak dan di canvas) -->
 
                 <div class="form-group">
                     <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
@@ -743,8 +713,6 @@
         
         // DOM Elements
         const judulInput = document.getElementById('judulKegiatanInput');
-        const coordValueSpan = document.getElementById('coordValue');
-        const refreshCoordBtn = document.getElementById('refreshCoordBtn');
         const gambarInput = document.getElementById('gambar');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
         const fileInputLabel = document.getElementById('fileInputLabel');
@@ -1009,11 +977,10 @@ Dokumentasi: ${baseFileName}.png
                 KOORDINAT_LIST = data.koordinat;
                 koordinatLoaded = true;
                 currentKoordinat = getRandomCoordinate();
-                coordValueSpan.textContent = currentKoordinat;
+                // Tidak perlu update span karena sudah dihapus
             } catch (error) {
                 console.error('Gagal memuat koordinat:', error);
                 koordinatLoaded = false;
-                coordValueSpan.textContent = 'Gagal memuat koordinat';
             }
             checkInputCompletion();
         }
@@ -1025,10 +992,10 @@ Dokumentasi: ${baseFileName}.png
             return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
         }
         
-        function refreshCoordinate() {
+        // Fungsi refresh koordinat: tetap dipanggil dari tombol refresh? Tombol refresh dihapus, tapi tetap buat internal jika diperlukan untuk update acak gambar
+        function refreshCoordinateInternal() {
             if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
                 currentKoordinat = getRandomCoordinate();
-                coordValueSpan.textContent = currentKoordinat;
                 updateCanvasPreview();
                 checkInputCompletion();
             }
@@ -1048,9 +1015,9 @@ Dokumentasi: ${baseFileName}.png
             fileNameDisplay.textContent = file.name;
             fileInputLabel.style.background = "#254f3f";
             
+            // Setiap kali pilih gambar, koordinat diacak ulang secara otomatis
             if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
                 currentKoordinat = getRandomCoordinate();
-                coordValueSpan.textContent = currentKoordinat;
             }
             
             const currentDateValue = tanggalInput.value;
@@ -1305,7 +1272,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         narasiText.addEventListener('input', checkInputCompletion);
         downloadBtn.addEventListener('click', saveReport);
         resetBtn.addEventListener('click', resetAllData);
-        refreshCoordBtn.addEventListener('click', refreshCoordinate);
+        // Tombol refresh koordinat sudah dihapus dari UI, jadi tidak perlu event listener untuk itu
         
         if (downloadPngBtn) {
             downloadPngBtn.addEventListener('click', downloadPngAndTxt);
