@@ -310,6 +310,38 @@
         }
         textarea { resize: vertical; min-height: 85px; line-height: 1.4; }
         
+        /* AI Button */
+        .ai-narasi-wrapper {
+            position: relative;
+        }
+        
+        .ai-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        
+        .ai-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .ai-button i {
+            color: white;
+            font-size: 1.2rem;
+        }
+        
         .file-input-wrapper {
             position: relative;
             width: 100%;
@@ -514,6 +546,54 @@
         .install-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
         .install-buttons button { padding: 8px 20px; margin: 0; width: auto; font-size: 0.8rem; }
         
+        /* MODAL IFRAME UNTUK TEMPLATE */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: #1a3a2c;
+            border-radius: 24px;
+            width: 95%;
+            max-width: 1000px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 12px 20px;
+            background: #1e3a2f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3b6b55;
+        }
+        .modal-header h3 { color: #bde5ca; }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #8abf9a;
+        }
+        .modal-close:hover { color: #e74c3c; }
+        .modal-iframe {
+            width: 100%;
+            flex: 1;
+            border: none;
+            background: #0a1814;
+        }
+        
         @media (max-width: 550px) {
             body { padding: 12px 8px; }
             .content { padding: 16px 18px; }
@@ -615,7 +695,12 @@
 
                 <div class="form-group">
                     <label><i class="fas fa-file-alt"></i> Narasi Kegiatan Babinsa</label>
-                    <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
+                    <div class="ai-narasi-wrapper">
+                        <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
+                        <button class="ai-button" id="aiTemplateBtn" title="Pilih Template Narasi (100+ template)">
+                            <i class="fas fa-magic"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="canvas-wrapper">
@@ -657,8 +742,91 @@
         </div>
     </div>
 
+    <!-- MODAL TEMPLATE -->
+    <div id="templateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-robot"></i> 100+ Template Narasi Babinsa</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <iframe class="modal-iframe" id="templateIframe" src=""></iframe>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
+        // ======================== KONFIGURASI ========================
+        // GANTI URL INI DENGAN LOKASI FILE template-narasi.html DI GITHUB ANDA
+        const TEMPLATE_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.html';
+        
+        const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
+        
+        let KOORDINAT_LIST = [];
+        let koordinatLoaded = false;
+        const STORAGE_KEY_COUNTER = "dukops_counter";
+        const STORAGE_KEY_LOGS = "dukops_logs";
+        const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
+        
+        const judulInput = document.getElementById('judulKegiatanInput');
+        const gambarInput = document.getElementById('gambar');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const fileInputLabel = document.getElementById('fileInputLabel');
+        const tanggalInput = document.getElementById('tanggalWaktu');
+        const narasiText = document.getElementById('narasi');
+        const canvas = document.getElementById('canvas');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const loader = document.getElementById('loadingIndicator');
+        const resetBtn = document.getElementById('resetBtn');
+        const logListDiv = document.getElementById('logList');
+        const logCountBadge = document.getElementById('logCountBadge');
+        const downloadPngBtn = document.getElementById('downloadPngBtn');
+        
+        let currentImage = new Image();
+        let currentKoordinat = "";
+        let currentJudul = "";
+        let currentTimestamp = "";
+        let submissionCount = 0;
+        let sequenceNumber = 0;
+        let canvasWidth = 600;
+        let canvasHeight = 400;
+        
+        // ======================== MODAL TEMPLATE ========================
+        const modal = document.getElementById('templateModal');
+        const templateIframe = document.getElementById('templateIframe');
+        const openModalBtn = document.getElementById('aiTemplateBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        
+        // Event listener dari iframe (komunikasi antara iframe dan parent)
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'COPY_TEMPLATE') {
+                narasiText.value = event.data.template;
+                modal.classList.remove('show');
+                checkInputCompletion();
+                
+                // Toast notifikasi
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#2ecc71;color:#0a1814;padding:10px20px;border-radius:50px;z-index:2001;font-weight:bold;';
+                toast.innerHTML = '✅ Template narasi disalin!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 1500);
+            }
+        });
+        
+        openModalBtn.onclick = () => {
+            templateIframe.src = TEMPLATE_URL;
+            modal.classList.add('show');
+        };
+        
+        closeModalBtn.onclick = () => {
+            modal.classList.remove('show');
+        };
+        
+        window.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        };
+        
         // ======================== SPLASH SCREEN ========================
         let progress = 0;
         const progressBar = document.getElementById('progressBar');
@@ -712,38 +880,6 @@
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
         updateConnectionStatus();
-        
-        // ======================== KONFIGURASI ========================
-        const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
-        
-        let KOORDINAT_LIST = [];
-        let koordinatLoaded = false;
-        const STORAGE_KEY_COUNTER = "dukops_counter";
-        const STORAGE_KEY_LOGS = "dukops_logs";
-        const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
-        
-        const judulInput = document.getElementById('judulKegiatanInput');
-        const gambarInput = document.getElementById('gambar');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const fileInputLabel = document.getElementById('fileInputLabel');
-        const tanggalInput = document.getElementById('tanggalWaktu');
-        const narasiText = document.getElementById('narasi');
-        const canvas = document.getElementById('canvas');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const loader = document.getElementById('loadingIndicator');
-        const resetBtn = document.getElementById('resetBtn');
-        const logListDiv = document.getElementById('logList');
-        const logCountBadge = document.getElementById('logCountBadge');
-        const downloadPngBtn = document.getElementById('downloadPngBtn');
-        
-        let currentImage = new Image();
-        let currentKoordinat = "";
-        let currentJudul = "";
-        let currentTimestamp = "";
-        let submissionCount = 0;
-        let sequenceNumber = 0;
-        let canvasWidth = 600;
-        let canvasHeight = 400;
         
         // ======================== ANTI GANDA ========================
         function getFullDateKey(dateString) {
@@ -1046,7 +1182,6 @@ Dokumentasi: ${baseFileName}.png
             reader.readAsDataURL(file);
         }
         
-        // ========== UPDATE CANVAS TANPA BACKGROUND GELAP ==========
         function updateCanvasPreview() {
             if (!canvas.width || canvas.width === 0) {
                 canvas.width = 600;
@@ -1058,7 +1193,6 @@ Dokumentasi: ${baseFileName}.png
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // HITUNG FONT SIZE PROPORSIONAL BERDASARKAN LEBAR CANVAS
             const baseFontSize = Math.max(14, Math.floor(canvas.width / 28));
             const boldFontSize = baseFontSize + 2;
             const smallFontSize = Math.max(11, baseFontSize - 2);
@@ -1074,20 +1208,14 @@ Dokumentasi: ${baseFileName}.png
                 ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
             }
             
-            // HANYA SHADOW UNTUK TEKS, TANPA BACKGROUND GELAP
             ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
             ctx.shadowBlur = 3;
-            ctx.shadowOffsetX = 1;
-            ctx.shadowOffsetY = 1;
-            
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign = "right";
             
-            const marginBottom = 12;
+            let yPos = canvas.height - 12;
             const lineHeight = baseFontSize + 5;
-            let yPos = canvas.height - marginBottom;
             
-            // TAMPILAN TANGGAL DAN WAKTU
             let dateObj = new Date(currentTimestamp);
             if (!isNaN(dateObj.getTime())) {
                 const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
@@ -1101,7 +1229,6 @@ Dokumentasi: ${baseFileName}.png
                 yPos -= lineHeight;
             }
             
-            // KOORDINAT
             ctx.font = `${smallFontSize}px Arial`;
             let koordinatDisplay = currentKoordinat;
             const maxCharsCoord = Math.floor(canvas.width / 9);
@@ -1111,7 +1238,6 @@ Dokumentasi: ${baseFileName}.png
             ctx.fillText(koordinatDisplay, canvas.width - 12, yPos);
             yPos -= lineHeight;
             
-            // JUDUL KEGIATAN
             ctx.font = `bold ${boldFontSize}px Arial`;
             let judulDisplay = currentJudul;
             const maxChars = Math.floor(canvas.width / 10);
@@ -1120,11 +1246,7 @@ Dokumentasi: ${baseFileName}.png
             }
             ctx.fillText(judulDisplay, canvas.width - 12, yPos);
             
-            // MATIKAN SHADOW SETELAH SELESAI
             ctx.shadowColor = "transparent";
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
         }
         
         function checkInputCompletion() {
