@@ -322,8 +322,8 @@
             background: linear-gradient(135deg, #8e44ad, #9b59b6);
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -546,7 +546,7 @@
         .install-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
         .install-buttons button { padding: 8px 20px; margin: 0; width: auto; font-size: 0.8rem; }
         
-        /* MODAL IFRAME UNTUK TEMPLATE */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -587,11 +587,60 @@
             color: #8abf9a;
         }
         .modal-close:hover { color: #e74c3c; }
-        .modal-iframe {
-            width: 100%;
+        .modal-body {
             flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .modal-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #12261f;
+            padding: 0 10px;
+            gap: 5px;
+            border-bottom: 1px solid #3b6b55;
+        }
+        .modal-tab-btn {
+            padding: 10px 16px;
+            background: none;
             border: none;
-            background: #0a1814;
+            color: #8abf9a;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .modal-tab-btn.active {
+            color: #2ecc71;
+            border-bottom-color: #2ecc71;
+        }
+        .modal-template-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .modal-template-item {
+            background: #1e352b;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 3px solid #3b6b55;
+        }
+        .modal-template-item:hover {
+            background: #2a5541;
+            border-left-color: #2ecc71;
+            transform: translateX(5px);
+        }
+        .modal-template-text {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .loading-templates {
+            text-align: center;
+            padding: 40px;
+            color: #8abf9a;
         }
         
         @media (max-width: 550px) {
@@ -611,6 +660,7 @@
             canvas { max-width: 100%; }
             .header-logo { width: 60px; height: 60px; }
             .footer-version { font-size: 0.6rem; }
+            .modal-template-list { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 380px) {
@@ -697,7 +747,7 @@
                     <label><i class="fas fa-file-alt"></i> Narasi Kegiatan Babinsa</label>
                     <div class="ai-narasi-wrapper">
                         <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
-                        <button class="ai-button" id="aiTemplateBtn" title="Pilih Template Narasi (100+ template)">
+                        <button class="ai-button" id="aiTemplateBtn" title="Pilih Template Narasi">
                             <i class="fas fa-magic"></i>
                         </button>
                     </div>
@@ -746,75 +796,131 @@
     <div id="templateModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-robot"></i> 100+ Template Narasi Babinsa</h3>
+                <h3><i class="fas fa-robot"></i> Template Narasi Babinsa</h3>
                 <button class="modal-close" id="closeModalBtn">&times;</button>
             </div>
-            <iframe class="modal-iframe" id="templateIframe" src=""></iframe>
+            <div class="modal-tabs" id="modalTabs"></div>
+            <div class="modal-body" id="modalBody">
+                <div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template...</div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
         // ======================== KONFIGURASI ========================
-        // GANTI URL INI DENGAN LOKASI FILE template-narasi.html DI GITHUB ANDA
-        const TEMPLATE_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.html';
-        
+        // GANTI URL INI DENGAN RAW URL FILE template-narasi.json ANDA
+        const TEMPLATE_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.json';
         const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
         
-        let KOORDINAT_LIST = [];
-        let koordinatLoaded = false;
-        const STORAGE_KEY_COUNTER = "dukops_counter";
-        const STORAGE_KEY_LOGS = "dukops_logs";
-        const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
+        // Variabel global untuk menyimpan template
+        let templateData = null;
+        let activeTab = "monitoring";
         
-        const judulInput = document.getElementById('judulKegiatanInput');
-        const gambarInput = document.getElementById('gambar');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const fileInputLabel = document.getElementById('fileInputLabel');
-        const tanggalInput = document.getElementById('tanggalWaktu');
-        const narasiText = document.getElementById('narasi');
-        const canvas = document.getElementById('canvas');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const loader = document.getElementById('loadingIndicator');
-        const resetBtn = document.getElementById('resetBtn');
-        const logListDiv = document.getElementById('logList');
-        const logCountBadge = document.getElementById('logCountBadge');
-        const downloadPngBtn = document.getElementById('downloadPngBtn');
+        // Tab configuration
+        const tabConfig = [
+            { id: "monitoring", name: "🚓 MONITORING & PATROLI" },
+            { id: "komsos", name: "💬 KOMSOS" },
+            { id: "pengamanan", name: "🛡️ PENGAMANAN" },
+            { id: "pendampingan", name: "🤝 PENDAMPINGAN" },
+            { id: "gotong", name: "🌾 GOTONG ROYONG" }
+        ];
         
-        let currentImage = new Image();
-        let currentKoordinat = "";
-        let currentJudul = "";
-        let currentTimestamp = "";
-        let submissionCount = 0;
-        let sequenceNumber = 0;
-        let canvasWidth = 600;
-        let canvasHeight = 400;
+        // ======================== LOAD TEMPLATE DARI GITHUB ========================
+        async function loadTemplatesFromGitHub() {
+            try {
+                const response = await fetch(TEMPLATE_JSON_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                templateData = data.templates;
+                console.log("✅ Template berhasil dimuat dari GitHub");
+                return true;
+            } catch (error) {
+                console.error("Gagal memuat template:", error);
+                return false;
+            }
+        }
         
         // ======================== MODAL TEMPLATE ========================
         const modal = document.getElementById('templateModal');
-        const templateIframe = document.getElementById('templateIframe');
         const openModalBtn = document.getElementById('aiTemplateBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTabs = document.getElementById('modalTabs');
+        const modalBody = document.getElementById('modalBody');
         
-        // Event listener dari iframe (komunikasi antara iframe dan parent)
-        window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'COPY_TEMPLATE') {
-                narasiText.value = event.data.template;
-                modal.classList.remove('show');
-                checkInputCompletion();
-                
-                // Toast notifikasi
-                const toast = document.createElement('div');
-                toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#2ecc71;color:#0a1814;padding:10px20px;border-radius:50px;z-index:2001;font-weight:bold;';
-                toast.innerHTML = '✅ Template narasi disalin!';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 1500);
+        function renderModalTabs() {
+            modalTabs.innerHTML = "";
+            tabConfig.forEach(tab => {
+                const btn = document.createElement('button');
+                btn.className = `modal-tab-btn ${activeTab === tab.id ? 'active' : ''}`;
+                btn.innerHTML = tab.name;
+                btn.onclick = () => {
+                    activeTab = tab.id;
+                    renderModalTabs();
+                    renderModalTemplateList();
+                };
+                modalTabs.appendChild(btn);
+            });
+        }
+        
+        function renderModalTemplateList() {
+            if (!templateData || !templateData[activeTab]) {
+                modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa koneksi internet!</div>';
+                return;
             }
-        });
+            
+            const templates = templateData[activeTab];
+            modalBody.innerHTML = `
+                <div class="modal-template-list">
+                    ${templates.map((template, idx) => `
+                        <div class="modal-template-item" onclick="selectTemplate('${escapeJs(template)}')">
+                            <div style="font-size:0.65rem;color:#2ecc71;margin-bottom:5px;">#${idx + 1}</div>
+                            <div class="modal-template-text">${escapeHtml(template)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
         
-        openModalBtn.onclick = () => {
-            templateIframe.src = TEMPLATE_URL;
-            modal.classList.add('show');
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function escapeJs(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
+        }
+        
+        window.selectTemplate = function(template) {
+            document.getElementById('narasi').value = template;
+            modal.classList.remove('show');
+            checkInputCompletion();
+            
+            // Toast notifikasi
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#2ecc71;color:#0a1814;padding:10px20px;border-radius:50px;z-index:2001;font-weight:bold;';
+            toast.innerHTML = '✅ Template narasi disalin!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
+        };
+        
+        openModalBtn.onclick = async () => {
+            if (!templateData) {
+                modalBody.innerHTML = '<div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template dari GitHub...</div>';
+                modal.classList.add('show');
+                const success = await loadTemplatesFromGitHub();
+                if (success && templateData) {
+                    renderModalTabs();
+                    renderModalTemplateList();
+                } else {
+                    modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa koneksi internet!</div>';
+                }
+            } else {
+                renderModalTabs();
+                renderModalTemplateList();
+                modal.classList.add('show');
+            }
         };
         
         closeModalBtn.onclick = () => {
@@ -880,6 +986,36 @@
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
         updateConnectionStatus();
+        
+        // ======================== KONFIGURASI ========================
+        let KOORDINAT_LIST = [];
+        let koordinatLoaded = false;
+        const STORAGE_KEY_COUNTER = "dukops_counter";
+        const STORAGE_KEY_LOGS = "dukops_logs";
+        const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
+        
+        const judulInput = document.getElementById('judulKegiatanInput');
+        const gambarInput = document.getElementById('gambar');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const fileInputLabel = document.getElementById('fileInputLabel');
+        const tanggalInput = document.getElementById('tanggalWaktu');
+        const narasiText = document.getElementById('narasi');
+        const canvas = document.getElementById('canvas');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const loader = document.getElementById('loadingIndicator');
+        const resetBtn = document.getElementById('resetBtn');
+        const logListDiv = document.getElementById('logList');
+        const logCountBadge = document.getElementById('logCountBadge');
+        const downloadPngBtn = document.getElementById('downloadPngBtn');
+        
+        let currentImage = new Image();
+        let currentKoordinat = "";
+        let currentJudul = "";
+        let currentTimestamp = "";
+        let submissionCount = 0;
+        let sequenceNumber = 0;
+        let canvasWidth = 600;
+        let canvasHeight = 400;
         
         // ======================== ANTI GANDA ========================
         function getFullDateKey(dateString) {
@@ -1440,6 +1576,9 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         async function init() {
             loadCounter();
             loadLogs();
+            
+            // Pre-load templates di background
+            loadTemplatesFromGitHub();
             
             const now = new Date();
             const tahun = now.getFullYear();
