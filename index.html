@@ -108,6 +108,8 @@
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
+        
+        /* HEADER STYLE */
         .header {
             background: linear-gradient(135deg, #1a3a2c, #0f2a20);
             padding: 16px 20px 12px;
@@ -115,7 +117,26 @@
             border-bottom: 1px solid #3a6b55;
         }
         
-        .header-row1 { margin-bottom: 4px; }
+        /* HEADER ROW JUDUL - FLEX DENGAN POSISI CENTER */
+        .header-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        /* Spacer kiri untuk menyeimbangkan (biar judul benar-benar center) */
+        .header-spacer {
+            width: 120px;
+            visibility: hidden;
+        }
+        
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+        
         .header-title h1 {
             font-size: 1.9rem;
             font-weight: 700;
@@ -127,10 +148,100 @@
             letter-spacing: 1.5px;
         }
         
-        .header-row2 { text-align: center; margin-bottom: 14px; }
-        .sub { font-size: 0.9rem; opacity: 0.9; color: #c7e9cf; font-weight: 500; letter-spacing: 0.5px; }
+        /* STATUS ONLINE/OFFLINE - POSISI KANAN */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
         
-        .header-row3 { text-align: center; margin-bottom: 10px; }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse-status 1.5s infinite;
+        }
+        
+        .status-dot.online {
+            background: #2ecc71;
+            box-shadow: 0 0 5px #2ecc71;
+        }
+        
+        .status-dot.offline {
+            background: #e74c3c;
+            box-shadow: 0 0 5px #e74c3c;
+            animation: none;
+        }
+        
+        @keyframes pulse-status {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .status-text {
+            color: white;
+        }
+        
+        .status-text.online {
+            color: #2ecc71;
+        }
+        
+        .status-text.offline {
+            color: #e74c3c;
+        }
+        
+        /* MARQUEE / RUNNING TEXT */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 40px;
+            padding: 6px 0;
+        }
+        
+        .marquee {
+            display: inline-block;
+            padding-left: 100%;
+            animation: jalan 15s linear infinite;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff700;
+            text-shadow: 1px 1px 2px black;
+        }
+        
+        @keyframes jalan {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .marquee:hover {
+            animation-play-state: paused;
+        }
+        
+        /* MOTTO */
+        .motto {
+            text-align: center;
+            padding: 8px 0 12px 0;
+            font-size: 13px;
+            color: #c7e9cf;
+            border-top: 1px solid #3a6b55;
+            margin-top: 5px;
+        }
+        
+        .motto i {
+            margin-right: 8px;
+            color: #63b581;
+        }
+        
         .header-icon-right {
             width: 65px;
             height: 65px;
@@ -138,9 +249,9 @@
             border-radius: 16px;
             background: #1a3a2c;
             padding: 5px;
+            margin-top: 5px;
         }
         
-        .header-row4 { text-align: center; }
         .badge-area {
             display: inline-flex;
             background: #2a5541;
@@ -149,6 +260,7 @@
             font-size: 0.8rem;
             gap: 8px;
             font-weight: 500;
+            margin-top: 8px;
         }
         
         .content { padding: 20px 22px; }
@@ -394,15 +506,20 @@
         @media (max-width: 550px) {
             body { padding: 12px 8px; }
             .content { padding: 16px 18px; }
-            .header-icon-right { width: 55px; height: 55px; }
-            .header-title h1 { font-size: 1.5rem; }
-            .sub { font-size: 0.75rem; }
+            .header-title h1 { font-size: 1.2rem; }
+            .header-title-row { margin-bottom: 5px; }
+            .status-indicator { padding: 3px 8px; font-size: 0.65rem; }
+            .status-dot { width: 8px; height: 8px; }
+            .header-spacer { width: 70px; }
+            .marquee { font-size: 11px; animation-duration: 12s; }
+            .motto { font-size: 10px; }
             .badge-area { font-size: 0.7rem; padding: 4px 14px; }
             .coord-label { font-size: 0.8rem; }
             .button-group { gap: 6px; }
             .btn-action { font-size: 0.65rem; padding: 8px 4px; white-space: normal; word-break: keep-all; }
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
             canvas { max-width: 100%; }
+            .header-icon-right { width: 45px; height: 45px; }
         }
     </style>
 </head>
@@ -423,28 +540,46 @@
     <!-- MAIN APP -->
     <div id="mainApp">
         <div class="container">
+            <!-- HEADER -->
             <div class="header">
-                <div class="header-row1">
+                <div class="header-title-row">
+                    <!-- Spacer kiri untuk keseimbangan (biar judul center) -->
+                    <div class="header-spacer"></div>
+                    
                     <div class="header-title">
                         <h1>DUKOPS BABINSA</h1>
                     </div>
-                </div>
-                <div class="header-row2">
-                    <div class="sub">Koramil 1609-01 / Buleleng</div>
-                </div>
-                <div class="header-row3">
-                    <img class="header-icon-right" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
-                </div>
-                <div class="header-row4">
-                    <div class="badge-area">
-                        <span>📍 Kelurahan Liligundi</span>
+                    
+                    <div class="status-indicator" id="statusIndicator">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span class="status-text" id="statusText">Mengecek...</span>
                     </div>
                 </div>
+                
+                <!-- MARQUEE / RUNNING TEXT -->
+                <div class="marquee-container">
+                    <div class="marquee">
+                        ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
+                    </div>
+                </div>
+                
+                <!-- MOTTO -->
+                <div class="motto">
+                    <i class="fas fa-quote-left"></i> Bersama Rakyat TNI Kuat <i class="fas fa-quote-right"></i>
+                </div>
+                
+                <div style="text-align: center;">
+                    <img class="header-icon-right" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
+                </div>
+                <div class="badge-area">
+                    <span>📍 Kelurahan Liligundi</span>
+                </div>
             </div>
+            
             <div class="content">
                 <div class="form-group">
                     <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
-                    <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="">
+                    <input type="text" id="judulKegiatanInput" placeholder="Judul Kegiatan" value="Kelurahan Liligundi">
                 </div>
 
                 <div class="form-group">
@@ -501,7 +636,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.6<br>
+                    VERSI 1.7<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
@@ -551,6 +686,29 @@
                 }
             }
         }, 150);
+        
+        // ======================== CEK STATUS KONEKSI ========================
+        function updateConnectionStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (navigator.onLine) {
+                statusDot.className = 'status-dot online';
+                statusText.className = 'status-text online';
+                statusText.innerHTML = '<i class="fas fa-wifi"></i> Online';
+            } else {
+                statusDot.className = 'status-dot offline';
+                statusText.className = 'status-text offline';
+                statusText.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+            }
+        }
+        
+        // Event listener untuk perubahan koneksi
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        
+        // Cek status awal
+        updateConnectionStatus();
         
         // ======================== KONFIGURASI ========================
         const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
@@ -683,7 +841,7 @@
             }
         }
         
-        // ======================== FUNGSI DOWNLOAD PNG+TXT (TANPA ZIP, DENGAN KONFIRMASI TANGGAL GANDA) ========================
+        // ======================== FUNGSI DOWNLOAD PNG+TXT ========================
         async function downloadPngAndTxt() {
             // Cek kelengkapan data
             if (!currentImage.complete || !currentImage.src || currentImage.naturalWidth === 0) {
@@ -709,7 +867,7 @@
             
             const currentDateValue = tanggalInput.value;
             
-            // CEK TANGGAL GANDA (sama seperti SIMPAN ZIP)
+            // CEK TANGGAL GANDA
             if (isFullDateAlreadySubmitted(currentDateValue)) {
                 const dateObj = new Date(currentDateValue);
                 const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -730,13 +888,13 @@
                 const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
                 const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
-                // Buat nama file (tanpa nomor urut)
+                // Buat nama file
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
                 let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
                 if (!safeJudul) safeJudul = "Kegiatan";
                 const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
                 
-                // Konfirmasi sebelum download
+                // Konfirmasi
                 if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
                     loader.style.display = "none";
                     downloadPngBtn.disabled = false;
@@ -744,7 +902,7 @@
                     return;
                 }
                 
-                // Buat konten TXT (format rapi)
+                // Buat konten TXT
                 const txtContent = `═══════════════════════════════════════
    DUKOPS BABINSA - LILIGUNDI
    Koramil 1609-01 / Buleleng
@@ -791,10 +949,8 @@ Dokumentasi: ${baseFileName}.png
                 document.body.removeChild(txtLink);
                 URL.revokeObjectURL(txtUrl);
                 
-                // Simpan tanggal ke riwayat (agar tidak bisa dipakai lagi)
+                // Simpan tanggal ke riwayat
                 saveSubmittedFullDate(currentDateValue);
-                
-                // Tambahkan ke log dengan keterangan "PNG+TXT"
                 addLog(`${baseFileName}.png + .txt`);
                 
                 alert(`✅ Berhasil diunduh!\n📄 ${baseFileName}.txt\n🖼️ ${baseFileName}.png\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
@@ -858,7 +1014,7 @@ Dokumentasi: ${baseFileName}.png
         
         function updateJudul() {
             let raw = judulInput.value.trim();
-            if (raw === "") raw = "";
+            if (raw === "") raw = "Kelurahan Liligundi";
             currentJudul = raw;
             document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
