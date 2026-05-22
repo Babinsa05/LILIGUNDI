@@ -1110,20 +1110,20 @@ Dokumentasi: ${baseFileName}.png
             if (!isNaN(dateObj.getTime())) {
                 const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
                 const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                ctx.font = "16px Arial";
+                ctx.font = "20px Arial";
                 ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 15, yPos);
                 yPos -= lineHeight;
             } else {
-                ctx.font = "16px Arial";
+                ctx.font = "20px Arial";
                 ctx.fillText("Tanggal belum dipilih", canvas.width - 15, yPos);
                 yPos -= lineHeight;
             }
             
-            ctx.font = "16px Arial";
+            ctx.font = "20px Arial";
             ctx.fillText(currentKoordinat, canvas.width - 15, yPos);
             yPos -= lineHeight;
             
-            ctx.font = "bold 16px Arial";
+            ctx.font = "bold 20px Arial";
             ctx.fillText(currentJudul, canvas.width - 15, yPos);
             
             ctx.shadowColor = "transparent";
