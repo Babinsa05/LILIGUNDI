@@ -988,7 +988,7 @@ Dokumentasi: ${baseFileName}.png
         
         function updateJudul() {
             let raw = judulInput.value.trim();
-            if (raw === "") raw = "Kelurahan Liligundi";
+            if (raw === "") raw = "";
             currentJudul = raw;
             document.title = `${currentJudul} - DUKOPS`;
             updateCanvasPreview();
