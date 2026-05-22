@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
     
-    <!-- Icon untuk berbagai platform -->
+    <!-- Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* SPLASH SCREEN STYLE */
+        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -87,7 +87,7 @@
             font-family: monospace;
         }
         
-        /* MAIN APP STYLE (awal disembunyikan) */
+        /* MAIN APP */
         #mainApp {
             display: none;
         }
@@ -115,9 +115,7 @@
             border-bottom: 1px solid #3a6b55;
         }
         
-        .header-row1 {
-            margin-bottom: 4px;
-        }
+        .header-row1 { margin-bottom: 4px; }
         .header-title h1 {
             font-size: 1.9rem;
             font-weight: 700;
@@ -129,22 +127,10 @@
             letter-spacing: 1.5px;
         }
         
-        .header-row2 {
-            text-align: center;
-            margin-bottom: 14px;
-        }
-        .sub {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            color: #c7e9cf;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
+        .header-row2 { text-align: center; margin-bottom: 14px; }
+        .sub { font-size: 0.9rem; opacity: 0.9; color: #c7e9cf; font-weight: 500; letter-spacing: 0.5px; }
         
-        .header-row3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+        .header-row3 { text-align: center; margin-bottom: 10px; }
         .header-icon-right {
             width: 65px;
             height: 65px;
@@ -154,9 +140,7 @@
             padding: 5px;
         }
         
-        .header-row4 {
-            text-align: center;
-        }
+        .header-row4 { text-align: center; }
         .badge-area {
             display: inline-flex;
             background: #2a5541;
@@ -222,13 +206,8 @@
             background: #254f3f;
             border-color: #7bcb9e;
         }
-        .file-input-label span:first-child {
-            color: #bde5ca;
-        }
-        .file-input-label span:last-child {
-            color: #8abf9a;
-            font-size: 0.8rem;
-        }
+        .file-input-label span:first-child { color: #bde5ca; }
+        .file-input-label span:last-child { color: #8abf9a; font-size: 0.8rem; }
         
         .coord-wrapper {
             display: flex;
@@ -239,17 +218,8 @@
             padding: 10px 14px;
             min-height: 44px;
         }
-        .coord-label {
-            color: #bde5ca;
-            margin-right: 8px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-        .coord-value {
-            color: #f0faf3;
-            word-break: break-all;
-            flex: 1;
-        }
+        .coord-label { color: #bde5ca; margin-right: 8px; font-weight: 500; white-space: nowrap; }
+        .coord-value { color: #f0faf3; word-break: break-all; flex: 1; }
         .coord-refresh {
             background: none;
             border: none;
@@ -259,16 +229,13 @@
             padding: 0 5px;
             margin-left: 5px;
         }
-        .coord-refresh:hover {
-            color: #7bcb9e;
-        }
+        .coord-refresh:hover { color: #7bcb9e; }
         
         .canvas-wrapper {
-            background: #0e221c;
+            background: transparent;
             border-radius: 22px;
-            padding: 8px;
+            padding: 0;
             margin: 16px 0 8px;
-            border: 1px solid #3c6b54;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -280,28 +247,69 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
             height: auto;
+            max-width: 100%;
+            margin: 0 auto;
         }
-        .btn-primary {
-            background: linear-gradient(95deg, #317456, #1f543f);
+        
+        /* TOMBOL BERJAJAR HORIZONTAL */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0 10px;
+            justify-content: center;
+        }
+        
+        .btn-action {
+            flex: 1;
+            background: #2a5541;
             border: none;
-            padding: 12px 18px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            border-radius: 50px;
-            width: 100%;
+            padding: 10px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 40px;
             color: white;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 12px;
+            text-align: center;
+            white-space: nowrap;
         }
-        .btn-primary:hover:not(:disabled) { background: linear-gradient(95deg, #409b72, #2b7054); transform: scale(0.98); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-secondary { background: #3a5548; border: none; padding: 10px; font-weight: 600; border-radius: 50px; width: 100%; color: #f0fff0; cursor: pointer; margin-top: 10px; }
-        .btn-secondary:hover { background: #577b66; }
+        
+        .btn-action:hover {
+            background: #3a7057;
+            transform: translateY(-1px);
+        }
+        
+        .btn-action i {
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-download {
+            background: linear-gradient(95deg, #317456, #1f543f);
+        }
+        
+        .btn-download:hover:not(:disabled) {
+            background: linear-gradient(95deg, #409b72, #2b7054);
+        }
+        
+        .btn-reset {
+            background: #5a3a3a;
+        }
+        
+        .btn-reset:hover {
+            background: #7a4a4a;
+        }
+        
         .loader-overlay { display: flex; justify-content: center; margin: 6px 0; }
         .loader { width: 30px; height: 30px; border: 3px solid #3c775b; border-top: 3px solid #c5f5d3; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .hint { font-size: 0.65rem; color: #9bc2aa; margin-top: 4px; margin-left: 10px; }
+        
         hr { border: none; border-top: 1px solid #3e6857; margin: 16px 0 10px; }
         
         .log-section {
@@ -323,9 +331,7 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #3a6b55;
         }
-        .log-title span:first-child i {
-            margin-right: 6px;
-        }
+        .log-title span:first-child i { margin-right: 6px; }
         .log-count {
             background: #2a5541;
             padding: 2px 10px;
@@ -393,6 +399,10 @@
             .sub { font-size: 0.75rem; }
             .badge-area { font-size: 0.7rem; padding: 4px 14px; }
             .coord-label { font-size: 0.8rem; }
+            .button-group { gap: 6px; }
+            .btn-action { font-size: 0.65rem; padding: 8px 4px; white-space: normal; word-break: keep-all; }
+            .btn-action i { margin-right: 3px; font-size: 0.7rem; }
+            canvas { max-width: 100%; }
         }
     </style>
 </head>
@@ -468,12 +478,17 @@
                 </div>
 
                 <div class="canvas-wrapper">
-                    <canvas id="canvas" width="759" height="300"></canvas>
+                    <canvas id="canvas"></canvas>
                 </div>
+                
+                <!-- TOMBOL BERJAJAR HORIZONTAL -->
+                <div class="button-group">
+                    <button id="downloadPngBtn" class="btn-action"><i class="fas fa-image"></i> PNG</button>
+                    <button id="downloadBtn" class="btn-action btn-download" disabled><i class="fas fa-save"></i> SIMPAN ZIP</button>
+                    <button id="resetBtn" class="btn-action btn-reset"><i class="fas fa-trash-alt"></i> RESET</button>
+                </div>
+                
                 <div class="loader-overlay"><div class="loader" id="loadingIndicator"></div></div>
-
-                <button id="downloadBtn" class="btn-primary" disabled><i class="fas fa-download"></i> SIMPAN LAPORAN (ZIP)</button>
-                <button id="resetBtn" class="btn-secondary"><i class="fas fa-trash-alt"></i> Reset semua data</button>
                 
                 <div class="log-section">
                     <div class="log-title">
@@ -486,7 +501,7 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    VERSI 1.1<br>
+                    VERSI 1.5<br>
                     Developer: Serka I Nyoman Arta
                 </div>
             </div>
@@ -503,7 +518,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
-        // ======================== SPLASH SCREEN WITH PROGRESS ========================
+        // ======================== SPLASH SCREEN ========================
         let progress = 0;
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
@@ -524,7 +539,6 @@
             }, 500);
         }
         
-        // Simulasi loading progress
         updateProgress(0);
         let interval = setInterval(() => {
             if (progress < 100) {
@@ -562,6 +576,7 @@
         const resetBtn = document.getElementById('resetBtn');
         const logListDiv = document.getElementById('logList');
         const logCountBadge = document.getElementById('logCountBadge');
+        const downloadPngBtn = document.getElementById('downloadPngBtn');
         
         let currentImage = new Image();
         let currentKoordinat = "";
@@ -569,6 +584,10 @@
         let currentTimestamp = "";
         let submissionCount = 0;
         let sequenceNumber = 0;
+        
+        // Variabel untuk ukuran canvas dinamis
+        let canvasWidth = 600;
+        let canvasHeight = 400;
         
         // ======================== ANTI GANDA ========================
         function getFullDateKey(dateString) {
@@ -599,18 +618,6 @@
         }
         
         // ======================== LOG SYSTEM ========================
-        function updateLogBadge() {
-            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-            if (savedLogs) {
-                try {
-                    const logs = JSON.parse(savedLogs);
-                    if (logCountBadge) logCountBadge.textContent = logs.length;
-                } catch(e) { if (logCountBadge) logCountBadge.textContent = "0"; }
-            } else {
-                if (logCountBadge) logCountBadge.textContent = "0";
-            }
-        }
-        
         function loadLogs() {
             const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
             if (savedLogs) {
@@ -676,7 +683,24 @@
             }
         }
         
-        // ======================== FUNGSI LAINNYA ========================
+        // ======================== DOWNLOAD PNG ========================
+        function downloadCanvasAsPNG() {
+            try {
+                updateCanvasPreview();
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                const filename = `DUKOPS_Canvas_${timestamp}.png`;
+                link.download = filename;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                alert(`✅ Gambar canvas berhasil diunduh sebagai:\n${filename}`);
+            } catch (error) {
+                console.error('Gagal download PNG:', error);
+                alert('❌ Gagal mengunduh gambar canvas.');
+            }
+        }
+        
+        // ======================== FUNGSI UTAMA ========================
         function acakDetik(pilihWaktu) {
             if (!pilihWaktu) return null;
             let dateObj = new Date(pilihWaktu);
@@ -751,6 +775,30 @@
             reader.onload = function(e) {
                 currentImage = new Image();
                 currentImage.onload = function() {
+                    // Set ukuran canvas berdasarkan rasio gambar asli
+                    // Maksimal lebar 600px, tinggi menyesuaikan rasio
+                    const maxWidth = 600;
+                    const maxHeight = 500;
+                    
+                    let width = currentImage.naturalWidth;
+                    let height = currentImage.naturalHeight;
+                    
+                    // Resize proporsional jika terlalu besar
+                    if (width > maxWidth) {
+                        height = (height * maxWidth) / width;
+                        width = maxWidth;
+                    }
+                    if (height > maxHeight) {
+                        width = (width * maxHeight) / height;
+                        height = maxHeight;
+                    }
+                    
+                    canvasWidth = Math.round(width);
+                    canvasHeight = Math.round(height);
+                    
+                    canvas.width = canvasWidth;
+                    canvas.height = canvasHeight;
+                    
                     updateCanvasPreview();
                     checkInputCompletion();
                 };
@@ -770,38 +818,75 @@
         }
         
         function updateCanvasPreview() {
-            canvas.width = 759;
-            canvas.height = 300;
+            if (!canvas.width || canvas.width === 0) {
+                // Default size jika belum ada gambar
+                canvas.width = 500;
+                canvas.height = 300;
+                canvasWidth = 500;
+                canvasHeight = 300;
+            }
             
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
+            // Gambar foto - FULL menutupi seluruh canvas sesuai rasio asli
             if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
+                // Gambar ditaruh sesuai ukuran canvas (sudah proporsional)
                 ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
             } else {
+                // Background jika belum ada gambar
                 ctx.fillStyle = '#2a5e48';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#bde5ca';
-                ctx.font = "25px Arial";
+                ctx.font = "20px Arial";
                 ctx.textAlign = "center";
                 ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
             }
             
-            ctx.fillStyle = "white";
-            ctx.font = "25px Arial";
+            // Shadow untuk teks agar terbaca
+            ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+            
+            // Teks RATA KANAN dengan jarak 15px dari tepi kanan
+            ctx.fillStyle = "#FFFFFF";
             ctx.textAlign = "right";
             
-            ctx.fillText(currentJudul.substring(0, 40), canvas.width - 10, canvas.height - 80);
-            ctx.fillText(currentKoordinat || "Koordinat Tidak Tersedia", canvas.width - 10, canvas.height - 50);
+            // Hitung posisi Y berdasarkan tinggi canvas
+            const marginBottom = 20;
+            const lineHeight = 22;
+            let yPos = canvas.height - marginBottom;
             
+            // Tanggal & Waktu (paling bawah) - Menggunakan koma sebagai pemisah
             let dateObj = new Date(currentTimestamp);
             if (!isNaN(dateObj.getTime())) {
                 const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
                 const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 10, canvas.height - 20);
+                ctx.font = "12px Arial";
+                // Menggunakan koma sebagai pengganti tanda hubung
+                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 15, yPos);
+                yPos -= lineHeight;
             } else {
-                ctx.fillText("Tanggal belum dipilih", canvas.width - 10, canvas.height - 20);
+                ctx.font = "12px Arial";
+                ctx.fillText("Tanggal belum dipilih", canvas.width - 15, yPos);
+                yPos -= lineHeight;
             }
+            
+            // Koordinat - UKURAN AWAL 12px
+            ctx.font = "12px Arial";
+            ctx.fillText(currentKoordinat, canvas.width - 15, yPos);
+            yPos -= lineHeight;
+            
+            // Judul (paling atas) - UKURAN AWAL 14px BOLD
+            ctx.font = "bold 14px Arial";
+            ctx.fillText(currentJudul, canvas.width - 15, yPos);
+            
+            // Reset shadow
+            ctx.shadowColor = "transparent";
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
         }
         
         function checkInputCompletion() {
@@ -849,7 +934,7 @@
             
             loader.style.display = "block";
             downloadBtn.disabled = true;
-            downloadBtn.textContent = "⏳ MEMPROSES...";
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROSES';
             
             try {
                 sequenceNumber++;
@@ -898,7 +983,7 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             } finally {
                 loader.style.display = "none";
                 downloadBtn.disabled = false;
-                downloadBtn.textContent = "💾 SIMPAN LAPORAN (ZIP)";
+                downloadBtn.innerHTML = '<i class="fas fa-save"></i> SIMPAN ZIP';
                 checkInputCompletion();
             }
         }
@@ -950,6 +1035,10 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
         resetBtn.addEventListener('click', resetAllData);
         refreshCoordBtn.addEventListener('click', refreshCoordinate);
         
+        if (downloadPngBtn) {
+            downloadPngBtn.addEventListener('click', downloadCanvasAsPNG);
+        }
+        
         gambarInput.addEventListener('change', function(e) {
             if (e.target.files && e.target.files[0]) {
                 previewImage(e.target.files[0]);
@@ -960,7 +1049,6 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             }
         });
         
-        // Load counter dan data
         function loadCounter() {
             const saved = localStorage.getItem(STORAGE_KEY_COUNTER);
             submissionCount = saved ? parseInt(saved, 10) : 0;
@@ -983,11 +1071,14 @@ Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
             acakDetik(defaultDateTime);
             updateJudul();
             await loadKoordinat();
+            
+            // Set default canvas size
+            canvas.width = 500;
+            canvas.height = 300;
             updateCanvasPreview();
             checkInputCompletion();
         }
         
-        // Tunggu splash selesai baru init
         setTimeout(() => {
             init();
         }, 500);
