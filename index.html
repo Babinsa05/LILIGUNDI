@@ -109,36 +109,54 @@
             overflow: hidden;
         }
         
-        /* HEADER STYLE */
+        /* HEADER STYLE - LAYOUT 2 KOLOM */
         .header {
             background: linear-gradient(135deg, #1a3a2c, #0f2a20);
             padding: 16px 20px 12px;
-            text-align: center;
             border-bottom: 1px solid #3a6b55;
         }
         
-        /* HEADER ROW JUDUL - FLEX DENGAN POSISI CENTER */
-        .header-title-row {
+        /* Container 2 kolom */
+        .header-two-columns {
             display: flex;
+            gap: 20px;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            position: relative;
+            flex-wrap: wrap;
         }
         
-        /* Spacer kiri untuk menyeimbangkan (biar judul benar-benar center) */
-        .header-spacer {
-            width: 120px;
-            visibility: hidden;
-        }
-        
-        .header-title {
-            flex: 1;
+        /* Kolom Kiri - Logo */
+        .header-left {
+            flex-shrink: 0;
             text-align: center;
         }
         
+        .header-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 16px;
+            background: #1a3a2c;
+            padding: 5px;
+        }
+        
+        /* Kolom Kanan - Info Teks */
+        .header-right {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        /* Baris Judul dan Status */
+        .title-status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
         .header-title h1 {
-            font-size: 1.9rem;
+            font-size: 1.6rem;
             font-weight: 700;
             background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
             background-clip: text;
@@ -148,7 +166,7 @@
             letter-spacing: 1.5px;
         }
         
-        /* STATUS ONLINE/OFFLINE - POSISI KANAN */
+        /* STATUS ONLINE/OFFLINE */
         .status-indicator {
             display: inline-flex;
             align-items: center;
@@ -158,7 +176,6 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: bold;
-            margin-left: auto;
         }
         
         .status-dot {
@@ -212,7 +229,7 @@
             display: inline-block;
             padding-left: 100%;
             animation: jalan 15s linear infinite;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: #fff700;
             text-shadow: 1px 1px 2px black;
@@ -229,12 +246,12 @@
         
         /* MOTTO */
         .motto {
-            text-align: center;
-            padding: 8px 0 12px 0;
-            font-size: 13px;
+            text-align: left;
+            padding: 5px 0 0 0;
+            font-size: 12px;
             color: #c7e9cf;
             border-top: 1px solid #3a6b55;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         
         .motto i {
@@ -242,25 +259,23 @@
             color: #63b581;
         }
         
-        .header-icon-right {
-            width: 65px;
-            height: 65px;
-            object-fit: contain;
-            border-radius: 16px;
-            background: #1a3a2c;
-            padding: 5px;
-            margin-top: 5px;
-        }
-        
+        /* BADGE AREA - dipindah ke bawah banner (di luar header-two-columns) */
         .badge-area {
             display: inline-flex;
             background: #2a5541;
-            padding: 5px 18px;
+            padding: 6px 20px;
             border-radius: 40px;
             font-size: 0.8rem;
             gap: 8px;
             font-weight: 500;
-            margin-top: 8px;
+            margin-top: 12px;
+            width: auto;
+            justify-content: center;
+        }
+        
+        .badge-wrapper {
+            text-align: center;
+            margin-top: 5px;
         }
         
         .content { padding: 20px 22px; }
@@ -506,20 +521,21 @@
         @media (max-width: 550px) {
             body { padding: 12px 8px; }
             .content { padding: 16px 18px; }
-            .header-title h1 { font-size: 1.2rem; }
-            .header-title-row { margin-bottom: 5px; }
+            .header-two-columns { flex-direction: column; text-align: center; gap: 10px; }
+            .header-right { text-align: center; }
+            .title-status-row { justify-content: center; }
+            .header-title h1 { font-size: 1.3rem; }
             .status-indicator { padding: 3px 8px; font-size: 0.65rem; }
             .status-dot { width: 8px; height: 8px; }
-            .header-spacer { width: 70px; }
             .marquee { font-size: 11px; animation-duration: 12s; }
-            .motto { font-size: 10px; }
+            .motto { text-align: center; font-size: 10px; }
             .badge-area { font-size: 0.7rem; padding: 4px 14px; }
             .coord-label { font-size: 0.8rem; }
             .button-group { gap: 6px; }
             .btn-action { font-size: 0.65rem; padding: 8px 4px; white-space: normal; word-break: keep-all; }
             .btn-action i { margin-right: 3px; font-size: 0.7rem; }
             canvas { max-width: 100%; }
-            .header-icon-right { width: 45px; height: 45px; }
+            .header-logo { width: 60px; height: 60px; }
         }
     </style>
 </head>
@@ -542,37 +558,43 @@
         <div class="container">
             <!-- HEADER -->
             <div class="header">
-                <div class="header-title-row">
-                    <!-- Spacer kiri untuk keseimbangan (biar judul center) -->
-                    <div class="header-spacer"></div>
-                    
-                    <div class="header-title">
-                        <h1>DUKOPS BABINSA</h1>
+                <div class="header-two-columns">
+                    <!-- KOLOM KIRI: LOGO -->
+                    <div class="header-left">
+                        <img class="header-logo" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
                     </div>
                     
-                    <div class="status-indicator" id="statusIndicator">
-                        <div class="status-dot" id="statusDot"></div>
-                        <span class="status-text" id="statusText">Mengecek...</span>
+                    <!-- KOLOM KANAN: TEKS -->
+                    <div class="header-right">
+                        <div class="title-status-row">
+                            <div class="header-title">
+                                <h1>DUKOPS BABINSA</h1>
+                            </div>
+                            <div class="status-indicator" id="statusIndicator">
+                                <div class="status-dot" id="statusDot"></div>
+                                <span class="status-text" id="statusText">Mengecek...</span>
+                            </div>
+                        </div>
+                        
+                        <!-- MARQUEE / RUNNING TEXT -->
+                        <div class="marquee-container">
+                            <div class="marquee">
+                                ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
+                            </div>
+                        </div>
+                        
+                        <!-- MOTTO -->
+                        <div class="motto">
+                            <i class="fas fa-quote-left"></i> Bersama Rakyat TNI Kuat <i class="fas fa-quote-right"></i>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- MARQUEE / RUNNING TEXT -->
-                <div class="marquee-container">
-                    <div class="marquee">
-                        ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
+                <!-- BADGE AREA di bawah banner (setelah 2 kolom) -->
+                <div class="badge-wrapper">
+                    <div class="badge-area">
+                        <span>📍 Kelurahan Liligundi</span>
                     </div>
-                </div>
-                
-                <!-- MOTTO -->
-                <div class="motto">
-                    <i class="fas fa-quote-left"></i> Bersama Rakyat TNI Kuat <i class="fas fa-quote-right"></i>
-                </div>
-                
-                <div style="text-align: center;">
-                    <img class="header-icon-right" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
-                </div>
-                <div class="badge-area">
-                    <span>📍 Kelurahan Liligundi</span>
                 </div>
             </div>
             
