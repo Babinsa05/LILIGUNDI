@@ -22,11 +22,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* ========== GAYA ASLI (DIKEMAS) ========== */
+        /* ========== GAYA DUKOPS ========== */
         button, .btn-action, .file-input-label { min-height: 44px; }
         html { scroll-behavior: smooth; }
         @media (max-width: 768px) { input, select, textarea { font-size: 16px; } }
         
+        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -46,12 +47,12 @@
         .splash-title { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 8px; }
         .splash-subtitle { font-size: 1rem; color: #c7e9cf; margin-bottom: 30px; }
         .progress-container { width: 280px; height: 6px; background: #2a5541; border-radius: 10px; overflow: hidden; margin: 0 auto; }
-        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #63b581, #a8e6b0); transition: width 0.3s ease; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #63b581, #a8e6b0); transition: width 0.1s linear; }
         .progress-text { margin-top: 12px; font-size: 0.8rem; color: #8abf9a; font-family: monospace; }
         
         #mainApp { display: none; }
         
-        /* ========== TAMPILAN LOGIN / INPUT NAMA SEPERTI HALAMAN LOGIN ========== */
+        /* TAMPILAN LOGIN (muncul setelah splash) */
         .login-overlay {
             position: fixed;
             top: 0;
@@ -240,7 +241,7 @@
         .modal-template-item { background: #1e352b; padding: 12px; border-radius: 12px; cursor: pointer; border-left: 3px solid #3b6b55; }
         .modal-template-item:hover { background: #2a5541; border-left-color: #2ecc71; }
         
-        /* ========== GAYA LIVE CHAT WIDGET ========== */
+        /* GAYA LIVE CHAT WIDGET */
         .chat-widget {
             position: fixed;
             bottom: 20px;
@@ -397,7 +398,7 @@
         </div>
     </div>
 
-    <!-- LOGIN / INPUT NAMA SEPERTI HALAMAN LOGIN -->
+    <!-- LOGIN OVERLAY (muncul setelah splash selesai) -->
     <div id="loginOverlay" class="login-overlay" style="display: none;">
         <div class="login-card">
             <div class="login-icon">
@@ -518,10 +519,7 @@
                 <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
             </div>
             <div class="chat-messages" id="chatMessages">
-                <div class="message message-babinsa">
-                    Assalamualaikum, selamat datang di Live Chat DUKOPS. Ada yang bisa dibantu? 🇮🇩
-                    <div class="message-time">Sekarang</div>
-                </div>
+                <!-- Pesan sambutan dihapus total -->
             </div>
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Tulis pesan...">
@@ -655,17 +653,21 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // ======================== SPLASH SCREEN DAN LOGIN ========================
+        // ======================== SPLASH SCREEN + LOGIN ========================
         let progress = 0;
         const progressBar = document.getElementById('progressBar');
         const progressTextSpan = document.getElementById('progressText');
         const splashScreen = document.getElementById('splashScreen');
-        const mainAppDiv = document.getElementById('mainApp');
         const loginOverlay = document.getElementById('loginOverlay');
+        const mainAppDiv = document.getElementById('mainApp');
         const loginNameInput = document.getElementById('loginNameInput');
         const loginSubmitBtn = document.getElementById('loginSubmitBtn');
         
-        function updateProgress(value) { progress = value; progressBar.style.width = progress + '%'; progressTextSpan.textContent = 'Loading ' + progress + '%'; }
+        function updateProgress(value) { 
+            progress = value; 
+            progressBar.style.width = progress + '%'; 
+            progressTextSpan.textContent = 'Loading ' + progress + '%'; 
+        }
         
         function finishSplash() {
             splashScreen.style.opacity = '0';
@@ -677,19 +679,17 @@
                     // Langsung buka dashboard tanpa login
                     startApp(savedName);
                 } else {
-                    // Tampilkan halaman login
+                    // Tampilkan form login
                     loginOverlay.style.display = 'flex';
                     loginNameInput.focus();
                 }
-            }, 500);
+            }, 300);
         }
         
         function startApp(userName) {
             loginOverlay.style.display = 'none';
             mainAppDiv.style.display = 'block';
-            // Inisialisasi fitur DUKOPS
             initDukops();
-            // Inisialisasi live chat
             initSupabaseChat(userName);
         }
         
@@ -709,10 +709,11 @@
             }
         });
         
+        // Progress bar cepat (selesai dalam < 1 detik)
         updateProgress(0);
         let interval = setInterval(() => {
             if (progress < 100) { 
-                let inc = Math.floor(Math.random() * 15) + 5; 
+                let inc = Math.floor(Math.random() * 20) + 10; 
                 let np = Math.min(progress + inc, 100); 
                 updateProgress(np); 
                 if (np === 100) { 
@@ -720,7 +721,7 @@
                     finishSplash(); 
                 } 
             }
-        }, 150);
+        }, 80);
         
         // Status koneksi
         function updateConnectionStatus() {
@@ -740,7 +741,7 @@
         window.addEventListener('offline', updateConnectionStatus);
         updateConnectionStatus();
         
-        // ======================== FUNGSI DUKOPS (UPLOAD, CANVAS, DLL) ========================
+        // ======================== FUNGSI DUKOPS ========================
         function getFullDateKey(dateString) { if (!dateString) return null; let d = new Date(dateString); if (isNaN(d)) return null; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
         function isFullDateAlreadySubmitted(dateString) { const submitted = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]'); return submitted.includes(getFullDateKey(dateString)); }
         function saveSubmittedFullDate(dateString) { const key = getFullDateKey(dateString); if (!key) return; let submitted = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]'); if (!submitted.includes(key)) { submitted.push(key); localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submitted)); } }
