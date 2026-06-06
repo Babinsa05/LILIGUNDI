@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#1e3b2c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng">
+    <meta name="description" content="Aplikasi DUKOPS Babinsa Liligundi - Koramil 1609-01/Buleleng dengan Live Chat Real-time">
     
     <!-- Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/android-chrome-512x512.png">
@@ -18,20 +18,14 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
-        button, .btn-action, .file-input-label {
-            min-height: 44px;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        @media (max-width: 768px) {
-            input, select, textarea {
-                font-size: 16px;
-            }
-        }
+        /* ========== GAYA ASLI (DIKEMAS) ========== */
+        button, .btn-action, .file-input-label { min-height: 44px; }
+        html { scroll-behavior: smooth; }
+        @media (max-width: 768px) { input, select, textarea { font-size: 16px; } }
         
         #splashScreen {
             position: fixed;
@@ -46,63 +40,16 @@
             z-index: 9999;
             transition: opacity 0.5s ease;
         }
-        .splash-content {
-            text-align: center;
-            padding: 20px;
-        }
-        .splash-logo {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .splash-title {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-        .splash-subtitle {
-            font-size: 1rem;
-            color: #c7e9cf;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-        }
-        .progress-container {
-            width: 280px;
-            height: 6px;
-            background: #2a5541;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #63b581, #a8e6b0);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        .progress-text {
-            margin-top: 12px;
-            font-size: 0.8rem;
-            color: #8abf9a;
-            font-family: monospace;
-        }
+        .splash-content { text-align: center; padding: 20px; }
+        .splash-logo { width: 120px; height: 120px; object-fit: contain; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+        .splash-title { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 8px; }
+        .splash-subtitle { font-size: 1rem; color: #c7e9cf; margin-bottom: 30px; }
+        .progress-container { width: 280px; height: 6px; background: #2a5541; border-radius: 10px; overflow: hidden; margin: 0 auto; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #63b581, #a8e6b0); transition: width 0.3s ease; }
+        .progress-text { margin-top: 12px; font-size: 0.8rem; color: #8abf9a; font-family: monospace; }
         
-        #mainApp {
-            display: none;
-        }
+        #mainApp { display: none; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -120,553 +67,211 @@
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
-        
         .header {
             background: linear-gradient(135deg, #1a3a2c, #0f2a20);
             padding: 16px 20px 12px;
             border-bottom: 1px solid #3a6b55;
             overflow-x: hidden;
         }
-        
-        .header-two-columns {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .header-left {
-            flex-shrink: 0;
-            text-align: center;
-        }
-        
-        .header-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 16px;
-            background: #1a3a2c;
-            padding: 5px;
-        }
-        
-        .header-right {
-            flex: 1;
-            min-width: 180px;
-            overflow-x: hidden;
-        }
-        
-        .title-status-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .header-title h1 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin: 0;
-            letter-spacing: 1.5px;
-            white-space: nowrap;
-        }
-        
-        .status-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.4);
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            animation: pulse-status 1.5s infinite;
-        }
-        
-        .status-dot.online {
-            background: #2ecc71;
-            box-shadow: 0 0 5px #2ecc71;
-        }
-        
-        .status-dot.offline {
-            background: #e74c3c;
-            box-shadow: 0 0 5px #e74c3c;
-            animation: none;
-        }
-        
-        @keyframes pulse-status {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
-        .status-text {
-            color: white;
-        }
-        
-        .status-text.online {
-            color: #2ecc71;
-        }
-        
-        .status-text.offline {
-            color: #e74c3c;
-        }
-        
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            margin: 10px 0;
-            background: rgba(0,0,0,0.2);
-            border-radius: 40px;
-            padding: 6px 0;
-        }
-        
-        .marquee {
-            display: inline-block;
-            padding-left: 100%;
-            animation: jalan 15s linear infinite;
-            font-size: 13px;
-            font-weight: bold;
-            color: #fff700;
-            text-shadow: 1px 1px 2px black;
-            white-space: nowrap;
-        }
-        
-        @keyframes jalan {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .marquee:hover {
-            animation-play-state: paused;
-        }
-        
-        .motto {
-            text-align: left;
-            padding: 5px 0 0 0;
-            font-size: 12px;
-            color: #c7e9cf;
-            border-top: 1px solid #3a6b55;
-            margin-top: 8px;
-            white-space: nowrap;
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .motto i {
-            margin-right: 8px;
-            color: #63b581;
-        }
-        
-        .badge-wrapper {
-            text-align: center;
-            margin-top: 5px;
-        }
-        
-        .badge-wrapper div {
-            display: inline-flex;
-            background: #2a5541;
-            padding: 6px 20px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            gap: 8px;
-            font-weight: 500;
-        }
-        
+        .header-two-columns { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .header-left { flex-shrink: 0; text-align: center; }
+        .header-logo { width: 80px; height: 80px; object-fit: contain; border-radius: 16px; background: #1a3a2c; padding: 5px; }
+        .header-right { flex: 1; min-width: 180px; overflow-x: hidden; }
+        .title-status-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        .header-title h1 { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; margin: 0; white-space: nowrap; }
+        .status-indicator { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); padding: 5px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: bold; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; animation: pulse-status 1.5s infinite; }
+        .status-dot.online { background: #2ecc71; box-shadow: 0 0 5px #2ecc71; }
+        .status-dot.offline { background: #e74c3c; box-shadow: 0 0 5px #e74c3c; animation: none; }
+        @keyframes pulse-status { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        .status-text.online { color: #2ecc71; }
+        .status-text.offline { color: #e74c3c; }
+        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; margin: 10px 0; background: rgba(0,0,0,0.2); border-radius: 40px; padding: 6px 0; }
+        .marquee { display: inline-block; padding-left: 100%; animation: jalan 15s linear infinite; font-size: 13px; font-weight: bold; color: #fff700; text-shadow: 1px 1px 2px black; }
+        @keyframes jalan { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .motto { text-align: left; padding: 5px 0 0 0; font-size: 12px; color: #c7e9cf; border-top: 1px solid #3a6b55; margin-top: 8px; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; }
+        .motto i { margin-right: 8px; color: #63b581; }
         .content { padding: 20px 22px; }
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 600; font-size: 0.85rem; color: #cbefd4; margin-bottom: 6px; }
         label i { margin-right: 6px; }
-        
-        input, textarea {
-            width: 100%;
-            padding: 10px 14px;
-            background: #1e352b;
-            border: 1px solid #3b6b55;
-            border-radius: 18px;
-            font-size: 0.9rem;
-            color: #f0faf3;
-            transition: all 0.2s;
-            font-family: Arial, sans-serif;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #7bcb9e;
-            background: #254f3f;
-            box-shadow: 0 0 0 2px rgba(92, 186, 125, 0.2);
-        }
+        input, textarea { width: 100%; padding: 10px 14px; background: #1e352b; border: 1px solid #3b6b55; border-radius: 18px; font-size: 0.9rem; color: #f0faf3; transition: all 0.2s; }
+        input:focus, textarea:focus { outline: none; border-color: #7bcb9e; background: #254f3f; box-shadow: 0 0 0 2px rgba(92, 186, 125, 0.2); }
         textarea { resize: vertical; min-height: 85px; line-height: 1.4; }
-        
-        /* AI Button */
-        .ai-narasi-wrapper {
-            position: relative;
-        }
-        
-        .ai-button {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            border: none;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-            z-index: 10;
-        }
-        
-        .ai-button:hover {
-            transform: scale(1.05);
-        }
-        
-        .ai-button i {
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .file-input-wrapper {
-            position: relative;
-            width: 100%;
-        }
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-        }
-        .file-input-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 10px 14px;
-            background: #1e352b;
-            border: 1px solid #3b6b55;
-            border-radius: 18px;
-            font-size: 0.9rem;
-            color: #f0faf3;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .file-input-label:hover {
-            background: #254f3f;
-            border-color: #7bcb9e;
-        }
-        .file-input-label span:first-child { color: #bde5ca; }
-        .file-input-label span:last-child { color: #8abf9a; font-size: 0.8rem; }
-        
-        .canvas-wrapper {
-            background: transparent;
-            border-radius: 22px;
-            padding: 0;
-            margin: 16px 0 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        canvas {
-            display: block;
-            border-radius: 16px;
-            background: #1b3028;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
-            height: auto;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0 10px;
-            justify-content: center;
-        }
-        
-        .btn-action {
-            flex: 1;
-            background: #2a5541;
-            border: none;
-            padding: 10px 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 40px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            white-space: nowrap;
-        }
-        
-        .btn-action:hover {
-            background: #3a7057;
-            transform: translateY(-1px);
-        }
-        
-        .btn-action i {
-            margin-right: 5px;
-            font-size: 0.8rem;
-        }
-        
-        .btn-action:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-download {
-            background: linear-gradient(95deg, #317456, #1f543f);
-        }
-        
-        .btn-download:hover:not(:disabled) {
-            background: linear-gradient(95deg, #409b72, #2b7054);
-        }
-        
-        .btn-reset {
-            background: #5a3a3a;
-        }
-        
-        .btn-reset:hover {
-            background: #7a4a4a;
-        }
-        
+        .ai-narasi-wrapper { position: relative; }
+        .ai-button { position: absolute; bottom: 10px; right: 10px; background: linear-gradient(135deg, #8e44ad, #9b59b6); border: none; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .ai-button i { color: white; font-size: 1.2rem; }
+        .file-input-wrapper { position: relative; width: 100%; }
+        .file-input-wrapper input[type="file"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; }
+        .file-input-label { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 14px; background: #1e352b; border: 1px solid #3b6b55; border-radius: 18px; font-size: 0.9rem; color: #f0faf3; cursor: pointer; }
+        .file-input-label:hover { background: #254f3f; border-color: #7bcb9e; }
+        .canvas-wrapper { background: transparent; border-radius: 22px; padding: 0; margin: 16px 0 8px; display: flex; justify-content: center; align-items: center; }
+        canvas { display: block; border-radius: 16px; background: #1b3028; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 100%; height: auto; max-width: 100%; margin: 0 auto; }
+        .button-group { display: flex; gap: 10px; margin: 15px 0 10px; justify-content: center; }
+        .btn-action { flex: 1; background: #2a5541; border: none; padding: 10px 8px; font-size: 0.75rem; font-weight: 600; border-radius: 40px; color: white; cursor: pointer; transition: all 0.2s; text-align: center; white-space: nowrap; }
+        .btn-action:hover { background: #3a7057; transform: translateY(-1px); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-download { background: linear-gradient(95deg, #317456, #1f543f); }
+        .btn-reset { background: #5a3a3a; }
         .loader-overlay { display: flex; justify-content: center; margin: 6px 0; }
         .loader { width: 30px; height: 30px; border: 3px solid #3c775b; border-top: 3px solid #c5f5d3; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         hr { border: none; border-top: 1px solid #3e6857; margin: 16px 0 10px; }
-        
-        .log-section {
-            margin-top: 18px;
-            background: #12261f;
-            border-radius: 20px;
-            padding: 12px;
-            border: 1px solid #3a6b55;
-        }
-        .log-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #bde0ca;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #3a6b55;
-        }
-        .log-title span:first-child i { margin-right: 6px; }
-        .log-count {
-            background: #2a5541;
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .log-list {
-            max-height: 200px;
-            overflow-y: auto;
-            font-size: 0.7rem;
-        }
-        .log-item {
-            background: #1a352b;
-            padding: 6px 10px;
-            margin-bottom: 5px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 3px solid #63b581;
-        }
-        .log-filename {
-            font-weight: 600;
-            color: #bde5ca;
-            word-break: break-all;
-            flex: 1;
-            font-size: 0.7rem;
-        }
-        .log-time {
-            color: #8abf9a;
-            font-size: 0.65rem;
-            margin-left: 8px;
-        }
-        .empty-log {
-            text-align: center;
-            color: #8abf9a;
-            padding: 12px;
-            font-style: italic;
-            font-size: 0.7rem;
-        }
-        
-        .footer-version {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #8abf9a;
-            margin-top: 16px;
-            padding-bottom: 8px;
-            line-height: 1.5;
-        }
-        
-        .footer-version .version {
-            font-weight: bold;
-            color: #bde5ca;
-        }
-        
-        .footer-version .sub {
-            font-size: 0.65rem;
-            color: #6b8f7a;
-        }
-        
-        #installContainer {
-            position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 12px; border-radius: 24px;
-            z-index: 1000; display: none; text-align: center; border: 1px solid #5b9b7a;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
+        .log-section { margin-top: 18px; background: #12261f; border-radius: 20px; padding: 12px; border: 1px solid #3a6b55; }
+        .log-title { font-size: 0.85rem; font-weight: 600; color: #bde0ca; margin-bottom: 10px; display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid #3a6b55; }
+        .log-count { background: #2a5541; padding: 2px 10px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; }
+        .log-list { max-height: 200px; overflow-y: auto; font-size: 0.7rem; }
+        .log-item { background: #1a352b; padding: 6px 10px; margin-bottom: 5px; border-radius: 12px; display: flex; justify-content: space-between; border-left: 3px solid #63b581; }
+        .empty-log { text-align: center; color: #8abf9a; padding: 12px; font-style: italic; }
+        .footer-version { text-align: center; font-size: 0.7rem; color: #8abf9a; margin-top: 16px; padding-bottom: 8px; }
+        #installContainer { position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e3a2f; padding: 12px; border-radius: 24px; z-index: 1000; display: none; text-align: center; backdrop-filter: blur(10px); }
         .install-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
-        .install-buttons button { padding: 8px 20px; margin: 0; width: auto; font-size: 0.8rem; }
         
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
+        /* MODAL TEMPLATE */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 2000; justify-content: center; align-items: center; }
         .modal.show { display: flex; }
-        .modal-content {
-            background: #1a3a2c;
+        .modal-content { background: #1a3a2c; border-radius: 24px; width: 95%; max-width: 1000px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header { padding: 12px 20px; background: #1e3a2f; display: flex; justify-content: space-between; border-bottom: 1px solid #3b6b55; }
+        .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #8abf9a; }
+        .modal-tabs { display: flex; flex-wrap: wrap; background: #12261f; padding: 0 10px; gap: 5px; border-bottom: 1px solid #3b6b55; }
+        .modal-tab-btn { padding: 10px 16px; background: none; border: none; color: #8abf9a; cursor: pointer; border-bottom: 2px solid transparent; }
+        .modal-tab-btn.active { color: #2ecc71; border-bottom-color: #2ecc71; }
+        .modal-template-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 10px; padding: 10px; }
+        .modal-template-item { background: #1e352b; padding: 12px; border-radius: 12px; cursor: pointer; border-left: 3px solid #3b6b55; }
+        .modal-template-item:hover { background: #2a5541; border-left-color: #2ecc71; }
+        
+        /* ========== GAYA LIVE CHAT WIDGET ========== */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2ecc71, #1e8e3e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+            color: white;
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+        .chat-toggle:hover { transform: scale(1.05); }
+        .chat-panel {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 350px;
+            max-width: 85vw;
+            height: 500px;
+            background: #1a2f28;
             border-radius: 24px;
-            width: 95%;
-            max-width: 1000px;
-            height: 85vh;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            border: 1px solid #2ecc71;
         }
-        .modal-header {
-            padding: 12px 20px;
-            background: #1e3a2f;
+        .chat-panel.hide { display: none; }
+        .chat-header {
+            background: #0f2a20;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #3b6b55;
+            border-bottom: 1px solid #2ecc71;
         }
-        .modal-header h3 { color: #bde5ca; }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #8abf9a;
-        }
-        .modal-close:hover { color: #e74c3c; }
-        .modal-body {
+        .chat-header h4 { margin: 0; font-size: 1rem; color: #e2ffe6; }
+        .chat-close { background: none; border: none; color: #c7e9cf; font-size: 20px; cursor: pointer; }
+        .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
-        }
-        .modal-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            background: #12261f;
-            padding: 0 10px;
-            gap: 5px;
-            border-bottom: 1px solid #3b6b55;
-        }
-        .modal-tab-btn {
-            padding: 10px 16px;
-            background: none;
-            border: none;
-            color: #8abf9a;
-            cursor: pointer;
-            font-size: 0.8rem;
-            border-bottom: 2px solid transparent;
-            transition: 0.2s;
-        }
-        .modal-tab-btn.active {
-            color: #2ecc71;
-            border-bottom-color: #2ecc71;
-        }
-        .modal-template-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 10px;
-            padding: 10px;
-        }
-        .modal-template-item {
-            background: #1e352b;
             padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            border-left: 3px solid #3b6b55;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #15261f;
         }
-        .modal-template-item:hover {
-            background: #2a5541;
-            border-left-color: #2ecc71;
-            transform: translateX(5px);
-        }
-        .modal-template-text {
+        .message {
+            max-width: 85%;
+            padding: 8px 12px;
+            border-radius: 18px;
             font-size: 0.8rem;
             line-height: 1.4;
+            word-wrap: break-word;
         }
-        .loading-templates {
-            text-align: center;
-            padding: 40px;
-            color: #8abf9a;
+        .message-user {
+            align-self: flex-end;
+            background: #2ecc71;
+            color: #0a1814;
+            border-bottom-right-radius: 4px;
+        }
+        .message-babinsa {
+            align-self: flex-start;
+            background: #2a5541;
+            color: #f0faf3;
+            border-bottom-left-radius: 4px;
+        }
+        .message-time {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-align: right;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            background: #0f2a20;
+            border-top: 1px solid #3a6b55;
+            gap: 8px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            background: #1e352b;
+            border: 1px solid #3b6b55;
+            border-radius: 30px;
+            padding: 10px 14px;
+            color: white;
+            font-size: 0.8rem;
+        }
+        .chat-input-area button {
+            background: #2ecc71;
+            border: none;
+            border-radius: 30px;
+            padding: 0 16px;
+            color: #0a1814;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
         
         @media (max-width: 550px) {
             body { padding: 12px 8px; }
-            .content { padding: 16px 18px; }
-            .header-two-columns { flex-direction: column; text-align: center; gap: 10px; }
-            .header-right { text-align: center; width: 100%; }
-            .title-status-row { justify-content: center; flex-direction: column; }
             .header-title h1 { font-size: 1.2rem; white-space: normal; }
-            .status-indicator { padding: 3px 8px; font-size: 0.65rem; }
-            .status-dot { width: 8px; height: 8px; }
-            .marquee { font-size: 10px; animation-duration: 12s; }
-            .motto { text-align: center; font-size: 9px; white-space: normal; }
-            .button-group { gap: 6px; flex-wrap: wrap; }
-            .btn-action { font-size: 0.65rem; padding: 10px 4px; white-space: normal; word-break: keep-all; min-width: 90px; }
-            .btn-action i { margin-right: 3px; font-size: 0.7rem; }
-            canvas { max-width: 100%; }
-            .header-logo { width: 60px; height: 60px; }
-            .footer-version { font-size: 0.6rem; }
-            .modal-template-list { grid-template-columns: 1fr; }
-        }
-        
-        @media (max-width: 380px) {
-            .btn-action { font-size: 0.6rem; padding: 8px 2px; min-width: 75px; }
-            .button-group { gap: 5px; }
-            .header-title h1 { font-size: 1rem; }
+            .button-group { flex-wrap: wrap; }
+            .btn-action { font-size: 0.65rem; min-width: 90px; }
+            .chat-panel { width: 90vw; right: -10px; bottom: 70px; height: 450px; }
         }
     </style>
 </head>
@@ -690,43 +295,26 @@
                     <div class="header-left">
                         <img class="header-logo" src="https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/profile%20liligundi.png" alt="Logo" onerror="this.style.display='none'">
                     </div>
-                    
                     <div class="header-right">
                         <div class="title-status-row">
-                            <div class="header-title">
-                                <h1>DUKOPS BABINSA</h1>
-                            </div>
+                            <div class="header-title"><h1>DUKOPS BABINSA</h1></div>
                             <div class="status-indicator" id="statusIndicator">
                                 <div class="status-dot" id="statusDot"></div>
                                 <span class="status-text" id="statusText">Mengecek...</span>
                             </div>
                         </div>
-                        
                         <div class="marquee-container">
-                            <div class="marquee">
-                                ★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★
-                            </div>
+                            <div class="marquee">★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★</div>
                         </div>
-                        
-                        <div class="motto">
-                            <i class="fas fa-quote-left"></i>Bersama Rakyat TNI Kuat<i class="fas fa-quote-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="">
-                    <div>
-                        <span>Babinsa Kelurahan Liligundi</span>
+                        <div class="motto"><i class="fas fa-quote-left"></i>Bersama Rakyat TNI Kuat<i class="fas fa-quote-right"></i></div>
                     </div>
                 </div>
             </div>
-            
             <div class="content">
                 <div class="form-group">
                     <label><i class="fas fa-tag"></i> Judul Kegiatan</label>
                     <input type="text" id="judulKegiatanInput" placeholder="ketik disini Judul Kegiatan" value="">
                 </div>
-
                 <div class="form-group">
                     <label><i class="fas fa-camera"></i> Foto Kegiatan</label>
                     <div class="file-input-wrapper">
@@ -737,46 +325,31 @@
                         <input type="file" id="gambar" accept="image/*">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label><i class="fas fa-calendar-alt"></i> Tanggal & Waktu Kegiatan</label>
                     <input type="datetime-local" id="tanggalWaktu">
                 </div>
-
                 <div class="form-group">
                     <label><i class="fas fa-file-alt"></i> Narasi Kegiatan Babinsa</label>
                     <div class="ai-narasi-wrapper">
                         <textarea id="narasi" rows="4" placeholder="Tulis detail kegiatan DUKOPS..."></textarea>
-                        <button class="ai-button" id="aiTemplateBtn" title="Pilih Template Narasi">
-                            <i class="fas fa-magic"></i>
-                        </button>
+                        <button class="ai-button" id="aiTemplateBtn" title="Pilih Template Narasi"><i class="fas fa-magic"></i></button>
                     </div>
                 </div>
-
-                <div class="canvas-wrapper">
-                    <canvas id="canvas"></canvas>
-                </div>
-                
+                <div class="canvas-wrapper"><canvas id="canvas"></canvas></div>
                 <div class="button-group">
                     <button id="downloadPngBtn" class="btn-action"><i class="fas fa-image"></i> PNG+TXT</button>
                     <button id="downloadBtn" class="btn-action btn-download" disabled><i class="fas fa-save"></i> SIMPAN ZIP</button>
                     <button id="resetBtn" class="btn-action btn-reset"><i class="fas fa-trash-alt"></i> RESET</button>
                 </div>
-                
                 <div class="loader-overlay"><div class="loader" id="loadingIndicator"></div></div>
-                
                 <div class="log-section">
-                    <div class="log-title">
-                        <span><i class="fas fa-history"></i> Riwayat Laporan Tersimpan</span>
-                        <span class="log-count" id="logCountBadge">0</span>
-                    </div>
-                    <div id="logList" class="log-list">
-                        <div class="empty-log">Belum ada laporan tersimpan</div>
-                    </div>
+                    <div class="log-title"><span><i class="fas fa-history"></i> Riwayat Laporan Tersimpan</span><span class="log-count" id="logCountBadge">0</span></div>
+                    <div id="logList" class="log-list"><div class="empty-log">Belum ada laporan tersimpan</div></div>
                 </div>
                 <hr>
                 <div class="footer-version">
-                    <div class="version">DUKOPS BABINSA — VERSI 2.0</div>
+                    <div class="version">DUKOPS BABINSA — VERSI 2.0 + LIVE CHAT</div>
                     <div class="sub">Aplikasi Pendukung Data dan Operasional Babinsa</div>
                     <div class="sub">Developer: Serka I Nyoman Arta</div>
                 </div>
@@ -792,7 +365,7 @@
         </div>
     </div>
 
-    <!-- MODAL TEMPLATE -->
+    <!-- MODAL TEMPLATE NARASI -->
     <div id="templateModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -800,24 +373,51 @@
                 <button class="modal-close" id="closeModalBtn">&times;</button>
             </div>
             <div class="modal-tabs" id="modalTabs"></div>
-            <div class="modal-body" id="modalBody">
-                <div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template...</div>
+            <div class="modal-body" id="modalBody"><div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template...</div></div>
+        </div>
+    </div>
+
+    <!-- LIVE CHAT WIDGET -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chatToggleBtn">
+            <i class="fas fa-comment-dots"></i>
+            <span id="chatBadge" class="chat-badge" style="display: none;">0</span>
+        </button>
+        <div class="chat-panel hide" id="chatPanel">
+            <div class="chat-header">
+                <h4><i class="fas fa-headset"></i> Live Chat Babinsa</h4>
+                <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message message-babinsa">
+                    Assalamualaikum, selamat datang di Live Chat DUKOPS. Ada yang bisa dibantu? 🇮🇩
+                    <div class="message-time">Sekarang</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Tulis pesan...">
+                <button id="chatSendBtn"><i class="fas fa-paper-plane"></i> Kirim</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
-        // ======================== KONFIGURASI ========================
-        // GANTI URL INI DENGAN RAW URL FILE template-narasi.json ANDA
+        // ======================== KONFIGURASI SUPABASE UNTUK LIVE CHAT ========================
+        const SUPABASE_URL = 'https://mopwdhicxoycalnjfihd.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_hZaJeXyc-thhiLoPamdmTw_TSDHqPBe';
+        
+        let supabaseChat;
+        let chatChannel;
+        let chatCurrentUser = null;
+        let chatUnreadCount = 0;
+        
+        // ======================== FUNGSI ASLI DUKOPS (TEMPLATE, KOORDINAT, DLL) ========================
         const TEMPLATE_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.json';
         const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/refs/heads/main/koordinat.json';
         
-        // Variabel global untuk menyimpan template
         let templateData = null;
         let activeTab = "monitoring";
-        
-        // Tab configuration
         const tabConfig = [
             { id: "monitoring", name: "🚓 MONITORING & PATROLI" },
             { id: "komsos", name: "💬 KOMSOS" },
@@ -826,168 +426,7 @@
             { id: "gotong", name: "🌾 GOTONG ROYONG" }
         ];
         
-        // ======================== LOAD TEMPLATE DARI GITHUB ========================
-        async function loadTemplatesFromGitHub() {
-            try {
-                const response = await fetch(TEMPLATE_JSON_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                templateData = data.templates;
-                console.log("✅ Template berhasil dimuat dari GitHub");
-                return true;
-            } catch (error) {
-                console.error("Gagal memuat template:", error);
-                return false;
-            }
-        }
-        
-        // ======================== MODAL TEMPLATE ========================
-        const modal = document.getElementById('templateModal');
-        const openModalBtn = document.getElementById('aiTemplateBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const modalTabs = document.getElementById('modalTabs');
-        const modalBody = document.getElementById('modalBody');
-        
-        function renderModalTabs() {
-            modalTabs.innerHTML = "";
-            tabConfig.forEach(tab => {
-                const btn = document.createElement('button');
-                btn.className = `modal-tab-btn ${activeTab === tab.id ? 'active' : ''}`;
-                btn.innerHTML = tab.name;
-                btn.onclick = () => {
-                    activeTab = tab.id;
-                    renderModalTabs();
-                    renderModalTemplateList();
-                };
-                modalTabs.appendChild(btn);
-            });
-        }
-        
-        function renderModalTemplateList() {
-            if (!templateData || !templateData[activeTab]) {
-                modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa koneksi internet!</div>';
-                return;
-            }
-            
-            const templates = templateData[activeTab];
-            modalBody.innerHTML = `
-                <div class="modal-template-list">
-                    ${templates.map((template, idx) => `
-                        <div class="modal-template-item" onclick="selectTemplate('${escapeJs(template)}')">
-                            <div style="font-size:0.65rem;color:#2ecc71;margin-bottom:5px;">#${idx + 1}</div>
-                            <div class="modal-template-text">${escapeHtml(template)}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        function escapeJs(text) {
-            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
-        }
-        
-        window.selectTemplate = function(template) {
-            document.getElementById('narasi').value = template;
-            modal.classList.remove('show');
-            checkInputCompletion();
-            
-            // Toast notifikasi
-            const toast = document.createElement('div');
-            toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#2ecc71;color:#0a1814;padding:10px20px;border-radius:50px;z-index:2001;font-weight:bold;';
-            toast.innerHTML = '✅ Template narasi disalin!';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 1500);
-        };
-        
-        openModalBtn.onclick = async () => {
-            if (!templateData) {
-                modalBody.innerHTML = '<div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template dari GitHub...</div>';
-                modal.classList.add('show');
-                const success = await loadTemplatesFromGitHub();
-                if (success && templateData) {
-                    renderModalTabs();
-                    renderModalTemplateList();
-                } else {
-                    modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa koneksi internet!</div>';
-                }
-            } else {
-                renderModalTabs();
-                renderModalTemplateList();
-                modal.classList.add('show');
-            }
-        };
-        
-        closeModalBtn.onclick = () => {
-            modal.classList.remove('show');
-        };
-        
-        window.onclick = (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('show');
-            }
-        };
-        
-        // ======================== SPLASH SCREEN ========================
-        let progress = 0;
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const splashScreen = document.getElementById('splashScreen');
-        const mainApp = document.getElementById('mainApp');
-        
-        function updateProgress(value) {
-            progress = value;
-            progressBar.style.width = progress + '%';
-            progressText.textContent = 'Loading ' + progress + '%';
-        }
-        
-        function finishSplash() {
-            splashScreen.style.opacity = '0';
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-                mainApp.style.display = 'block';
-            }, 500);
-        }
-        
-        updateProgress(0);
-        let interval = setInterval(() => {
-            if (progress < 100) {
-                let increment = Math.floor(Math.random() * 15) + 5;
-                let newProgress = Math.min(progress + increment, 100);
-                updateProgress(newProgress);
-                if (newProgress === 100) {
-                    clearInterval(interval);
-                    finishSplash();
-                }
-            }
-        }, 150);
-        
-        // ======================== CEK STATUS KONEKSI ========================
-        function updateConnectionStatus() {
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            
-            if (navigator.onLine) {
-                statusDot.className = 'status-dot online';
-                statusText.className = 'status-text online';
-                statusText.innerHTML = '<i class="fas fa-wifi"></i> Online';
-            } else {
-                statusDot.className = 'status-dot offline';
-                statusText.className = 'status-text offline';
-                statusText.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
-            }
-        }
-        
-        window.addEventListener('online', updateConnectionStatus);
-        window.addEventListener('offline', updateConnectionStatus);
-        updateConnectionStatus();
-        
-        // ======================== KONFIGURASI ========================
+        // Variabel DUKOPS
         let KOORDINAT_LIST = [];
         let koordinatLoaded = false;
         const STORAGE_KEY_COUNTER = "dukops_counter";
@@ -1012,596 +451,294 @@
         let currentKoordinat = "";
         let currentJudul = "";
         let currentTimestamp = "";
-        let submissionCount = 0;
         let sequenceNumber = 0;
-        let canvasWidth = 600;
-        let canvasHeight = 400;
+        let canvasWidth = 600, canvasHeight = 400;
         
-        // ======================== ANTI GANDA ========================
-        function getFullDateKey(dateString) {
-            if (!dateString) return null;
-            let date = new Date(dateString);
-            if (isNaN(date.getTime())) return null;
-            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-        }
-        
-        function isFullDateAlreadySubmitted(dateString) {
-            const submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
-            const dateKey = getFullDateKey(dateString);
-            return submittedDates.includes(dateKey);
-        }
-        
-        function saveSubmittedFullDate(dateString) {
-            const dateKey = getFullDateKey(dateString);
-            if (!dateKey) return;
-            let submittedDates = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]');
-            if (!submittedDates.includes(dateKey)) {
-                submittedDates.push(dateKey);
-                localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submittedDates));
+        // ======================== LOAD TEMPLATE ========================
+        async function loadTemplatesFromGitHub() {
+            try {
+                const response = await fetch(TEMPLATE_JSON_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                templateData = data.templates;
+                console.log("✅ Template narasi dimuat");
+                return true;
+            } catch (error) {
+                console.error("Gagal memuat template:", error);
+                return false;
             }
         }
         
-        // ======================== LOG SYSTEM ========================
-        function loadLogs() {
-            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-            if (savedLogs) {
-                try {
-                    const logs = JSON.parse(savedLogs);
-                    displayLogs(logs);
-                    if (logCountBadge) logCountBadge.textContent = logs.length;
-                } catch(e) { console.error(e); }
-            } else {
-                if (logCountBadge) logCountBadge.textContent = "0";
-            }
-        }
+        // Modal template
+        const modal = document.getElementById('templateModal');
+        const openModalBtn = document.getElementById('aiTemplateBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTabs = document.getElementById('modalTabs');
+        const modalBody = document.getElementById('modalBody');
         
-        function displayLogs(logs) {
-            if (!logListDiv) return;
-            if (!logs || logs.length === 0) {
-                logListDiv.innerHTML = '<div class="empty-log">Belum ada laporan tersimpan</div>';
-                return;
-            }
-            logListDiv.innerHTML = '';
-            logs.forEach(log => {
-                const logItem = document.createElement('div');
-                logItem.className = 'log-item';
-                logItem.innerHTML = `
-                    <span class="log-filename"><i class="fas fa-file-archive"></i> ${log.filename}</span>
-                    <span class="log-time"><i class="far fa-clock"></i> ${log.time || '-'}</span>
-                `;
-                logListDiv.appendChild(logItem);
+        function renderModalTabs() {
+            modalTabs.innerHTML = "";
+            tabConfig.forEach(tab => {
+                const btn = document.createElement('button');
+                btn.className = `modal-tab-btn ${activeTab === tab.id ? 'active' : ''}`;
+                btn.innerHTML = tab.name;
+                btn.onclick = () => {
+                    activeTab = tab.id;
+                    renderModalTabs();
+                    renderModalTemplateList();
+                };
+                modalTabs.appendChild(btn);
             });
         }
         
-        function saveLog(filename, timeStr) {
-            let logs = [];
-            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-            if (savedLogs) {
-                try {
-                    logs = JSON.parse(savedLogs);
-                } catch(e) { logs = []; }
+        function renderModalTemplateList() {
+            if (!templateData || !templateData[activeTab]) {
+                modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa koneksi!</div>';
+                return;
             }
-            logs.unshift({ filename, time: timeStr, date: new Date().toISOString() });
-            if (logs.length > 50) logs = logs.slice(0, 50);
-            localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
-            displayLogs(logs);
-            if (logCountBadge) logCountBadge.textContent = logs.length;
+            const templates = templateData[activeTab];
+            modalBody.innerHTML = `<div class="modal-template-list">${templates.map((t, idx) => `<div class="modal-template-item" onclick="selectTemplate('${escapeJs(t)}')"><div style="font-size:0.65rem;color:#2ecc71;">#${idx+1}</div><div class="modal-template-text">${escapeHtml(t)}</div></div>`).join('')}</div>`;
         }
         
-        function addLog(filename) {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            saveLog(filename, timeStr);
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+        function escapeJs(text) { return text.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n'); }
+        window.selectTemplate = function(template) {
+            document.getElementById('narasi').value = template;
+            modal.classList.remove('show');
+            checkInputCompletion();
+            showToastMsg('✅ Template narasi disalin!');
+        };
+        
+        openModalBtn.onclick = async () => {
+            if (!templateData) {
+                modalBody.innerHTML = '<div class="loading-templates"><i class="fas fa-spinner fa-pulse"></i> Memuat template...</div>';
+                modal.classList.add('show');
+                const success = await loadTemplatesFromGitHub();
+                if (success && templateData) { renderModalTabs(); renderModalTemplateList(); }
+                else modalBody.innerHTML = '<div class="loading-templates">❌ Gagal memuat template. Periksa internet!</div>';
+            } else { renderModalTabs(); renderModalTemplateList(); modal.classList.add('show'); }
+        };
+        closeModalBtn.onclick = () => modal.classList.remove('show');
+        window.onclick = (e) => { if (e.target === modal) modal.classList.remove('show'); };
+        function showToastMsg(msg) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:80px;right:20px;background:#2ecc71;color:#0a1814;padding:10px 20px;border-radius:50px;z-index:4000;font-weight:bold;';
+            toast.innerHTML = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
         }
         
-        function resetAllData() {
-            if (confirm("RESET SEMUA DATA? Menghapus semua laporan tersimpan, data tanggal terkirim, dan mengatur ulang penghitung. Data tidak dapat dikembalikan.")) {
-                localStorage.removeItem(STORAGE_KEY_COUNTER);
-                localStorage.removeItem(STORAGE_KEY_LOGS);
-                localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES);
-                submissionCount = 0;
-                sequenceNumber = 0;
-                displayLogs([]);
-                if (logCountBadge) logCountBadge.textContent = "0";
-                alert("✅ Semua data laporan, riwayat tanggal, dan penghitung telah direset.");
+        // Splash screen
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const splashScreen = document.getElementById('splashScreen');
+        const mainApp = document.getElementById('mainApp');
+        function updateProgress(value) { progress = value; progressBar.style.width = progress + '%'; progressText.textContent = 'Loading ' + progress + '%'; }
+        function finishSplash() { splashScreen.style.opacity = '0'; setTimeout(() => { splashScreen.style.display = 'none'; mainApp.style.display = 'block'; }, 500); }
+        updateProgress(0);
+        let interval = setInterval(() => {
+            if (progress < 100) { let inc = Math.floor(Math.random() * 15) + 5; let np = Math.min(progress + inc, 100); updateProgress(np); if (np === 100) { clearInterval(interval); finishSplash(); } }
+        }, 150);
+        
+        // Status online
+        function updateConnectionStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            if (navigator.onLine) {
+                statusDot.className = 'status-dot online';
+                statusText.className = 'status-text online';
+                statusText.innerHTML = '<i class="fas fa-wifi"></i> Online';
+            } else {
+                statusDot.className = 'status-dot offline';
+                statusText.className = 'status-text offline';
+                statusText.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
             }
         }
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
         
-        // ======================== FUNGSI DOWNLOAD PNG+TXT ========================
+        // Fungsi DUKOPS
+        function getFullDateKey(dateString) { if (!dateString) return null; let d = new Date(dateString); if (isNaN(d)) return null; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+        function isFullDateAlreadySubmitted(dateString) { const submitted = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]'); return submitted.includes(getFullDateKey(dateString)); }
+        function saveSubmittedFullDate(dateString) { const key = getFullDateKey(dateString); if (!key) return; let submitted = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]'); if (!submitted.includes(key)) { submitted.push(key); localStorage.setItem(STORAGE_KEY_SUBMITTED_FULLDATES, JSON.stringify(submitted)); } }
+        function loadLogs() { const saved = localStorage.getItem(STORAGE_KEY_LOGS); if (saved) { try { const logs = JSON.parse(saved); displayLogs(logs); logCountBadge && (logCountBadge.textContent = logs.length); } catch(e){} } else { logCountBadge && (logCountBadge.textContent = "0"); } }
+        function displayLogs(logs) { if (!logListDiv) return; if (!logs || logs.length === 0) { logListDiv.innerHTML = '<div class="empty-log">Belum ada laporan tersimpan</div>'; return; } logListDiv.innerHTML = ''; logs.forEach(log => { const item = document.createElement('div'); item.className = 'log-item'; item.innerHTML = `<span class="log-filename"><i class="fas fa-file-archive"></i> ${log.filename}</span><span class="log-time"><i class="far fa-clock"></i> ${log.time || '-'}</span>`; logListDiv.appendChild(item); }); }
+        function saveLog(filename, timeStr) { let logs = []; const saved = localStorage.getItem(STORAGE_KEY_LOGS); if (saved) try { logs = JSON.parse(saved); } catch(e){} logs.unshift({ filename, time: timeStr, date: new Date().toISOString() }); if (logs.length > 50) logs = logs.slice(0,50); localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs)); displayLogs(logs); if (logCountBadge) logCountBadge.textContent = logs.length; }
+        function addLog(filename) { const now = new Date(); const timeStr = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' }); saveLog(filename, timeStr); }
+        function resetAllData() { if (confirm("RESET SEMUA DATA? Menghapus semua laporan tersimpan, data tanggal terkirim, dan mengatur ulang penghitung.")) { localStorage.removeItem(STORAGE_KEY_COUNTER); localStorage.removeItem(STORAGE_KEY_LOGS); localStorage.removeItem(STORAGE_KEY_SUBMITTED_FULLDATES); sequenceNumber = 0; displayLogs([]); if(logCountBadge) logCountBadge.textContent = "0"; alert("✅ Semua data laporan, riwayat tanggal, dan penghitung telah direset."); } }
+        
         async function downloadPngAndTxt() {
-            if (!currentImage.complete || !currentImage.src || currentImage.naturalWidth === 0) {
-                alert("❌ Pilih foto terlebih dahulu!");
-                return;
-            }
-            if (!tanggalInput.value) {
-                alert("❌ Pilih tanggal dan waktu terlebih dahulu!");
-                return;
-            }
-            if (!narasiText.value.trim()) {
-                alert("❌ Isi narasi kegiatan terlebih dahulu!");
-                return;
-            }
-            if (!judulInput.value.trim()) {
-                alert("❌ Isi judul kegiatan terlebih dahulu!");
-                return;
-            }
-            if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
-                alert("❌ Koordinat belum dimuat. Periksa koneksi internet!");
-                return;
-            }
-            
-            const currentDateValue = tanggalInput.value;
-            
-            if (isFullDateAlreadySubmitted(currentDateValue)) {
-                const dateObj = new Date(currentDateValue);
-                const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-                alert(`⚠️ GAGAL! Laporan untuk tanggal ${tanggalFormatted} sudah pernah dibuat.\n\nSilakan pilih TANGGAL YANG BERBEDA.`);
-                return;
-            }
-            
+            if (!currentImage.complete || !currentImage.src) { alert("❌ Pilih foto terlebih dahulu!"); return; }
+            if (!tanggalInput.value) { alert("❌ Pilih tanggal dan waktu terlebih dahulu!"); return; }
+            if (!narasiText.value.trim()) { alert("❌ Isi narasi kegiatan terlebih dahulu!"); return; }
+            if (!judulInput.value.trim()) { alert("❌ Isi judul kegiatan terlebih dahulu!"); return; }
             loader.style.display = "block";
             downloadPngBtn.disabled = true;
-            downloadPngBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROSES';
-            
             try {
-                acakDetik(currentDateValue);
+                acakDetik(tanggalInput.value);
                 updateCanvasPreview();
-                
                 const dateObj = new Date(currentTimestamp);
-                const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-                const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
-                if (!safeJudul) safeJudul = "Kegiatan";
+                const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+                const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+                const timestamp = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+                let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0,30) || "Kegiatan";
                 const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
-                
-                if (!confirm(`Download PNG + TXT?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ File akan didownload terpisah (PNG dan TXT).\n📌 Tanggal ${formattedDate} tidak bisa digunakan lagi setelah ini!`)) {
-                    loader.style.display = "none";
-                    downloadPngBtn.disabled = false;
-                    downloadPngBtn.innerHTML = '<i class="fas fa-image"></i> PNG+TXT';
-                    return;
-                }
-                
-                const txtContent = `═══════════════════════════════════════
-   DUKOPS BABINSA - LILIGUNDI
-   Koramil 1609-01 / Buleleng
-═══════════════════════════════════════
-
-📌 JUDUL KEGIATAN
-${currentJudul}
-
-📅 TANGGAL
-${formattedDate}
-
-🕐 WAKTU
-${formattedTime}
-
-📍 KOORDINAT
-${currentKoordinat}
-
-📝 NARASI KEGIATAN
-${narasiText.value}
-
-═══════════════════════════════════════
-Dokumentasi: ${baseFileName}.png
-═══════════════════════════════════════`;
-
+                const txtContent = `JUDUL: ${currentJudul}\nTANGGAL: ${formattedDate}\nWAKTU: ${formattedTime}\nKOORDINAT: ${currentKoordinat}\nNARASI:\n${narasiText.value}`;
                 const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                const pngLink = document.createElement('a');
-                const pngUrl = URL.createObjectURL(pngBlob);
-                pngLink.href = pngUrl;
-                pngLink.download = `${baseFileName}.png`;
-                document.body.appendChild(pngLink);
-                pngLink.click();
-                document.body.removeChild(pngLink);
-                URL.revokeObjectURL(pngUrl);
-                
-                const txtBlob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
-                const txtLink = document.createElement('a');
-                const txtUrl = URL.createObjectURL(txtBlob);
-                txtLink.href = txtUrl;
-                txtLink.download = `${baseFileName}.txt`;
-                document.body.appendChild(txtLink);
-                txtLink.click();
-                document.body.removeChild(txtLink);
-                URL.revokeObjectURL(txtUrl);
-                
-                saveSubmittedFullDate(currentDateValue);
+                const pngLink = document.createElement('a'); pngLink.href = URL.createObjectURL(pngBlob); pngLink.download = `${baseFileName}.png`; pngLink.click();
+                const txtBlob = new Blob([txtContent], {type:'text/plain;charset=utf-8'});
+                const txtLink = document.createElement('a'); txtLink.href = URL.createObjectURL(txtBlob); txtLink.download = `${baseFileName}.txt`; txtLink.click();
+                saveSubmittedFullDate(tanggalInput.value);
                 addLog(`${baseFileName}.png + .txt`);
-                
-                alert(`✅ Berhasil diunduh!\n📄 ${baseFileName}.txt\n🖼️ ${baseFileName}.png\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
-                
-            } catch (err) {
-                console.error(err);
-                alert("❌ Gagal menyimpan: " + err.message);
-            } finally {
-                loader.style.display = "none";
-                downloadPngBtn.disabled = false;
-                downloadPngBtn.innerHTML = '<i class="fas fa-image"></i> PNG+TXT';
-            }
+                alert("✅ PNG dan TXT berhasil diunduh!");
+            } catch(err) { alert("Gagal: "+err.message); }
+            finally { loader.style.display = "none"; downloadPngBtn.disabled = false; downloadPngBtn.innerHTML = '<i class="fas fa-image"></i> PNG+TXT'; }
         }
         
-        // ======================== FUNGSI UTAMA ========================
-        function acakDetik(pilihWaktu) {
-            if (!pilihWaktu) return null;
-            let dateObj = new Date(pilihWaktu);
-            if (isNaN(dateObj.getTime())) return null;
-            const detikAcak = Math.floor(Math.random() * 60);
-            dateObj.setSeconds(detikAcak);
-            currentTimestamp = dateObj.toISOString();
-            return dateObj;
-        }
+        function acakDetik(pilihWaktu) { if (!pilihWaktu) return null; let d = new Date(pilihWaktu); if (isNaN(d)) return null; d.setSeconds(Math.floor(Math.random()*60)); currentTimestamp = d.toISOString(); return d; }
+        async function loadKoordinat() { try { const res = await fetch(GITHUB_JSON_URL); if (!res.ok) throw new Error(); const data = await res.json(); if (!data.koordinat || !data.koordinat.length) throw new Error(); KOORDINAT_LIST = data.koordinat; koordinatLoaded = true; currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; } catch(e){ koordinatLoaded = false; } checkInputCompletion(); }
+        function updateJudul() { currentJudul = judulInput.value.trim(); document.title = `${currentJudul || "DUKOPS"} - Live Chat`; updateCanvasPreview(); }
+        function previewImage(file) { if (!file) return; fileNameDisplay.textContent = file.name; fileInputLabel.style.background = "#254f3f"; if (koordinatLoaded) currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; if (tanggalInput.value) acakDetik(tanggalInput.value); const reader = new FileReader(); reader.onload = function(e) { currentImage = new Image(); currentImage.onload = function() { canvasWidth = Math.min(currentImage.naturalWidth, 800); canvasHeight = Math.min(currentImage.naturalHeight, 600); canvas.width = canvasWidth; canvas.height = canvasHeight; updateCanvasPreview(); checkInputCompletion(); }; currentImage.src = e.target.result; }; reader.readAsDataURL(file); }
+        function updateCanvasPreview() { if (!canvas.width) canvas.width = 600; if (!canvas.height) canvas.height = 400; const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); if (currentImage.complete && currentImage.src && currentImage.naturalWidth>0) ctx.drawImage(currentImage,0,0,canvas.width,canvas.height); else { ctx.fillStyle='#2a5e48'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#bde5ca'; ctx.font='14px Arial'; ctx.textAlign='center'; ctx.fillText("Pilih foto", canvas.width/2, canvas.height/2); } ctx.fillStyle="#FFFFFF"; ctx.shadowBlur=3; ctx.font="12px Arial"; ctx.textAlign="right"; let y=canvas.height-10; if(currentTimestamp){ let d=new Date(currentTimestamp); if(!isNaN(d)) ctx.fillText(d.toLocaleDateString('id-ID')+" "+d.toLocaleTimeString('id-ID'), canvas.width-10, y); y-=18; } ctx.fillText(currentKoordinat, canvas.width-10, y); y-=20; ctx.font="bold 14px Arial"; ctx.fillText(currentJudul.substring(0,30), canvas.width-10, y); ctx.shadowBlur=0; }
+        function checkInputCompletion() { const hasImage = gambarInput.files.length>0 && currentImage.complete; const hasDate = tanggalInput.value.trim()!==""; const hasNarasi = narasiText.value.trim()!==""; const hasJudul = judulInput.value.trim()!==""; const hasKoordinat = koordinatLoaded; downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat); }
+        async function saveReport() { if(downloadBtn.disabled){ if(!koordinatLoaded) alert("Koordinat belum dimuat."); else alert("Lengkapi semua data!"); return; } if(!tanggalInput.value) return alert("Pilih tanggal!"); if(isFullDateAlreadySubmitted(tanggalInput.value)) return alert("Tanggal ini sudah pernah dipakai!"); loader.style.display="block"; downloadBtn.disabled=true; downloadBtn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> PROSES'; try { sequenceNumber++; let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g,"_").substring(0,30)||"Kegiatan"; const finalName = `${sequenceNumber}_${safeJudul}_${new Date().toLocaleDateString('id-ID').replace(/\//g,'-')}`; updateCanvasPreview(); const zip = new JSZip(); zip.file(`${finalName}_Laporan.txt`, `Judul: ${currentJudul}\nNarasi: ${narasiText.value}\nKoordinat: ${currentKoordinat}`); zip.file(`${finalName}_Dokumentasi.png`, canvas.toDataURL("image/png").split(",")[1], { base64: true }); const blob = await zip.generateAsync({type:"blob"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${finalName}.zip`; link.click(); saveSubmittedFullDate(tanggalInput.value); addLog(`${finalName}.zip`); alert("✅ ZIP tersimpan!"); } catch(e){ alert("Gagal: "+e.message); } finally { loader.style.display="none"; downloadBtn.disabled=false; downloadBtn.innerHTML='<i class="fas fa-save"></i> SIMPAN ZIP'; checkInputCompletion(); } }
         
-        async function loadKoordinat() {
+        // Event DUKOPS
+        judulInput.addEventListener('input', () => { updateJudul(); checkInputCompletion(); });
+        tanggalInput.addEventListener('input', (e) => { if(e.target.value) acakDetik(e.target.value); updateCanvasPreview(); checkInputCompletion(); });
+        narasiText.addEventListener('input', checkInputCompletion);
+        downloadBtn.addEventListener('click', saveReport);
+        resetBtn.addEventListener('click', resetAllData);
+        downloadPngBtn.addEventListener('click', downloadPngAndTxt);
+        gambarInput.addEventListener('change', function(e) { if(e.target.files && e.target.files[0]) previewImage(e.target.files[0]); else { fileNameDisplay.textContent='Belum ada file'; checkInputCompletion(); } });
+        
+        async function initDukops() { loadLogs(); loadTemplatesFromGitHub(); const now = new Date(); const defDateTime = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; tanggalInput.value = defDateTime; acakDetik(defDateTime); updateJudul(); await loadKoordinat(); canvas.width=600; canvas.height=400; updateCanvasPreview(); checkInputCompletion(); }
+        
+        // ======================== LIVE CHAT SUPABASE ========================
+        async function initSupabaseChat() {
             try {
-                const response = await fetch(GITHUB_JSON_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                if (!data.koordinat || data.koordinat.length === 0) {
-                    throw new Error('File koordinat kosong');
-                }
-                KOORDINAT_LIST = data.koordinat;
-                koordinatLoaded = true;
-                currentKoordinat = getRandomCoordinate();
-            } catch (error) {
-                console.error('Gagal memuat koordinat:', error);
-                koordinatLoaded = false;
-            }
-            checkInputCompletion();
-        }
-        
-        function getRandomCoordinate() {
-            if (!koordinatLoaded || KOORDINAT_LIST.length === 0) {
-                return "-8° 8'38.215S, 115°6'52.463E";
-            }
-            return KOORDINAT_LIST[Math.floor(Math.random() * KOORDINAT_LIST.length)];
-        }
-        
-        function updateJudul() {
-            let raw = judulInput.value.trim();
-            if (raw === "") raw = "";
-            currentJudul = raw;
-            document.title = `${currentJudul} - DUKOPS`;
-            updateCanvasPreview();
-        }
-        
-        function previewImage(file) {
-            if (!file) return;
+                supabaseChat = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('Supabase chat client ready');
+            } catch(err) { console.error('Supabase init error:', err); return; }
             
-            fileNameDisplay.textContent = file.name;
-            fileInputLabel.style.background = "#254f3f";
-            
-            if (koordinatLoaded && KOORDINAT_LIST.length > 0) {
-                currentKoordinat = getRandomCoordinate();
+            // Prompt nama untuk chat (bisa berbeda dengan nama babinsa)
+            let chatName = localStorage.getItem('chat_username');
+            if (!chatName) {
+                chatName = prompt('Masukkan nama Anda untuk Live Chat:', 'Warga Liligundi');
+                if (!chatName) chatName = 'Pengunjung';
+                localStorage.setItem('chat_username', chatName);
             }
             
-            const currentDateValue = tanggalInput.value;
-            if (currentDateValue) {
-                acakDetik(currentDateValue);
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentImage = new Image();
-                currentImage.onload = function() {
-                    const maxWidth = 800;
-                    const maxHeight = 600;
-                    
-                    let width = currentImage.naturalWidth;
-                    let height = currentImage.naturalHeight;
-                    
-                    if (width > maxWidth) {
-                        height = (height * maxWidth) / width;
-                        width = maxWidth;
-                    }
-                    if (height > maxHeight) {
-                        width = (width * maxHeight) / height;
-                        height = maxHeight;
-                    }
-                    
-                    canvasWidth = Math.round(width);
-                    canvasHeight = Math.round(height);
-                    
-                    canvas.width = canvasWidth;
-                    canvas.height = canvasHeight;
-                    
-                    updateCanvasPreview();
-                    checkInputCompletion();
-                };
-                currentImage.onerror = function() {
-                    fileNameDisplay.textContent = 'Gagal memuat gambar';
-                    checkInputCompletion();
-                };
-                currentImage.src = e.target.result;
+            chatCurrentUser = {
+                id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+                name: chatName.substring(0,25)
             };
-            reader.readAsDataURL(file);
+            
+            chatChannel = supabaseChat.channel('dukops-live', {
+                config: { presence: { key: chatCurrentUser.id } }
+            });
+            
+            // Presence: sync online users (tampilkan badge, tapi tidak perlu sidebar karena sudah ada widget)
+            chatChannel.on('presence', { event: 'sync' }, () => {
+                const state = chatChannel.presenceState();
+                const userCount = Object.keys(state).length;
+                // update badge jika perlu (misal tampilkan jumlah online di tooltip, tapi tidak perlu sidebar)
+                console.log(`Online users: ${userCount}`);
+            });
+            
+            // Broadcast pesan masuk
+            chatChannel.on('broadcast', { event: 'message' }, ({ payload }) => {
+                addChatMessage(payload);
+            });
+            
+            await chatChannel.subscribe(async (status) => {
+                if (status === 'SUBSCRIBED') {
+                    await chatChannel.track({
+                        user_id: chatCurrentUser.id,
+                        name: chatCurrentUser.name
+                    });
+                    console.log('Chat presence tracked');
+                }
+            });
         }
         
-        function updateCanvasPreview() {
-            if (!canvas.width || canvas.width === 0) {
-                canvas.width = 600;
-                canvas.height = 400;
-                canvasWidth = 600;
-                canvasHeight = 400;
-            }
+        function addChatMessage(msg) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const isOwn = (msg.senderId === chatCurrentUser.id);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isOwn ? 'message-user' : 'message-babinsa'}`;
+            const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+            messageDiv.innerHTML = `
+                ${!isOwn ? `<div style="font-size:0.7rem;font-weight:bold;">${escapeHtml(msg.sender)}</div>` : ''}
+                <div>${escapeHtml(msg.text)}</div>
+                <div class="message-time">${time}</div>
+            `;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const baseFontSize = Math.max(14, Math.floor(canvas.width / 28));
-            const boldFontSize = baseFontSize + 2;
-            const smallFontSize = Math.max(11, baseFontSize - 2);
-            
-            if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) {
-                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-            } else {
-                ctx.fillStyle = '#2a5e48';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#bde5ca';
-                ctx.font = `${baseFontSize}px Arial`;
-                ctx.textAlign = "center";
-                ctx.fillText("Pilih foto untuk preview", canvas.width/2, canvas.height/2);
-            }
-            
-            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-            ctx.shadowBlur = 3;
-            ctx.fillStyle = "#FFFFFF";
-            ctx.textAlign = "right";
-            
-            let yPos = canvas.height - 12;
-            const lineHeight = baseFontSize + 5;
-            
-            let dateObj = new Date(currentTimestamp);
-            if (!isNaN(dateObj.getTime())) {
-                const dateStr = dateObj.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-                const timeStr = dateObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                ctx.font = `${smallFontSize}px Arial`;
-                ctx.fillText(`${dateStr}, ${timeStr}`, canvas.width - 12, yPos);
-                yPos -= lineHeight;
-            } else {
-                ctx.font = `${smallFontSize}px Arial`;
-                ctx.fillText("Tanggal belum dipilih", canvas.width - 12, yPos);
-                yPos -= lineHeight;
-            }
-            
-            ctx.font = `${smallFontSize}px Arial`;
-            let koordinatDisplay = currentKoordinat;
-            const maxCharsCoord = Math.floor(canvas.width / 9);
-            if (koordinatDisplay.length > maxCharsCoord) {
-                koordinatDisplay = koordinatDisplay.substring(0, maxCharsCoord - 3) + '...';
-            }
-            ctx.fillText(koordinatDisplay, canvas.width - 12, yPos);
-            yPos -= lineHeight;
-            
-            ctx.font = `bold ${boldFontSize}px Arial`;
-            let judulDisplay = currentJudul;
-            const maxChars = Math.floor(canvas.width / 10);
-            if (judulDisplay.length > maxChars) {
-                judulDisplay = judulDisplay.substring(0, maxChars - 3) + '...';
-            }
-            ctx.fillText(judulDisplay, canvas.width - 12, yPos);
-            
-            ctx.shadowColor = "transparent";
-        }
-        
-        function checkInputCompletion() {
-            const hasImage = gambarInput.files.length > 0 && currentImage.complete && currentImage.src;
-            const hasDate = tanggalInput.value.trim() !== "";
-            const hasNarasi = narasiText.value.trim() !== "";
-            const hasJudul = judulInput.value.trim() !== "";
-            const hasKoordinat = koordinatLoaded && KOORDINAT_LIST.length > 0;
-            
-            downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat);
-        }
-        
-        async function saveReport() {
-            if (downloadBtn.disabled) {
-                if (!koordinatLoaded) alert("Koordinat belum dimuat. Periksa koneksi internet!");
-                else alert("Lengkapi semua data terlebih dahulu!");
-                return;
-            }
-            
-            const currentDateValue = tanggalInput.value;
-            if (!currentDateValue) {
-                alert("Pilih tanggal dan waktu terlebih dahulu!");
-                return;
-            }
-            
-            if (isFullDateAlreadySubmitted(currentDateValue)) {
-                const dateObj = new Date(currentDateValue);
-                const tanggalFormatted = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-                alert(`⚠️ GAGAL! Laporan untuk tanggal ${tanggalFormatted} sudah pernah dibuat.\n\nSilakan pilih TANGGAL YANG BERBEDA.`);
-                return;
-            }
-            
-            const dateObj = new Date(currentDateValue);
-            if (isNaN(dateObj.getTime())) { 
-                alert("Tanggal tidak valid"); 
-                return; 
-            }
-            
-            acakDetik(currentDateValue);
-            
-            const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-            const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            if (!confirm(`Simpan laporan?\n\n📌 Judul: ${currentJudul}\n📅 Tanggal: ${formattedDate}\n🕐 Waktu: ${formattedTime}\n📍 Koordinat: ${currentKoordinat}\n\n⚠️ Perhatian: Tanggal yang sama tidak bisa digunakan dua kali!`)) return;
-            
-            loader.style.display = "block";
-            downloadBtn.disabled = true;
-            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROSES';
-            
-            try {
-                sequenceNumber++;
-                const ddmm = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit' }).replace(/\//g, "-");
-                let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 30);
-                if (!safeJudul) safeJudul = "Kegiatan";
-                const finalName = `${sequenceNumber}_${safeJudul}_${ddmm}`.replace(/\s/g, "_");
-                
-                updateCanvasPreview();
-                
-                const imageDataURL = canvas.toDataURL("image/png");
-                const narasiContent = narasiText.value;
-                
-                const txtContent = `Judul Kegiatan: ${currentJudul}
-Tanggal: ${formattedDate}
-Waktu input kegiatan: ${formattedTime}
-NARASI:
-${narasiContent}
-
-Koordinat: ${currentKoordinat}
-Koramil 1609-01/Buleleng - Kelurahan Liligundi`;
-                
-                if (typeof JSZip === 'undefined') throw new Error("JSZip tidak dimuat!");
-                
-                const zip = new JSZip();
-                zip.file(`${finalName}_Laporan.txt`, txtContent);
-                zip.file(`${finalName}_Dokumentasi.png`, imageDataURL.split("base64,")[1], { base64: true });
-                const zipBlob = await zip.generateAsync({ type: "blob" });
-                
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(zipBlob);
-                link.href = url;
-                link.download = `${finalName}.zip`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-                
-                saveSubmittedFullDate(currentDateValue);
-                addLog(`${finalName}.zip`);
-                alert(`✅ Laporan berhasil disimpan!\n📦 ${finalName}.zip\n\n📌 Catatan: Tanggal ${formattedDate} tidak bisa digunakan lagi.`);
-                
-            } catch (err) {
-                console.error(err);
-                alert("Gagal menyimpan: " + err.message);
-            } finally {
-                loader.style.display = "none";
-                downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-save"></i> SIMPAN ZIP';
-                checkInputCompletion();
+            if (!isOwn && document.getElementById('chatPanel').classList.contains('hide')) {
+                chatUnreadCount++;
+                const badge = document.getElementById('chatBadge');
+                badge.style.display = 'flex';
+                badge.innerText = chatUnreadCount > 9 ? '9+' : chatUnreadCount;
             }
         }
         
-        // ======================== PWA INSTALL ========================
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const msg = {
+                id: Date.now(),
+                sender: chatCurrentUser.name,
+                senderId: chatCurrentUser.id,
+                text: text,
+                timestamp: new Date().toISOString()
+            };
+            await chatChannel.send({ type: 'broadcast', event: 'message', payload: msg });
+            addChatMessage(msg);
+            input.value = '';
+        }
+        
+        // Event chat widget
+        const chatToggle = document.getElementById('chatToggleBtn');
+        const chatPanel = document.getElementById('chatPanel');
+        const chatClose = document.getElementById('chatCloseBtn');
+        const chatSend = document.getElementById('chatSendBtn');
+        const chatInputField = document.getElementById('chatInput');
+        const chatBadge = document.getElementById('chatBadge');
+        
+        chatToggle.addEventListener('click', () => {
+            chatPanel.classList.toggle('hide');
+            if (!chatPanel.classList.contains('hide')) {
+                chatUnreadCount = 0;
+                chatBadge.style.display = 'none';
+                chatInputField.focus();
+            }
+        });
+        chatClose.addEventListener('click', () => chatPanel.classList.add('hide'));
+        chatSend.addEventListener('click', sendChatMessage);
+        chatInputField.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatMessage(); });
+        
+        // Inisialisasi semuanya
+        setTimeout(() => {
+            initDukops();
+            initSupabaseChat();
+        }, 500);
+        
+        // PWA Install
         let deferredPrompt;
         const installDiv = document.getElementById('installContainer');
         const installBtn = document.getElementById('installButton');
         const closeInstall = document.getElementById('closeInstall');
-        
-        function showInstallFallback() {
-            setTimeout(() => {
-                if (installDiv.style.display !== 'block') {
-                    installDiv.style.display = 'block';
-                }
-            }, 3000);
-        }
-        
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                installDiv.style.display = 'none';
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response: ${outcome}`);
-                    deferredPrompt = null;
-                } else {
-                    alert("📱 Pasang Aplikasi:\n\n• Android: Buka menu browser (3 titik) → 'Install App' atau 'Tambahkan ke Home Screen'\n• iPhone: Buka menu Safari (bagian bawah) → 'Tambahkan ke Layar Utama'");
-                }
-            });
-        }
-        
-        if (closeInstall) {
-            closeInstall.addEventListener('click', () => {
-                installDiv.style.display = 'none';
-                localStorage.setItem('installDismissed', 'true');
-                localStorage.setItem('installDismissedTime', Date.now().toString());
-            });
-        }
-        
-        const isDismissed = localStorage.getItem('installDismissed');
-        if (!isDismissed) {
-            showInstallFallback();
-        }
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            localStorage.removeItem('installDismissed');
-            installDiv.style.display = 'block';
-        });
-        
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered:', reg.scope))
-                    .catch(err => console.log('Service Worker failed:', err));
-            });
-        }
-        
-        // ======================== EVENT LISTENERS ========================
-        judulInput.addEventListener('input', () => { updateJudul(); checkInputCompletion(); });
-        tanggalInput.addEventListener('input', (e) => { 
-            if (e.target.value) {
-                acakDetik(e.target.value);
-                updateCanvasPreview();
-            }
-            checkInputCompletion();
-        });
-        narasiText.addEventListener('input', checkInputCompletion);
-        downloadBtn.addEventListener('click', saveReport);
-        resetBtn.addEventListener('click', resetAllData);
-        
-        if (downloadPngBtn) {
-            downloadPngBtn.addEventListener('click', downloadPngAndTxt);
-        }
-        
-        gambarInput.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                previewImage(e.target.files[0]);
-            } else {
-                fileNameDisplay.textContent = 'Belum ada file';
-                fileInputLabel.style.background = '#1e352b';
-                checkInputCompletion();
-            }
-        });
-        
-        function loadCounter() {
-            const saved = localStorage.getItem(STORAGE_KEY_COUNTER);
-            submissionCount = saved ? parseInt(saved, 10) : 0;
-            sequenceNumber = submissionCount;
-        }
-        
-        async function init() {
-            loadCounter();
-            loadLogs();
-            
-            // Pre-load templates di background
-            loadTemplatesFromGitHub();
-            
-            const now = new Date();
-            const tahun = now.getFullYear();
-            const bulan = String(now.getMonth() + 1).padStart(2, '0');
-            const tanggal = String(now.getDate()).padStart(2, '0');
-            const jam = String(now.getHours()).padStart(2, '0');
-            const menit = String(now.getMinutes()).padStart(2, '0');
-            const defaultDateTime = `${tahun}-${bulan}-${tanggal}T${jam}:${menit}`;
-            tanggalInput.value = defaultDateTime;
-            
-            acakDetik(defaultDateTime);
-            updateJudul();
-            await loadKoordinat();
-            
-            canvas.width = 600;
-            canvas.height = 400;
-            updateCanvasPreview();
-            checkInputCompletion();
-        }
-        
-        setTimeout(() => {
-            init();
-        }, 500);
+        function showInstallFallback() { setTimeout(() => { if(installDiv.style.display !== 'block') installDiv.style.display = 'block'; }, 3000); }
+        if(installBtn) installBtn.addEventListener('click', async () => { installDiv.style.display = 'none'; if(deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; } else alert("📱 Pasang Aplikasi: Buka menu browser → 'Install App' atau 'Tambahkan ke Home Screen'"); });
+        if(closeInstall) closeInstall.addEventListener('click', () => { installDiv.style.display = 'none'; localStorage.setItem('installDismissed','true'); });
+        if(!localStorage.getItem('installDismissed')) showInstallFallback();
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; localStorage.removeItem('installDismissed'); installDiv.style.display = 'block'; });
+        if('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log("SW err:", err)); }); }
     </script>
 </body>
 </html>
