@@ -188,7 +188,15 @@
             align-items: center;
             border-bottom: 1px solid #2ecc71;
         }
-        .chat-header h4 { margin: 0; font-size: 1rem; color: #e2ffe6; }
+        .chat-header h4 { margin: 0; font-size: 1rem; color: #e2ffe6; display: flex; align-items: center; gap: 8px; }
+        .online-counter {
+            background: #2ecc71;
+            color: #0a1814;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
         .chat-close { background: none; border: none; color: #c7e9cf; font-size: 20px; cursor: pointer; }
         .chat-messages {
             flex: 1;
@@ -385,12 +393,12 @@
         </button>
         <div class="chat-panel hide" id="chatPanel">
             <div class="chat-header">
-                <h4><i class="fas fa-headset"></i> Live Chat Babinsa</h4>
+                <h4><i class="fas fa-headset"></i> Live Chat Babinsa <span id="onlineCounter" class="online-counter">0</span></h4>
                 <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message message-babinsa">
-                    Swastyastu, selamat datang di Live Chat DUKOPS Liligundi. Ada yang bisa dibantu? 🇮🇩
+                    Assalamualaikum, selamat datang di Live Chat DUKOPS. Ada yang bisa dibantu? 🇮🇩
                     <div class="message-time">Sekarang</div>
                 </div>
             </div>
@@ -616,17 +624,16 @@
         
         async function initDukops() { loadLogs(); loadTemplatesFromGitHub(); const now = new Date(); const defDateTime = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; tanggalInput.value = defDateTime; acakDetik(defDateTime); updateJudul(); await loadKoordinat(); canvas.width=600; canvas.height=400; updateCanvasPreview(); checkInputCompletion(); }
         
-        // ======================== LIVE CHAT SUPABASE ========================
+        // ======================== LIVE CHAT SUPABASE DENGAN COUNTER ONLINE ========================
         async function initSupabaseChat() {
             try {
                 supabaseChat = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('Supabase chat client ready');
             } catch(err) { console.error('Supabase init error:', err); return; }
             
-            // Prompt nama untuk chat (bisa berbeda dengan nama babinsa)
             let chatName = localStorage.getItem('chat_username');
             if (!chatName) {
-                chatName = prompt('Masukkan nama Anda:', 'Made Putu');
+                chatName = prompt('Masukkan nama Anda untuk Live Chat:', 'Warga Liligundi');
                 if (!chatName) chatName = 'Pengunjung';
                 localStorage.setItem('chat_username', chatName);
             }
@@ -640,15 +647,43 @@
                 config: { presence: { key: chatCurrentUser.id } }
             });
             
-            // Presence: sync online users (tampilkan badge, tapi tidak perlu sidebar karena sudah ada widget)
-            chatChannel.on('presence', { event: 'sync' }, () => {
+            // Fungsi untuk mengupdate counter online di header chat
+            function updateOnlineCounter() {
                 const state = chatChannel.presenceState();
-                const userCount = Object.keys(state).length;
-                // update badge jika perlu (misal tampilkan jumlah online di tooltip, tapi tidak perlu sidebar)
-                console.log(`Online users: ${userCount}`);
+                // Hitung jumlah user unik berdasarkan user_id
+                const users = new Set();
+                for (const [key, presences] of Object.entries(state)) {
+                    for (const p of presences) {
+                        if (p.user_id) users.add(p.user_id);
+                        else users.add(key);
+                    }
+                }
+                const count = users.size;
+                const counterSpan = document.getElementById('onlineCounter');
+                if (counterSpan) counterSpan.textContent = count;
+            }
+            
+            // Presence: sync
+            chatChannel.on('presence', { event: 'sync' }, () => {
+                updateOnlineCounter();
+                console.log('Presence synced');
             });
             
-            // Broadcast pesan masuk
+            chatChannel.on('presence', { event: 'join' }, ({ key, newPresences }) => {
+                updateOnlineCounter();
+                if (newPresences && newPresences[0] && newPresences[0].name !== chatCurrentUser.name) {
+                    addChatMessageSystem(`${newPresences[0].name} bergabung ke chat`);
+                }
+            });
+            
+            chatChannel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+                updateOnlineCounter();
+                if (leftPresences && leftPresences[0] && leftPresences[0].name !== chatCurrentUser.name) {
+                    addChatMessageSystem(`${leftPresences[0].name} meninggalkan chat`);
+                }
+            });
+            
+            // Broadcast pesan
             chatChannel.on('broadcast', { event: 'message' }, ({ payload }) => {
                 addChatMessage(payload);
             });
@@ -684,6 +719,15 @@
                 badge.style.display = 'flex';
                 badge.innerText = chatUnreadCount > 9 ? '9+' : chatUnreadCount;
             }
+        }
+        
+        function addChatMessageSystem(text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const sysDiv = document.createElement('div');
+            sysDiv.style.cssText = 'text-align:center; font-size:0.7rem; color:#8abf9a; margin:4px 0;';
+            sysDiv.innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(text)}`;
+            messagesDiv.appendChild(sysDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
         async function sendChatMessage() {
