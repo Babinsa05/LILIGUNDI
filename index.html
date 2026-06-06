@@ -673,13 +673,10 @@
             splashScreen.style.opacity = '0';
             setTimeout(() => {
                 splashScreen.style.display = 'none';
-                // Cek apakah sudah ada nama tersimpan
                 let savedName = localStorage.getItem('chat_username');
                 if (savedName && savedName.trim() !== '') {
-                    // Langsung buka dashboard tanpa login
                     startApp(savedName);
                 } else {
-                    // Tampilkan form login
                     loginOverlay.style.display = 'flex';
                     loginNameInput.focus();
                 }
@@ -709,7 +706,6 @@
             }
         });
         
-        // Progress bar cepat (selesai dalam < 1 detik)
         updateProgress(0);
         let interval = setInterval(() => {
             if (progress < 100) { 
@@ -783,7 +779,57 @@
         async function loadKoordinat() { try { const res = await fetch(GITHUB_JSON_URL); if (!res.ok) throw new Error(); const data = await res.json(); if (!data.koordinat || !data.koordinat.length) throw new Error(); KOORDINAT_LIST = data.koordinat; koordinatLoaded = true; currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; } catch(e){ koordinatLoaded = false; } checkInputCompletion(); }
         function updateJudul() { currentJudul = judulInput.value.trim(); document.title = `${currentJudul || "DUKOPS"} - Live Chat`; updateCanvasPreview(); }
         function previewImage(file) { if (!file) return; fileNameDisplay.textContent = file.name; fileInputLabel.style.background = "#254f3f"; if (koordinatLoaded) currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; if (tanggalInput.value) acakDetik(tanggalInput.value); const reader = new FileReader(); reader.onload = function(e) { currentImage = new Image(); currentImage.onload = function() { canvasWidth = Math.min(currentImage.naturalWidth, 800); canvasHeight = Math.min(currentImage.naturalHeight, 600); canvas.width = canvasWidth; canvas.height = canvasHeight; updateCanvasPreview(); checkInputCompletion(); }; currentImage.src = e.target.result; }; reader.readAsDataURL(file); }
-        function updateCanvasPreview() { if (!canvas.width) canvas.width = 600; if (!canvas.height) canvas.height = 400; const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); if (currentImage.complete && currentImage.src && currentImage.naturalWidth>0) ctx.drawImage(currentImage,0,0,canvas.width,canvas.height); else { ctx.fillStyle='#2a5e48'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#bde5ca'; ctx.font='14px Arial'; ctx.textAlign='center'; ctx.fillText("Pilih foto", canvas.width/2, canvas.height/2); } ctx.fillStyle="#FFFFFF"; ctx.shadowBlur=3; ctx.font="12px Arial"; ctx.textAlign="right"; let y=canvas.height-10; if(currentTimestamp){ let d=new Date(currentTimestamp); if(!isNaN(d)) ctx.fillText(d.toLocaleDateString('id-ID')+" "+d.toLocaleTimeString('id-ID'), canvas.width-10, y); y-=18; } ctx.fillText(currentKoordinat, canvas.width-10, y); y-=20; ctx.font="bold 14px Arial"; ctx.fillText(currentJudul.substring(0,30), canvas.width-10, y); ctx.shadowBlur=0; }
+        
+        // ========== UPDATE CANVAS PREVIEW DENGAN FONT BESAR ==========
+        function updateCanvasPreview() { 
+            if (!canvas.width) canvas.width = 600; 
+            if (!canvas.height) canvas.height = 400; 
+            const ctx = canvas.getContext('2d'); 
+            ctx.clearRect(0,0,canvas.width,canvas.height); 
+            if (currentImage.complete && currentImage.src && currentImage.naturalWidth > 0) { 
+                ctx.drawImage(currentImage,0,0,canvas.width,canvas.height); 
+            } else { 
+                ctx.fillStyle = '#2a5e48'; 
+                ctx.fillRect(0,0,canvas.width,canvas.height); 
+                ctx.fillStyle = '#bde5ca'; 
+                ctx.font = '18px Arial'; 
+                ctx.textAlign = 'center'; 
+                ctx.fillText("Pilih foto", canvas.width/2, canvas.height/2); 
+            } 
+            
+            ctx.fillStyle = "#FFFFFF"; 
+            ctx.shadowBlur = 4; 
+            ctx.textAlign = "right"; 
+            
+            // Posisi awal dari bawah
+            let y = canvas.height - 25;
+            
+            // ===== TANGGAL & WAKTU (ukuran 20px) =====
+            if (currentTimestamp) { 
+                let d = new Date(currentTimestamp); 
+                if (!isNaN(d)) {
+                    ctx.font = "20px Arial";
+                    ctx.fillText(d.toLocaleDateString('id-ID') + " " + d.toLocaleTimeString('id-ID'), canvas.width - 18, y); 
+                    y -= 38; 
+                }
+            } 
+            
+            // ===== KOORDINAT (ukuran 22px) =====
+            ctx.font = "22px Arial";
+            let koordinatDisplay = currentKoordinat;
+            if (koordinatDisplay.length > 38) koordinatDisplay = koordinatDisplay.substring(0, 35) + '...';
+            ctx.fillText(koordinatDisplay, canvas.width - 18, y); 
+            y -= 42; 
+            
+            // ===== JUDUL KEGIATAN (ukuran 32px BOLD) =====
+            ctx.font = "bold 32px Arial";
+            let judulDisplay = currentJudul;
+            if (judulDisplay.length > 32) judulDisplay = judulDisplay.substring(0, 29) + '...';
+            ctx.fillText(judulDisplay, canvas.width - 18, y); 
+            
+            ctx.shadowBlur = 0; 
+        }
+        
         function checkInputCompletion() { const hasImage = gambarInput.files.length>0 && currentImage.complete; const hasDate = tanggalInput.value.trim()!==""; const hasNarasi = narasiText.value.trim()!==""; const hasJudul = judulInput.value.trim()!==""; const hasKoordinat = koordinatLoaded; downloadBtn.disabled = !(hasImage && hasDate && hasNarasi && hasJudul && hasKoordinat); }
         async function saveReport() { if(downloadBtn.disabled){ if(!koordinatLoaded) alert("Koordinat belum dimuat."); else alert("Lengkapi semua data!"); return; } if(!tanggalInput.value) return alert("Pilih tanggal!"); if(isFullDateAlreadySubmitted(tanggalInput.value)) return alert("Tanggal ini sudah pernah dipakai!"); loader.style.display="block"; downloadBtn.disabled=true; downloadBtn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> PROSES'; try { sequenceNumber++; let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g,"_").substring(0,30)||"Kegiatan"; const finalName = `${sequenceNumber}_${safeJudul}_${new Date().toLocaleDateString('id-ID').replace(/\//g,'-')}`; updateCanvasPreview(); const zip = new JSZip(); zip.file(`${finalName}_Laporan.txt`, `Judul: ${currentJudul}\nNarasi: ${narasiText.value}\nKoordinat: ${currentKoordinat}`); zip.file(`${finalName}_Dokumentasi.png`, canvas.toDataURL("image/png").split(",")[1], { base64: true }); const blob = await zip.generateAsync({type:"blob"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${finalName}.zip`; link.click(); saveSubmittedFullDate(tanggalInput.value); addLog(`${finalName}.zip`); alert("✅ ZIP tersimpan!"); } catch(e){ alert("Gagal: "+e.message); } finally { loader.style.display="none"; downloadBtn.disabled=false; downloadBtn.innerHTML='<i class="fas fa-save"></i> SIMPAN ZIP'; checkInputCompletion(); } }
         
