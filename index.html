@@ -52,7 +52,7 @@
         
         #mainApp { display: none; }
         
-        /* TAMPILAN LOGIN (muncul setelah splash) */
+        /* TAMPILAN LOGIN */
         .login-overlay {
             position: fixed;
             top: 0;
@@ -81,76 +81,16 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .login-icon {
-            font-size: 64px;
-            background: linear-gradient(135deg, #2ecc71, #1e8e3e);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 16px;
-        }
-        .login-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #e2ffe6, #b0e0b0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .login-card p {
-            font-size: 0.85rem;
-            color: #8abf9a;
-            margin-bottom: 28px;
-        }
-        .input-group {
-            position: relative;
-            margin-bottom: 24px;
-        }
-        .input-group i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8abf9a;
-            font-size: 1.1rem;
-        }
-        .login-card input {
-            width: 100%;
-            padding: 14px 16px 14px 48px;
-            background: #1e352b;
-            border: 1px solid #3b6b55;
-            border-radius: 50px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        .login-card input:focus {
-            outline: none;
-            border-color: #2ecc71;
-            box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-        }
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #2ecc71, #1e8e3e);
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #0a1814;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 8px;
-        }
-        .login-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-        }
-        .info-text {
-            margin-top: 20px;
-            font-size: 0.7rem;
-            color: #6b8f7a;
-        }
+        .login-icon { font-size: 64px; background: linear-gradient(135deg, #2ecc71, #1e8e3e); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 16px; }
+        .login-card h2 { font-size: 1.8rem; margin-bottom: 8px; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .login-card p { font-size: 0.85rem; color: #8abf9a; margin-bottom: 28px; }
+        .input-group { position: relative; margin-bottom: 24px; }
+        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8abf9a; font-size: 1.1rem; }
+        .login-card input { width: 100%; padding: 14px 16px 14px 48px; background: #1e352b; border: 1px solid #3b6b55; border-radius: 50px; color: white; font-size: 1rem; transition: all 0.2s; }
+        .login-card input:focus { outline: none; border-color: #2ecc71; box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2); }
+        .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #2ecc71, #1e8e3e); border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; color: #0a1814; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px; }
+        .login-btn:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
+        .info-text { margin-top: 20px; font-size: 0.7rem; color: #6b8f7a; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -241,6 +181,80 @@
         .modal-template-item { background: #1e352b; padding: 12px; border-radius: 12px; cursor: pointer; border-left: 3px solid #3b6b55; }
         .modal-template-item:hover { background: #2a5541; border-left-color: #2ecc71; }
         
+        /* MODAL FONT SETTINGS */
+        .font-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2500;
+            justify-content: center;
+            align-items: center;
+        }
+        .font-modal.show { display: flex; }
+        .font-modal-content {
+            background: #1a3a2c;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 450px;
+            padding: 24px;
+            border: 1px solid #2ecc71;
+        }
+        .font-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #3a6b55;
+        }
+        .font-modal-header h3 { color: #e2ffe6; }
+        .font-modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #8abf9a;
+        }
+        .font-setting {
+            margin-bottom: 24px;
+        }
+        .font-setting label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .font-setting input {
+            width: 100%;
+            margin: 8px 0;
+            accent-color: #2ecc71;
+        }
+        .font-value {
+            background: #1e352b;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .font-modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .font-modal-footer button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-save-font { background: #2ecc71; color: #0a1814; }
+        .btn-reset-font { background: #5a3a3a; color: white; }
+        
         /* GAYA LIVE CHAT WIDGET */
         .chat-widget {
             position: fixed;
@@ -290,90 +304,39 @@
             border-bottom: 1px solid #2ecc71;
         }
         .chat-header h4 { margin: 0; font-size: 1rem; color: #e2ffe6; display: flex; align-items: center; gap: 8px; }
-        .online-counter {
-            background: #2ecc71;
-            color: #0a1814;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
+        .online-counter { background: #2ecc71; color: #0a1814; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
         .chat-close { background: none; border: none; color: #c7e9cf; font-size: 20px; cursor: pointer; }
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: #15261f;
-        }
-        .message {
-            max-width: 85%;
-            padding: 8px 12px;
-            border-radius: 18px;
-            font-size: 0.8rem;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-        .message-user {
-            align-self: flex-end;
-            background: #2ecc71;
-            color: #0a1814;
-            border-bottom-right-radius: 4px;
-        }
-        .message-babinsa {
-            align-self: flex-start;
-            background: #2a5541;
-            color: #f0faf3;
-            border-bottom-left-radius: 4px;
-        }
-        .message-time {
-            font-size: 0.6rem;
-            opacity: 0.7;
-            margin-top: 4px;
-            text-align: right;
-        }
-        .chat-input-area {
-            display: flex;
-            padding: 10px;
-            background: #0f2a20;
-            border-top: 1px solid #3a6b55;
-            gap: 8px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            background: #1e352b;
-            border: 1px solid #3b6b55;
-            border-radius: 30px;
-            padding: 10px 14px;
-            color: white;
-            font-size: 0.8rem;
-        }
-        .chat-input-area button {
-            background: #2ecc71;
-            border: none;
-            border-radius: 30px;
-            padding: 0 16px;
-            color: #0a1814;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .chat-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
+        .chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #15261f; }
+        .message { max-width: 85%; padding: 8px 12px; border-radius: 18px; font-size: 0.8rem; line-height: 1.4; word-wrap: break-word; }
+        .message-user { align-self: flex-end; background: #2ecc71; color: #0a1814; border-bottom-right-radius: 4px; }
+        .message-babinsa { align-self: flex-start; background: #2a5541; color: #f0faf3; border-bottom-left-radius: 4px; }
+        .message-time { font-size: 0.6rem; opacity: 0.7; margin-top: 4px; text-align: right; }
+        .chat-input-area { display: flex; padding: 10px; background: #0f2a20; border-top: 1px solid #3a6b55; gap: 8px; }
+        .chat-input-area input { flex: 1; background: #1e352b; border: 1px solid #3b6b55; border-radius: 30px; padding: 10px 14px; color: white; font-size: 0.8rem; }
+        .chat-input-area button { background: #2ecc71; border: none; border-radius: 30px; padding: 0 16px; color: #0a1814; font-weight: bold; cursor: pointer; }
+        .chat-badge { position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* Tombol Font Settings */
+        .font-settings-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: #1a3a2c;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            font-size: 22px;
+            z-index: 3000;
+            transition: transform 0.2s;
         }
+        .font-settings-btn:hover { transform: scale(1.05); background: #2a5541; }
         
         @media (max-width: 550px) {
             body { padding: 12px 8px; }
@@ -381,6 +344,7 @@
             .button-group { flex-wrap: wrap; }
             .btn-action { font-size: 0.65rem; min-width: 90px; }
             .chat-panel { width: 90vw; right: -10px; bottom: 70px; height: 450px; }
+            .font-settings-btn { width: 45px; height: 45px; font-size: 18px; bottom: 20px; left: 20px; }
         }
     </style>
 </head>
@@ -398,12 +362,10 @@
         </div>
     </div>
 
-    <!-- LOGIN OVERLAY (muncul setelah splash selesai) -->
+    <!-- LOGIN OVERLAY -->
     <div id="loginOverlay" class="login-overlay" style="display: none;">
         <div class="login-card">
-            <div class="login-icon">
-                <i class="fas fa-user-astronaut"></i>
-            </div>
+            <div class="login-icon"><i class="fas fa-user-astronaut"></i></div>
             <h2>Masuk sebagai User</h2>
             <p>Silakan masukkan nama Anda untuk mengakses DUKOPS</p>
             <div class="input-group">
@@ -411,13 +373,11 @@
                 <input type="text" id="loginNameInput" placeholder="Nama lengkap / panggilan" maxlength="25" autocomplete="off">
             </div>
             <button id="loginSubmitBtn" class="login-btn">MASUK KE DUKOPS</button>
-            <div class="info-text">
-                <i class="fas fa-shield-alt"></i> Nama akan digunakan untuk live chat
-            </div>
+            <div class="info-text"><i class="fas fa-shield-alt"></i> Nama akan digunakan untuk live chat</div>
         </div>
     </div>
 
-    <!-- DASHBOARD DUKOPS (awalnya tersembunyi) -->
+    <!-- DASHBOARD DUKOPS -->
     <div id="mainApp" style="display: none;">
         <div class="container">
             <div class="header">
@@ -487,6 +447,37 @@
         </div>
     </div>
 
+    <!-- TOMBOL FONT SETTINGS -->
+    <div class="font-settings-btn" id="fontSettingsBtn" title="Atur Ukuran Font Canvas">
+        <i class="fas fa-text-height"></i>
+    </div>
+
+    <!-- MODAL FONT SETTINGS (HANYA 1 SLIDER UNTUK SEMUA) -->
+    <div id="fontModal" class="font-modal">
+        <div class="font-modal-content">
+            <div class="font-modal-header">
+                <h3><i class="fas fa-sliders-h"></i> Atur Ukuran Font Canvas</h3>
+                <button class="font-modal-close" id="closeFontModalBtn">&times;</button>
+            </div>
+            
+            <div class="font-setting">
+                <label>
+                    <span><i class="fas fa-heading"></i> Ukuran Font (Judul, Koordinat, Tanggal)</span>
+                    <span class="font-value" id="allFontValue">32px</span>
+                </label>
+                <input type="range" id="allFontSlider" min="16" max="56" value="32" step="1">
+                <p style="font-size:0.7rem; color:#8abf9a; margin-top:8px;">
+                    <i class="fas fa-info-circle"></i> Satu slider untuk semua teks di canvas
+                </p>
+            </div>
+            
+            <div class="font-modal-footer">
+                <button class="btn-reset-font" id="resetFontBtn">Reset Default</button>
+                <button class="btn-save-font" id="saveFontBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <div id="installContainer">
         <p><i class="fas fa-mobile-alt"></i> Pasang Aplikasi DUKOPS di HP</p>
         <div class="install-buttons">
@@ -509,18 +500,13 @@
 
     <!-- LIVE CHAT WIDGET -->
     <div class="chat-widget">
-        <button class="chat-toggle" id="chatToggleBtn">
-            <i class="fas fa-comment-dots"></i>
-            <span id="chatBadge" class="chat-badge" style="display: none;">0</span>
-        </button>
+        <button class="chat-toggle" id="chatToggleBtn"><i class="fas fa-comment-dots"></i><span id="chatBadge" class="chat-badge" style="display: none;">0</span></button>
         <div class="chat-panel hide" id="chatPanel">
             <div class="chat-header">
                 <h4><i class="fas fa-headset"></i> Live Chat Babinsa <span id="onlineCounter" class="online-counter">0</span></h4>
                 <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
             </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Pesan sambutan dihapus total -->
-            </div>
+            <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Tulis pesan...">
                 <button id="chatSendBtn"><i class="fas fa-paper-plane"></i> Kirim</button>
@@ -538,6 +524,9 @@
         let chatChannel;
         let chatCurrentUser = null;
         let chatUnreadCount = 0;
+        
+        // ======================== VARIABEL FONT (SATU UNTUK SEMUA) ========================
+        let allFontSize = 32;  // ukuran font sama untuk judul, koordinat, tanggal
         
         // ======================== FUNGSI DUKOPS ========================
         const TEMPLATE_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.json';
@@ -558,6 +547,7 @@
         const STORAGE_KEY_COUNTER = "dukops_counter";
         const STORAGE_KEY_LOGS = "dukops_logs";
         const STORAGE_KEY_SUBMITTED_FULLDATES = "dukops_submitted_fulldates";
+        const STORAGE_KEY_FONT = "dukops_font_settings_all";
         
         const judulInput = document.getElementById('judulKegiatanInput');
         const gambarInput = document.getElementById('gambar');
@@ -579,6 +569,37 @@
         let currentTimestamp = "";
         let sequenceNumber = 0;
         let canvasWidth = 600, canvasHeight = 400;
+        
+        // ======================== LOAD FONT SETTINGS ========================
+        function loadFontSettings() {
+            const saved = localStorage.getItem(STORAGE_KEY_FONT);
+            if (saved) {
+                try {
+                    const settings = JSON.parse(saved);
+                    allFontSize = settings.allFont || 32;
+                } catch(e) {}
+            }
+            // Update slider
+            document.getElementById('allFontSlider').value = allFontSize;
+            document.getElementById('allFontValue').innerText = allFontSize + 'px';
+        }
+        
+        function saveFontSettings() {
+            const settings = { allFont: allFontSize };
+            localStorage.setItem(STORAGE_KEY_FONT, JSON.stringify(settings));
+        }
+        
+        // ======================== FORMAT TANGGAL (01 Januari 2026, 13:23:34) ========================
+        function formatTanggalIndo(date) {
+            const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const hari = date.getDate();
+            const bulanNama = bulan[date.getMonth()];
+            const tahun = date.getFullYear();
+            const jam = String(date.getHours()).padStart(2, '0');
+            const menit = String(date.getMinutes()).padStart(2, '0');
+            const detik = String(date.getSeconds()).padStart(2, '0');
+            return `${hari} ${bulanNama} ${tahun}, ${jam}:${menit}:${detik}`;
+        }
         
         // ======================== LOAD TEMPLATE NARASI ========================
         async function loadTemplatesFromGitHub() {
@@ -719,24 +740,6 @@
             }
         }, 80);
         
-        // Status koneksi
-        function updateConnectionStatus() {
-            const statusDot = document.getElementById('statusDot');
-            const statusTextSpan = document.getElementById('statusText');
-            if (navigator.onLine) {
-                statusDot.className = 'status-dot online';
-                statusTextSpan.className = 'status-text online';
-                statusTextSpan.innerHTML = '<i class="fas fa-wifi"></i> Online';
-            } else {
-                statusDot.className = 'status-dot offline';
-                statusTextSpan.className = 'status-text offline';
-                statusTextSpan.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
-            }
-        }
-        window.addEventListener('online', updateConnectionStatus);
-        window.addEventListener('offline', updateConnectionStatus);
-        updateConnectionStatus();
-        
         // ======================== FUNGSI DUKOPS ========================
         function getFullDateKey(dateString) { if (!dateString) return null; let d = new Date(dateString); if (isNaN(d)) return null; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
         function isFullDateAlreadySubmitted(dateString) { const submitted = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED_FULLDATES) || '[]'); return submitted.includes(getFullDateKey(dateString)); }
@@ -758,12 +761,11 @@
                 acakDetik(tanggalInput.value);
                 updateCanvasPreview();
                 const dateObj = new Date(currentTimestamp);
-                const formattedDate = dateObj.toLocaleDateString('id-ID', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
-                const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+                const formattedDate = formatTanggalIndo(dateObj);
                 const timestamp = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
                 let safeJudul = currentJudul.replace(/[^a-zA-Z0-9]/g, "_").substring(0,30) || "Kegiatan";
                 const baseFileName = `DUKOPS_${safeJudul}_${timestamp}`;
-                const txtContent = `JUDUL: ${currentJudul}\nTANGGAL: ${formattedDate}\nWAKTU: ${formattedTime}\nKOORDINAT: ${currentKoordinat}\nNARASI:\n${narasiText.value}`;
+                const txtContent = `JUDUL: ${currentJudul}\nTANGGAL: ${formattedDate}\nKOORDINAT: ${currentKoordinat}\nNARASI:\n${narasiText.value}`;
                 const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
                 const pngLink = document.createElement('a'); pngLink.href = URL.createObjectURL(pngBlob); pngLink.download = `${baseFileName}.png`; pngLink.click();
                 const txtBlob = new Blob([txtContent], {type:'text/plain;charset=utf-8'});
@@ -780,7 +782,7 @@
         function updateJudul() { currentJudul = judulInput.value.trim(); document.title = `${currentJudul || "DUKOPS"} - Live Chat`; updateCanvasPreview(); }
         function previewImage(file) { if (!file) return; fileNameDisplay.textContent = file.name; fileInputLabel.style.background = "#254f3f"; if (koordinatLoaded) currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; if (tanggalInput.value) acakDetik(tanggalInput.value); const reader = new FileReader(); reader.onload = function(e) { currentImage = new Image(); currentImage.onload = function() { canvasWidth = Math.min(currentImage.naturalWidth, 800); canvasHeight = Math.min(currentImage.naturalHeight, 600); canvas.width = canvasWidth; canvas.height = canvasHeight; updateCanvasPreview(); checkInputCompletion(); }; currentImage.src = e.target.result; }; reader.readAsDataURL(file); }
         
-        // ========== UPDATE CANVAS PREVIEW DENGAN FONT BESAR ==========
+        // ========== UPDATE CANVAS PREVIEW DENGAN SATU UKURAN FONT UNTUK SEMUA ==========
         function updateCanvasPreview() { 
             if (!canvas.width) canvas.width = 600; 
             if (!canvas.height) canvas.height = 400; 
@@ -801,30 +803,33 @@
             ctx.shadowBlur = 4; 
             ctx.textAlign = "right"; 
             
-            // Posisi awal dari bawah
-            let y = canvas.height - 25;
+            // SEMUA MENGGUNAKAN UKURAN FONT YANG SAMA (allFontSize) DAN BOLD
+            let currentFont = allFontSize;
+            let y = canvas.height - (currentFont / 2) - 15;
             
-            // ===== TANGGAL & WAKTU (ukuran 20px) =====
+            // ===== TANGGAL & WAKTU (BOLD, UKURAN SAMA) =====
             if (currentTimestamp) { 
                 let d = new Date(currentTimestamp); 
                 if (!isNaN(d)) {
-                    ctx.font = "20px Arial";
-                    ctx.fillText(d.toLocaleDateString('id-ID') + " " + d.toLocaleTimeString('id-ID'), canvas.width - 18, y); 
-                    y -= 38; 
+                    ctx.font = `bold ${currentFont}px Arial`;
+                    ctx.fillText(formatTanggalIndo(d), canvas.width - 18, y); 
+                    y -= (currentFont + 15); 
                 }
             } 
             
-            // ===== KOORDINAT (ukuran 22px) =====
-            ctx.font = "22px Arial";
+            // ===== KOORDINAT (BOLD, UKURAN SAMA) =====
+            ctx.font = `bold ${currentFont}px Arial`;
             let koordinatDisplay = currentKoordinat;
-            if (koordinatDisplay.length > 38) koordinatDisplay = koordinatDisplay.substring(0, 35) + '...';
+            let maxCharsCoord = Math.floor((canvas.width - 40) / (currentFont * 0.6));
+            if (koordinatDisplay.length > maxCharsCoord) koordinatDisplay = koordinatDisplay.substring(0, maxCharsCoord - 3) + '...';
             ctx.fillText(koordinatDisplay, canvas.width - 18, y); 
-            y -= 42; 
+            y -= (currentFont + 15); 
             
-            // ===== JUDUL KEGIATAN (ukuran 32px BOLD) =====
-            ctx.font = "bold 32px Arial";
+            // ===== JUDUL KEGIATAN (BOLD, UKURAN SAMA) =====
+            ctx.font = `bold ${currentFont}px Arial`;
             let judulDisplay = currentJudul;
-            if (judulDisplay.length > 32) judulDisplay = judulDisplay.substring(0, 29) + '...';
+            let maxCharsJudul = Math.floor((canvas.width - 40) / (currentFont * 0.6));
+            if (judulDisplay.length > maxCharsJudul) judulDisplay = judulDisplay.substring(0, maxCharsJudul - 3) + '...';
             ctx.fillText(judulDisplay, canvas.width - 18, y); 
             
             ctx.shadowBlur = 0; 
@@ -841,7 +846,47 @@
         downloadPngBtn.addEventListener('click', downloadPngAndTxt);
         gambarInput.addEventListener('change', function(e) { if(e.target.files && e.target.files[0]) previewImage(e.target.files[0]); else { fileNameDisplay.textContent='Belum ada file'; checkInputCompletion(); } });
         
-        async function initDukops() { loadLogs(); loadTemplatesFromGitHub(); const now = new Date(); const defDateTime = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; tanggalInput.value = defDateTime; acakDetik(defDateTime); updateJudul(); await loadKoordinat(); canvas.width=600; canvas.height=400; updateCanvasPreview(); checkInputCompletion(); }
+        async function initDukops() { loadLogs(); loadTemplatesFromGitHub(); loadFontSettings(); const now = new Date(); const defDateTime = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; tanggalInput.value = defDateTime; acakDetik(defDateTime); updateJudul(); await loadKoordinat(); canvas.width=600; canvas.height=400; updateCanvasPreview(); checkInputCompletion(); }
+        
+        // ======================== FONT MODAL HANDLERS (SATU SLIDER) ========================
+        const fontModal = document.getElementById('fontModal');
+        const fontSettingsBtn = document.getElementById('fontSettingsBtn');
+        const closeFontModalBtn = document.getElementById('closeFontModalBtn');
+        const allSlider = document.getElementById('allFontSlider');
+        const allValue = document.getElementById('allFontValue');
+        const resetFontBtn = document.getElementById('resetFontBtn');
+        const saveFontBtn = document.getElementById('saveFontBtn');
+        
+        allSlider.addEventListener('input', () => {
+            allFontSize = parseInt(allSlider.value);
+            allValue.innerText = allFontSize + 'px';
+            updateCanvasPreview();
+        });
+        
+        resetFontBtn.addEventListener('click', () => {
+            allFontSize = 32;
+            allSlider.value = allFontSize;
+            allValue.innerText = allFontSize + 'px';
+            updateCanvasPreview();
+        });
+        
+        saveFontBtn.addEventListener('click', () => {
+            saveFontSettings();
+            fontModal.classList.remove('show');
+            showToastMsg('✅ Ukuran font tersimpan!');
+        });
+        
+        fontSettingsBtn.addEventListener('click', () => {
+            fontModal.classList.add('show');
+        });
+        
+        closeFontModalBtn.addEventListener('click', () => {
+            fontModal.classList.remove('show');
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === fontModal) fontModal.classList.remove('show');
+        });
         
         // ======================== LIVE CHAT SUPABASE ========================
         async function initSupabaseChat(userName) {
@@ -850,6 +895,7 @@
                 console.log('Supabase chat client ready');
             } catch(err) { console.error('Supabase init error:', err); return; }
             
+            // NAMA DARI LOGIN LANGSUNG DIGUNAKAN UNTUK CHAT
             chatCurrentUser = {
                 id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
                 name: userName.substring(0,25)
@@ -949,7 +995,6 @@
             input.value = '';
         }
         
-        // Event chat widget
         const chatToggle = document.getElementById('chatToggleBtn');
         const chatPanel = document.getElementById('chatPanel');
         const chatClose = document.getElementById('chatCloseBtn');
@@ -968,6 +1013,23 @@
         chatClose.addEventListener('click', () => chatPanel.classList.add('hide'));
         chatSend.addEventListener('click', sendChatMessage);
         chatInputField.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatMessage(); });
+        
+        function updateConnectionStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const statusTextSpan = document.getElementById('statusText');
+            if (navigator.onLine) {
+                statusDot.className = 'status-dot online';
+                statusTextSpan.className = 'status-text online';
+                statusTextSpan.innerHTML = '<i class="fas fa-wifi"></i> Online';
+            } else {
+                statusDot.className = 'status-dot offline';
+                statusTextSpan.className = 'status-text offline';
+                statusTextSpan.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+            }
+        }
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
         
         // PWA Install
         let deferredPrompt;
