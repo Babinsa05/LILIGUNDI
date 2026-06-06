@@ -626,7 +626,7 @@
             // Prompt nama untuk chat (bisa berbeda dengan nama babinsa)
             let chatName = localStorage.getItem('chat_username');
             if (!chatName) {
-                chatName = prompt('Masukkan nama Anda untuk Live Chat:', 'Warga Liligundi');
+                chatName = prompt('Masukkan nama Anda:', 'Made Putu');
                 if (!chatName) chatName = 'Pengunjung';
                 localStorage.setItem('chat_username', chatName);
             }
