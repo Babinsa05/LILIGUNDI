@@ -52,46 +52,6 @@
         
         #mainApp { display: none; }
         
-        /* TAMPILAN LOGIN */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-        .login-card {
-            background: #1a3a2c;
-            border-radius: 32px;
-            padding: 40px 32px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            animation: fadeInUp 0.5s ease;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .login-icon { font-size: 64px; background: linear-gradient(135deg, #2ecc71, #1e8e3e); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 16px; }
-        .login-card h2 { font-size: 1.8rem; margin-bottom: 8px; background: linear-gradient(135deg, #e2ffe6, #b0e0b0); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .login-card p { font-size: 0.85rem; color: #8abf9a; margin-bottom: 28px; }
-        .input-group { position: relative; margin-bottom: 24px; }
-        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8abf9a; font-size: 1.1rem; }
-        .login-card input { width: 100%; padding: 14px 16px 14px 48px; background: #1e352b; border: 1px solid #3b6b55; border-radius: 50px; color: white; font-size: 1rem; transition: all 0.2s; }
-        .login-card input:focus { outline: none; border-color: #2ecc71; box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2); }
-        .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #2ecc71, #1e8e3e); border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; color: #0a1814; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px; }
-        .login-btn:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
-        .info-text { margin-top: 20px; font-size: 0.7rem; color: #6b8f7a; }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, 'Segoe UI', sans-serif;
@@ -127,9 +87,36 @@
         @keyframes pulse-status { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
         .status-text.online { color: #2ecc71; }
         .status-text.offline { color: #e74c3c; }
-        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; margin: 10px 0; background: rgba(0,0,0,0.2); border-radius: 40px; padding: 6px 0; }
-        .marquee { display: inline-block; padding-left: 100%; animation: jalan 15s linear infinite; font-size: 13px; font-weight: bold; color: #fff700; text-shadow: 1px 1px 2px black; }
-        @keyframes jalan { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        
+        /* MARQUEE UNTUK LIVE CHAT */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.4);
+            border-radius: 40px;
+            padding: 8px 0;
+            border: 1px solid #2ecc71;
+        }
+        .marquee {
+            display: inline-block;
+            padding-left: 100%;
+            animation: jalan 20s linear infinite;
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff700;
+            text-shadow: 1px 1px 2px black;
+        }
+        .marquee i { margin: 0 4px; color: #2ecc71; }
+        @keyframes jalan {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .marquee-container:hover .marquee {
+            animation-play-state: paused;
+        }
+        
         .motto { text-align: left; padding: 5px 0 0 0; font-size: 12px; color: #c7e9cf; border-top: 1px solid #3a6b55; margin-top: 8px; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; }
         .motto i { margin-right: 8px; color: #63b581; }
         .content { padding: 20px 22px; }
@@ -362,22 +349,7 @@
         </div>
     </div>
 
-    <!-- LOGIN OVERLAY -->
-    <div id="loginOverlay" class="login-overlay" style="display: none;">
-        <div class="login-card">
-            <div class="login-icon"><i class="fas fa-user-astronaut"></i></div>
-            <h2>Masuk sebagai User</h2>
-            <p>Silakan masukkan nama Anda untuk mengakses DUKOPS</p>
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="loginNameInput" placeholder="Nama lengkap / panggilan" maxlength="25" autocomplete="off">
-            </div>
-            <button id="loginSubmitBtn" class="login-btn">MASUK KE DUKOPS</button>
-            <div class="info-text"><i class="fas fa-shield-alt"></i> Nama akan digunakan untuk live chat</div>
-        </div>
-    </div>
-
-    <!-- DASHBOARD DUKOPS -->
+    <!-- DASHBOARD DUKOPS (LANGSUNG TAMPIL TANPA LOGIN) -->
     <div id="mainApp" style="display: none;">
         <div class="container">
             <div class="header">
@@ -393,11 +365,17 @@
                                 <span class="status-text" id="statusText">Mengecek...</span>
                             </div>
                         </div>
+                        
+                        <!-- MARQUEE LIVE CHAT - Menampilkan pesan chat terbaru -->
                         <div class="marquee-container">
-                            <div class="marquee">★ KORAMIL 1609-01/BULELENG ★ DISIPLIN • LOYAL • PROFESIONAL • KORAMIL 01 BULELENG SIAP MELAYANI MASYARAKAT ★</div>
+                            <div class="marquee" id="liveChatMarquee">
+                                <i class="fas fa-comment-dots"></i> 💬 LIVE CHAT KELURAHAN LILIGUNDI: Belum ada pesan 💬 <i class="fas fa-comment-dots"></i>
+                            </div>
                         </div>
-                        <div class="motto"><i class="fas fa-quote-left"></i>Bersama Rakyat TNI Kuat<i class="fas fa-quote-right"></i></div>
                     </div>
+                </div>
+                <div class="motto">
+                    <i class="fas fa-star-of-life"></i> KORAMIL 1609-01/BULELENG — Bersama Rakyat TNI Kuat
                 </div>
             </div>
             <div class="content">
@@ -439,9 +417,10 @@
                 </div>
                 <hr>
                 <div class="footer-version">
-                    <div class="version">DUKOPS BABINSA — VERSI 2.0 + LIVE CHAT</div>
+                    <div class="version">DUKOPS BABINSA — VERSI 3.0 + LIVE CHAT MARQUEE</div>
                     <div class="sub">Aplikasi Pendukung Data dan Operasional Babinsa</div>
                     <div class="sub">Developer: Serka I Nyoman Arta</div>
+                    <div class="sub">Kelurahan Liligundi - Kecamatan Buleleng</div>
                 </div>
             </div>
         </div>
@@ -452,14 +431,13 @@
         <i class="fas fa-text-height"></i>
     </div>
 
-    <!-- MODAL FONT SETTINGS (HANYA 1 SLIDER UNTUK SEMUA) -->
+    <!-- MODAL FONT SETTINGS -->
     <div id="fontModal" class="font-modal">
         <div class="font-modal-content">
             <div class="font-modal-header">
                 <h3><i class="fas fa-sliders-h"></i> Atur Ukuran Font Canvas</h3>
                 <button class="font-modal-close" id="closeFontModalBtn">&times;</button>
             </div>
-            
             <div class="font-setting">
                 <label>
                     <span><i class="fas fa-heading"></i> Ukuran Font (Judul, Koordinat, Tanggal)</span>
@@ -470,7 +448,6 @@
                     <i class="fas fa-info-circle"></i> Satu slider untuk semua teks di canvas
                 </p>
             </div>
-            
             <div class="font-modal-footer">
                 <button class="btn-reset-font" id="resetFontBtn">Reset Default</button>
                 <button class="btn-save-font" id="saveFontBtn">Simpan</button>
@@ -503,7 +480,7 @@
         <button class="chat-toggle" id="chatToggleBtn"><i class="fas fa-comment-dots"></i><span id="chatBadge" class="chat-badge" style="display: none;">0</span></button>
         <div class="chat-panel hide" id="chatPanel">
             <div class="chat-header">
-                <h4><i class="fas fa-headset"></i> Live Chat Babinsa <span id="onlineCounter" class="online-counter">0</span></h4>
+                <h4><i class="fas fa-headset"></i> Live Chat Kelurahan Liligundi <span id="onlineCounter" class="online-counter">0</span></h4>
                 <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
             </div>
             <div class="chat-messages" id="chatMessages"></div>
@@ -525,8 +502,14 @@
         let chatCurrentUser = null;
         let chatUnreadCount = 0;
         
-        // ======================== VARIABEL FONT (SATU UNTUK SEMUA) ========================
-        let allFontSize = 32;  // ukuran font sama untuk judul, koordinat, tanggal
+        // NAMA DESA/KELURAHAN LANGSUNG DIGUNAKAN (TANPA INPUT LOGIN)
+        const DESA_NAME = "LILIGUNDI";
+        
+        // Array untuk menyimpan pesan chat terbaru (max 10 untuk marquee)
+        let latestChatMessages = [];
+        
+        // ======================== VARIABEL FONT ========================
+        let allFontSize = 32;
         
         // ======================== FUNGSI DUKOPS ========================
         const TEMPLATE_JSON_URL = 'https://raw.githubusercontent.com/Babinsa05/LILIGUNDI/main/template-narasi.json';
@@ -570,6 +553,38 @@
         let sequenceNumber = 0;
         let canvasWidth = 600, canvasHeight = 400;
         
+        // ======================== UPDATE MARQUEE DENGAN PESAN CHAT ========================
+        function updateMarqueeWithChat() {
+            const marqueeElement = document.getElementById('liveChatMarquee');
+            if (!marqueeElement) return;
+            
+            if (latestChatMessages.length === 0) {
+                marqueeElement.innerHTML = '<i class="fas fa-comment-dots"></i> 💬 LIVE CHAT KELURAHAN LILIGUNDI: Belum ada pesan. Kirim pesan pertama! 💬 <i class="fas fa-comment-dots"></i>';
+                return;
+            }
+            
+            // Buat teks marquee dari pesan terbaru (max 10 pesan)
+            let marqueeText = '<i class="fas fa-comment-dots"></i> 💬 KELURAHAN LILIGUNDI: ';
+            for (let i = 0; i < latestChatMessages.length; i++) {
+                const msg = latestChatMessages[i];
+                marqueeText += `${msg.sender}: ${msg.text.substring(0, 50)}${msg.text.length > 50 ? '...' : ''}`;
+                if (i < latestChatMessages.length - 1) {
+                    marqueeText += '  ★  ';
+                }
+            }
+            marqueeText += '  💬 <i class="fas fa-comment-dots"></i>';
+            marqueeElement.innerHTML = marqueeText;
+        }
+        
+        // Tambah pesan ke array marquee (max 10 pesan)
+        function addToMarqueeQueue(msg) {
+            latestChatMessages.unshift(msg);
+            if (latestChatMessages.length > 10) {
+                latestChatMessages.pop();
+            }
+            updateMarqueeWithChat();
+        }
+        
         // ======================== LOAD FONT SETTINGS ========================
         function loadFontSettings() {
             const saved = localStorage.getItem(STORAGE_KEY_FONT);
@@ -579,7 +594,6 @@
                     allFontSize = settings.allFont || 32;
                 } catch(e) {}
             }
-            // Update slider
             document.getElementById('allFontSlider').value = allFontSize;
             document.getElementById('allFontValue').innerText = allFontSize + 'px';
         }
@@ -589,7 +603,7 @@
             localStorage.setItem(STORAGE_KEY_FONT, JSON.stringify(settings));
         }
         
-        // ======================== FORMAT TANGGAL (01 Januari 2026, 13:23:34) ========================
+        // ======================== FORMAT TANGGAL ========================
         function formatTanggalIndo(date) {
             const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const hari = date.getDate();
@@ -674,15 +688,12 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // ======================== SPLASH SCREEN + LOGIN ========================
+        // ======================== SPLASH SCREEN ========================
         let progress = 0;
         const progressBar = document.getElementById('progressBar');
         const progressTextSpan = document.getElementById('progressText');
         const splashScreen = document.getElementById('splashScreen');
-        const loginOverlay = document.getElementById('loginOverlay');
         const mainAppDiv = document.getElementById('mainApp');
-        const loginNameInput = document.getElementById('loginNameInput');
-        const loginSubmitBtn = document.getElementById('loginSubmitBtn');
         
         function updateProgress(value) { 
             progress = value; 
@@ -694,38 +705,11 @@
             splashScreen.style.opacity = '0';
             setTimeout(() => {
                 splashScreen.style.display = 'none';
-                let savedName = localStorage.getItem('chat_username');
-                if (savedName && savedName.trim() !== '') {
-                    startApp(savedName);
-                } else {
-                    loginOverlay.style.display = 'flex';
-                    loginNameInput.focus();
-                }
+                mainAppDiv.style.display = 'block';
+                initDukops();
+                initSupabaseChat();
             }, 300);
         }
-        
-        function startApp(userName) {
-            loginOverlay.style.display = 'none';
-            mainAppDiv.style.display = 'block';
-            initDukops();
-            initSupabaseChat(userName);
-        }
-        
-        loginSubmitBtn.addEventListener('click', () => {
-            let name = loginNameInput.value.trim();
-            if (name === '') {
-                alert('Nama tidak boleh kosong!');
-                return;
-            }
-            localStorage.setItem('chat_username', name);
-            startApp(name);
-        });
-        
-        loginNameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                loginSubmitBtn.click();
-            }
-        });
         
         updateProgress(0);
         let interval = setInterval(() => {
@@ -779,10 +763,9 @@
         
         function acakDetik(pilihWaktu) { if (!pilihWaktu) return null; let d = new Date(pilihWaktu); if (isNaN(d)) return null; d.setSeconds(Math.floor(Math.random()*60)); currentTimestamp = d.toISOString(); return d; }
         async function loadKoordinat() { try { const res = await fetch(GITHUB_JSON_URL); if (!res.ok) throw new Error(); const data = await res.json(); if (!data.koordinat || !data.koordinat.length) throw new Error(); KOORDINAT_LIST = data.koordinat; koordinatLoaded = true; currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; } catch(e){ koordinatLoaded = false; } checkInputCompletion(); }
-        function updateJudul() { currentJudul = judulInput.value.trim(); document.title = `${currentJudul || "DUKOPS"} - Live Chat`; updateCanvasPreview(); }
+        function updateJudul() { currentJudul = judulInput.value.trim(); document.title = `${currentJudul || "DUKOPS"} - Live Chat Liligundi`; updateCanvasPreview(); }
         function previewImage(file) { if (!file) return; fileNameDisplay.textContent = file.name; fileInputLabel.style.background = "#254f3f"; if (koordinatLoaded) currentKoordinat = KOORDINAT_LIST[Math.floor(Math.random()*KOORDINAT_LIST.length)]; if (tanggalInput.value) acakDetik(tanggalInput.value); const reader = new FileReader(); reader.onload = function(e) { currentImage = new Image(); currentImage.onload = function() { canvasWidth = Math.min(currentImage.naturalWidth, 800); canvasHeight = Math.min(currentImage.naturalHeight, 600); canvas.width = canvasWidth; canvas.height = canvasHeight; updateCanvasPreview(); checkInputCompletion(); }; currentImage.src = e.target.result; }; reader.readAsDataURL(file); }
         
-        // ========== UPDATE CANVAS PREVIEW DENGAN SATU UKURAN FONT UNTUK SEMUA ==========
         function updateCanvasPreview() { 
             if (!canvas.width) canvas.width = 600; 
             if (!canvas.height) canvas.height = 400; 
@@ -803,11 +786,9 @@
             ctx.shadowBlur = 4; 
             ctx.textAlign = "right"; 
             
-            // SEMUA MENGGUNAKAN UKURAN FONT YANG SAMA (allFontSize) DAN BOLD
             let currentFont = allFontSize;
             let y = canvas.height - (currentFont / 2) - 15;
             
-            // ===== TANGGAL & WAKTU (BOLD, UKURAN SAMA) =====
             if (currentTimestamp) { 
                 let d = new Date(currentTimestamp); 
                 if (!isNaN(d)) {
@@ -817,7 +798,6 @@
                 }
             } 
             
-            // ===== KOORDINAT (BOLD, UKURAN SAMA) =====
             ctx.font = `bold ${currentFont}px Arial`;
             let koordinatDisplay = currentKoordinat;
             let maxCharsCoord = Math.floor((canvas.width - 40) / (currentFont * 0.6));
@@ -825,7 +805,6 @@
             ctx.fillText(koordinatDisplay, canvas.width - 18, y); 
             y -= (currentFont + 15); 
             
-            // ===== JUDUL KEGIATAN (BOLD, UKURAN SAMA) =====
             ctx.font = `bold ${currentFont}px Arial`;
             let judulDisplay = currentJudul;
             let maxCharsJudul = Math.floor((canvas.width - 40) / (currentFont * 0.6));
@@ -848,7 +827,7 @@
         
         async function initDukops() { loadLogs(); loadTemplatesFromGitHub(); loadFontSettings(); const now = new Date(); const defDateTime = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; tanggalInput.value = defDateTime; acakDetik(defDateTime); updateJudul(); await loadKoordinat(); canvas.width=600; canvas.height=400; updateCanvasPreview(); checkInputCompletion(); }
         
-        // ======================== FONT MODAL HANDLERS (SATU SLIDER) ========================
+        // ======================== FONT MODAL HANDLERS ========================
         const fontModal = document.getElementById('fontModal');
         const fontSettingsBtn = document.getElementById('fontSettingsBtn');
         const closeFontModalBtn = document.getElementById('closeFontModalBtn');
@@ -888,17 +867,17 @@
             if (e.target === fontModal) fontModal.classList.remove('show');
         });
         
-        // ======================== LIVE CHAT SUPABASE ========================
-        async function initSupabaseChat(userName) {
+        // ======================== LIVE CHAT SUPABASE (TANPA LOGIN) ========================
+        async function initSupabaseChat() {
             try {
                 supabaseChat = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('Supabase chat client ready');
             } catch(err) { console.error('Supabase init error:', err); return; }
             
-            // NAMA DARI LOGIN LANGSUNG DIGUNAKAN UNTUK CHAT
+            // Gunakan nama desa/kelurahan sebagai identitas chat
             chatCurrentUser = {
                 id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
-                name: userName.substring(0,25)
+                name: DESA_NAME
             };
             
             chatChannel = supabaseChat.channel('dukops-live', {
@@ -935,6 +914,11 @@
             
             chatChannel.on('broadcast', { event: 'message' }, ({ payload }) => {
                 addChatMessage(payload);
+                // Tambahkan pesan ke marquee running text
+                addToMarqueeQueue({
+                    sender: payload.sender,
+                    text: payload.text
+                });
             });
             
             await chatChannel.subscribe(async (status) => {
@@ -992,6 +976,11 @@
             };
             await chatChannel.send({ type: 'broadcast', event: 'message', payload: msg });
             addChatMessage(msg);
+            // Pesan sendiri juga ditambahkan ke marquee
+            addToMarqueeQueue({
+                sender: msg.sender,
+                text: msg.text
+            });
             input.value = '';
         }
         
